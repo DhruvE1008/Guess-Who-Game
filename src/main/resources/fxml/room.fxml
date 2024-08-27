@@ -20,7 +20,7 @@
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="171.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="77.0" />
       <Button fx:id="btnGuess" layoutX="47.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
-      <ImageView fitHeight="111.0" fitWidth="100.0" layoutX="45.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cimeScene" fitHeight="111.0" fitWidth="100.0" layoutX="45.0" layoutY="100.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/crime_scene.jpg" />
          </image>
@@ -28,7 +28,7 @@
           <Circle centerX="50.0" centerY="50.0" radius="50.0" />
         </clip>
       </ImageView>
-      <ImageView fitHeight="111.0" fitWidth="135.0" layoutX="31.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="archaeologist" fitHeight="111.0" fitWidth="135.0" layoutX="31.0" layoutY="225.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/suspect1.png" />
          </image>
@@ -36,7 +36,7 @@
           <Circle centerX="60.0" centerY="50.0" radius="50.0" />
         </clip>
       </ImageView>
-      <ImageView fitHeight="111.0" fitWidth="135.0" layoutX="40.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="journalist" fitHeight="111.0" fitWidth="135.0" layoutX="40.0" layoutY="350.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/suspect2.png" />
          </image>
@@ -44,7 +44,7 @@
           <Circle centerX="50.0" centerY="50.0" radius="50.0" />
         </clip>
       </ImageView>
-            <ImageView fitHeight="111.0" fitWidth="135.0" layoutX="35.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="guide" fitHeight="111.0" fitWidth="135.0" layoutX="35.0" layoutY="475.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/suspect3.png" />
          </image>

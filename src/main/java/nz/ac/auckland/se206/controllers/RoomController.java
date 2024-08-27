@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -22,6 +23,10 @@ public class RoomController {
   @FXML private Rectangle rectPerson3;
   @FXML private Rectangle rectWaitress;
   @FXML private Button btnGuess;
+  @FXML private ImageView crimeScene;
+  @FXML private ImageView archaeologist;
+  @FXML private ImageView journalist;
+  @FXML private ImageView guide;
 
   private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
@@ -57,6 +62,20 @@ public class RoomController {
   @FXML
   public void onKeyReleased(KeyEvent event) {
     System.out.println("Key " + event.getCode() + " released");
+  }
+
+  @FXML
+  private void onHover(MouseEvent event) {
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1.2);
+    hoveredImageView.setScaleY(1.2);
+  }
+
+  @FXML
+  private void onExit(MouseEvent event) {
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1);
+    hoveredImageView.setScaleY(1);
   }
 
   /**
