@@ -39,7 +39,7 @@ public class App extends Application {
     scene.setRoot(loadFxml(fxml));
   }
 
-  public static void changeArchaeoligist(MouseEvent event) throws IOException {
+  public static void changeArchaeologist(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/archaeologist.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -59,6 +59,15 @@ public class App extends Application {
 
   public static void changeGuide(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/tourGuide.fxml"));
+    Parent root = loader.load();
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    scene = new Scene(root);
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  public static void changeCrimeScene(MouseEvent event) throws IOException {
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);

@@ -22,7 +22,7 @@
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="171.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="77.0" />
       <Button fx:id="btnGuess" layoutX="18.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
-      <ImageView fx:id="crimeScene" fitHeight="111.0" fitWidth="100.0" layoutX="14.0" layoutY="227.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="crimeScene" fitHeight="111.0" fitWidth="100.0" layoutX="14.0" layoutY="227.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/crime_scene.jpg" />
          </image>

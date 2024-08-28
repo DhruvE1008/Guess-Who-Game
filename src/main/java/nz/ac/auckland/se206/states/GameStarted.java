@@ -48,13 +48,16 @@ public class GameStarted implements GameState {
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {
     switch (profile) {
       case "archaeologist":
-        App.changeArchaeoligist(event);
+        App.changeArchaeologist(event);
         return;
       case "journalist":
         App.changeJournalist(event);
         return;
       case "guide":
         App.changeGuide(event);
+        return;
+      case "crimeScene":
+        App.changeCrimeScene(event);
         return;
     }
   }
