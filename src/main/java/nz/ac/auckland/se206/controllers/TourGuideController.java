@@ -27,7 +27,6 @@ public class TourGuideController {
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
 
-  private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
 
   /**
