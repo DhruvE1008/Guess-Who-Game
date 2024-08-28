@@ -9,11 +9,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="599.0" prefWidth="726.0" style="-fx-background-color: #D2B48C;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.RoomController">
+<Pane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="599.0" prefWidth="726.0" style="-fx-background-color: #D2B48C;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.TourGuideController">
    <children>
       <ImageView fitHeight="599.0" fitWidth="622.0" layoutX="125.0" layoutY="-1.0" preserveRatio="true">
          <image>
-            <Image url="@../images/crime_scene.jpg" />
+            <Image url="@../images/tour_guide.jpg" />
          </image>
       </ImageView>
       <Rectangle fx:id="rectCashier" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="222.0" layoutY="262.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="38.0" />
