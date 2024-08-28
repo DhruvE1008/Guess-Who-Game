@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="599.0" prefWidth="726.0" style="-fx-background-color: #D2B48C;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ArchaeologistController">
+<Pane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="599.0" prefWidth="726.0" style="-fx-background-color: #D2B48C;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controller.ArchaeologistController">
    <children>
       <ImageView fitHeight="599.0" fitWidth="622.0" layoutX="125.0" layoutY="-1.0" preserveRatio="true">
          <image>
@@ -22,7 +22,7 @@
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="171.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="77.0" />
       <Button fx:id="btnGuess" layoutX="18.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
-      <ImageView fx:id="archaeology_room" fitHeight="111.0" fitWidth="100.0" layoutX="14.0" layoutY="227.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cimeScene" fitHeight="111.0" fitWidth="100.0" layoutX="14.0" layoutY="227.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/crime_scene.jpg" />
          </image>
