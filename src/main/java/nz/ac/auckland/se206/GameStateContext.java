@@ -145,6 +145,10 @@ public class GameStateContext {
     gameState.handleRectangleClick(event, rectangleId);
   }
 
+  public void handleProfileClick(MouseEvent event, String profile) throws IOException {
+    gameStartedState.handleProfileClick(event, profile);
+  }
+
   /**
    * Handles the event when the guess button is clicked.
    *

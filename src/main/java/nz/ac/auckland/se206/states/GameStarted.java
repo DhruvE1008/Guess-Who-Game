@@ -45,6 +45,20 @@ public class GameStarted implements GameState {
     App.openChat(event, context.getProfession(rectangleId));
   }
 
+  public void handleProfileClick(MouseEvent event, String profile) throws IOException {
+    switch (profile) {
+      case "archaeologist":
+        App.changeArchaeoligist(event);
+        return;
+      case "journalist":
+        App.changeJournalist(event);
+        return;
+      case "guide":
+        App.changeGuide(event);
+        return;
+    }
+  }
+
   /**
    * Handles the event when the guess button is clicked. Prompts the player to make a guess and
    * transitions to the guessing state.
