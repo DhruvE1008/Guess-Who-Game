@@ -9,7 +9,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import nz.ac.auckland.se206.GameStateContext;
-import nz.ac.auckland.se206.speech.TextToSpeech;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -28,7 +27,6 @@ public class RoomController {
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
 
-  private static boolean isFirstTimeInit = true;
   private static GameStateContext context = new GameStateContext();
 
   /**
@@ -37,11 +35,12 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
-    if (isFirstTimeInit) {
-      TextToSpeech.speak(
-          "Chat with the three customers, and guess who is the " + context.getProfessionToGuess());
-      isFirstTimeInit = false;
-    }
+    // if (isFirstTimeInit) {
+    //   TextToSpeech.speak(
+    //       "Chat with the three customers, and guess who is the " +
+    // context.getProfessionToGuess());
+    //   isFirstTimeInit = false;
+    // }
   }
 
   /**
@@ -76,6 +75,13 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1);
     hoveredImageView.setScaleY(1);
+  }
+
+  @FXML
+  private void onProfileClick(MouseEvent event) throws IOException {
+    ImageView clickedImageView = (ImageView) event.getSource();
+    context.handleProfileClick(event, clickedImageView.getId());
+    System.out.println("Clicked on " + clickedImageView.getId());
   }
 
   /**
