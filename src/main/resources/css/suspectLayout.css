@@ -1,0 +1,28 @@
+/* Style for all buttons */
+.button {
+  -fx-background-color: #ff6f61;
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+}
+
+
+
+/* Style for all Rectangle elements */
+.rectangle {
+  -fx-fill: #1f93ff;
+  -fx-stroke: black;
+  -fx-stroke-width: 2;
+  -fx-opacity: 0.5;
+}
+
+/* Specific styling for the VBox */
+.vbox {
+  -fx-background-image: url("../images/menu.png");
+  -fx-background-size: 100% 100%;
+  /* Stretches the image to fit the VBox */
+  -fx-background-repeat: no-repeat;
+  /* Ensures the image does not repeat */
+  -fx-background-position: center;
+  -fx-padding: 10;
+  -fx-spacing: 10;
+}
