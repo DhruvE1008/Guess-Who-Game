@@ -120,7 +120,7 @@ public class JournalistController {
     }
     txtInput.clear();
     try {
-      context.handleSendChatClick(txtaChat, message);
+      context.handleSendChatClick(txtaChat, message, "journalist");
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

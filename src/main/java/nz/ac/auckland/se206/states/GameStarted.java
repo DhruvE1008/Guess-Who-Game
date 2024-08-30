@@ -46,9 +46,9 @@ public class GameStarted implements GameState {
     App.openChat(event, context.getProfession(rectangleId));
   }
 
-  public void handleSendChatClick(TextArea chatTextArea, String userInput) {
+  public void handleSendChatClick(TextArea chatTextArea, String userInput, String person) {
     chatTextArea.appendText("You: " + userInput + "\n");
-    chatTextArea.appendText("Customer: I'm not sure" + "\n");
+    chatTextArea.appendText(person + ": I'm not sure" + "\n");
   }
 
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {

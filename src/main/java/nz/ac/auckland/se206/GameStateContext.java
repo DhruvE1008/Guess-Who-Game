@@ -159,7 +159,8 @@ public class GameStateContext {
     gameState.handleGuessClick();
   }
 
-  public void handleSendChatClick(TextArea txtArea, String input) throws IOException {
-    gameStartedState.handleSendChatClick(txtArea, input);
+  public void handleSendChatClick(TextArea txtArea, String input, String person)
+      throws IOException {
+    gameStartedState.handleSendChatClick(txtArea, input, person);
   }
 }

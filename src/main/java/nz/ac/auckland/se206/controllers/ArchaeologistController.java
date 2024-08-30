@@ -4,6 +4,8 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +28,8 @@ public class ArchaeologistController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
+  @FXML private TextArea txtaChat;
+  @FXML private TextField txtInput;
 
   private static GameStateContext context = new GameStateContext();
 
@@ -105,5 +109,20 @@ public class ArchaeologistController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
+  }
+
+  @FXML
+  public void onSendMessage(ActionEvent event) {
+    String message = txtInput.getText().trim();
+    if (message.isEmpty()) {
+      return;
+    }
+    txtInput.clear();
+    try {
+      context.handleSendChatClick(txtaChat, message, "archaeologist");
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 }
