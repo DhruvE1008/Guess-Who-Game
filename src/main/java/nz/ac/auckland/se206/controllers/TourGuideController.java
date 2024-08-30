@@ -1,13 +1,17 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.GameStateContext;
 
 /**
@@ -26,6 +30,8 @@ public class TourGuideController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
+  @FXML private Button arrowButton;
+  @FXML private VBox menu;
 
   private static GameStateContext context = new GameStateContext();
 
@@ -51,6 +57,33 @@ public class TourGuideController {
   @FXML
   public void onKeyPressed(KeyEvent event) {
     System.out.println("Key " + event.getCode() + " pressed");
+  }
+
+  @FXML
+  private void toggleMenu() {
+    boolean isVisible = menu.isVisible();
+
+    // Rotate animation for the arrow button
+    RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
+    rotateTransition.setByAngle(isVisible ? -180 : 180);
+
+    // Move the arrow button left or right
+    TranslateTransition translateTransition =
+        new TranslateTransition(Duration.millis(300), arrowButton);
+    translateTransition.setByX(isVisible ? -140 : 140);
+
+    // Slide the menu in or out
+    TranslateTransition menuTransition = new TranslateTransition(Duration.millis(300), menu);
+    menuTransition.setFromX(isVisible ? 0 : -menu.getWidth());
+    menuTransition.setToX(isVisible ? -menu.getWidth() : 0);
+
+    // Play animations
+    rotateTransition.play();
+    translateTransition.play();
+    menuTransition.play();
+
+    // Toggle visibility after the animation to avoid flickering
+    menuTransition.setOnFinished(event -> menu.setVisible(!isVisible));
   }
 
   /**

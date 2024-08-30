@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="599.0" fitWidth="622.0" layoutX="125.0" layoutY="-1.0" preserveRatio="true">
          <image>
-            <Image url="@../images/archaeologist.jpg" />
+            <Image url=C:\Users\ajith\OneDrive\Desktop\guess-who-beta-and-final-team-18\src\main\resources\images\menu.png />
          </image>
       </ImageView>
       <Rectangle fx:id="rectCashier" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="222.0" layoutY="262.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="38.0" />
