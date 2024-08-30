@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.states;
 
 import java.io.IOException;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
@@ -43,6 +44,11 @@ public class GameStarted implements GameState {
         return;
     }
     App.openChat(event, context.getProfession(rectangleId));
+  }
+
+  public void handleSendChatClick(TextArea chatTextArea, String userInput) {
+    chatTextArea.appendText("You: " + userInput + "\n");
+    chatTextArea.appendText("Customer: I'm not sure" + "\n");
   }
 
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {
