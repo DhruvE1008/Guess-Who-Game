@@ -74,16 +74,31 @@ public class TourGuideController {
 
     // Slide the menu in or out
     TranslateTransition menuTransition = new TranslateTransition(Duration.millis(300), menu);
-    menuTransition.setFromX(isVisible ? 0 : -menu.getWidth());
-    menuTransition.setToX(isVisible ? -menu.getWidth() : 0);
+
+    if (isVisible) {
+      // Slide out
+      menuTransition.setFromX(0);
+      menuTransition.setToX(-menu.getWidth());
+    } else {
+      // Ensure the menu is off-screen before showing it
+      menu.setTranslateX(-menu.getWidth());
+      menu.setVisible(true);
+      menuTransition.setFromX(-menu.getWidth());
+      menuTransition.setToX(0);
+    }
 
     // Play animations
     rotateTransition.play();
     translateTransition.play();
     menuTransition.play();
 
-    // Toggle visibility after the animation to avoid flickering
-    menuTransition.setOnFinished(event -> menu.setVisible(!isVisible));
+    // Toggle visibility after the animation completes (for sliding out)
+    menuTransition.setOnFinished(
+        event -> {
+          if (isVisible) {
+            menu.setVisible(false);
+          }
+        });
   }
 
   /**
