@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 
-<Pane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="599.0" prefWidth="726.0" style="-fx-background-color: #D2B48C;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ArchaeologistController">
+<Pane fx:id="room" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="694.0" prefWidth="697.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.ArchaeologistController">
    <children>
-      <ImageView fitHeight="599.0" fitWidth="622.0" layoutX="125.0" layoutY="-1.0" preserveRatio="true">
+      <ImageView fitHeight="704.0" fitWidth="808.0" layoutX="-6.0" layoutY="-5.0" preserveRatio="true">
          <image>
-            <Image url=C:\Users\ajith\OneDrive\Desktop\guess-who-beta-and-final-team-18\src\main\resources\images\menu.png />
+            <Image url="@../images/archaeologist.jpg" />
          </image>
       </ImageView>
       <Rectangle fx:id="rectCashier" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="222.0" layoutY="262.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="38.0" />
@@ -21,45 +20,43 @@
       <Rectangle fx:id="rectPerson3" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="135.0" layoutX="587.0" layoutY="284.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="91.0" />
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="171.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="77.0" />
-      <Button fx:id="btnGuess" layoutX="18.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
-      <ImageView fx:id="crimeScene" fitHeight="111.0" fitWidth="100.0" layoutX="14.0" layoutY="227.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/crime_scene.jpg" />
-         </image>
-        <clip>
-          <Circle centerX="50.0" centerY="40.0" radius="40.0" />
-        </clip>
-      </ImageView>
-      <ImageView fx:id="archaeologist" fitHeight="111.0" fitWidth="135.0" layoutX="3.0" layoutY="317.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/suspect1.png" />
-         </image>
-        <clip>
-          <Circle centerX="60.0" centerY="40.0" radius="40.0" />
-        </clip>
-      </ImageView>
-      <ImageView fx:id="journalist" fitHeight="111.0" fitWidth="135.0" layoutX="12.0" layoutY="405.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/suspect2.png" />
-         </image>
-        <clip>
-          <Circle centerX="50.0" centerY="45" radius="40.0" />
-        </clip>
-      </ImageView>
-            <ImageView fx:id="guide" fitHeight="111.0" fitWidth="135.0" layoutX="3.0" layoutY="496.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/suspect3.png" />
-         </image>
-        <clip>
-          <Circle centerX="55.0" centerY="50.0" radius="40.0" />
-        </clip>
-      </ImageView>
-      <Label layoutX="18.0" layoutY="21.0" prefHeight="25.0" prefWidth="89.0" text="Objectives">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <Label layoutX="8.0" layoutY="57.0" prefHeight="48.0" prefWidth="109.0" text="1. interact with all the suspects" wrapText="true" />
-      <Label layoutX="8.0" layoutY="105.0" prefHeight="73.0" prefWidth="91.0" text="2. find an interactable in the crime scene" wrapText="true" />
+      <Button fx:id="btnGuess" layoutX="483.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
+      <VBox fx:id="menu" layoutX="4.0" layoutY="92.0" prefHeight="400.0" prefWidth="143.0" styleClass="vbox" visible="false">
+         <children>
+            <ImageView fx:id="crimeScene" fitHeight="98.0" fitWidth="118.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="35.0">
+               <image>
+                  <Image url="@../images/crime_scene.jpg" />
+               </image>
+              <clip>
+                <Circle centerX="50.0" centerY="40.0" radius="40.0" />
+              </clip>
+            </ImageView>
+            <ImageView fx:id="archaeologist" fitHeight="100.0" fitWidth="139.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="20.0">
+               <image>
+                  <Image url="@../images/suspect1.png" />
+               </image>
+              <clip>
+                <Circle centerX="60.0" centerY="40.0" radius="40.0" />
+              </clip>
+            </ImageView>
+                  <ImageView fx:id="guide" fitHeight="111.0" fitWidth="135.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="6.0">
+               <image>
+                  <Image url="@../images/suspect3.png" />
+               </image>
+              <clip>
+                <Circle centerX="55.0" centerY="50.0" radius="40.0" />
+              </clip>
+            </ImageView>
+            <ImageView fx:id="journalist" fitHeight="111.0" fitWidth="100.0" layoutX="10.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-15.0">
+               <image>
+                  <Image url="@../images/suspect2.png" />
+               </image>
+              <clip>
+                <Circle centerX="50.0" centerY="45" radius="40.0" />
+              </clip>
+            </ImageView>
+         </children>
+      </VBox>
+      <Button fx:id="arrowButton" layoutX="4.0" layoutY="299.0" mnemonicParsing="false" onAction="#toggleMenu" prefHeight="56.0" prefWidth="66.0" />
    </children>
 </Pane>
