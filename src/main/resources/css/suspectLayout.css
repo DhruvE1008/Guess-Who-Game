@@ -1,11 +1,12 @@
 /* Style for all buttons */
-.button {
+.arrowButton {
   -fx-font-size: 14px;
   -fx-background-image: url("../images/arrow.png");
   -fx-background-size: 100% 100%;
   /* Stretches the image to fit the VBox */
   -fx-background-repeat: no-repeat;
   /* Ensures the image does not repeat */
+  -fx-cursor: hand;
 }
 
 
@@ -28,4 +29,31 @@
   -fx-background-position: center;
   -fx-padding: 10;
   -fx-spacing: 10;
+}
+
+.objectivesButton {
+  -fx-font-size: 14px;
+  -fx-background-image: url("../images/objectives.png");
+  -fx-background-size: 100% 100%;
+  /* Stretches the image to fit the VBox */
+  -fx-background-repeat: no-repeat;
+  /* Ensures the image does not repeat */
+  -fx-cursor: hand;
+}
+
+.objectiveLabel {
+  -fx-padding: 10px;
+
+  /* Gold color */
+  -fx-text-fill: white;
+  /* Text color */
+  -fx-font-family: "Georgia", serif;
+  /* Font style */
+  -fx-font-size: 14px;
+  /* Font size */
+  -fx-border-radius: 5px;
+  -fx-background-radius: 5px;
+  -fx-border-color: #8B4513;
+  /* SaddleBrown color */
+  -fx-border-width: 2px;
 }
