@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import nz.ac.auckland.se206.states.GameOver;
 import nz.ac.auckland.se206.states.GameStarted;
@@ -156,5 +157,10 @@ public class GameStateContext {
    */
   public void handleGuessClick() throws IOException {
     gameState.handleGuessClick();
+  }
+
+  public void handleSendChatClick(TextArea txtArea, String input, String person)
+      throws IOException {
+    gameStartedState.handleSendChatClick(txtArea, input, person);
   }
 }

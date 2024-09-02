@@ -4,7 +4,10 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -26,6 +29,8 @@ public class JournalistController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
+  @FXML private TextArea txtaChat;
+  @FXML private TextField txtInput;
 
   private static GameStateContext context = new GameStateContext();
 
@@ -35,6 +40,13 @@ public class JournalistController {
    */
   @FXML
   public void initialize() {
+    txtaChat.clear();
+    txtInput.setOnKeyPressed(
+        event -> {
+          if (event.getCode() == KeyCode.ENTER) {
+            onSendMessage(null);
+          }
+        });
     // if (isFirstTimeInit) {
     //   TextToSpeech.speak(
     //       "Chat with the three customers, and guess who is the " +
@@ -105,5 +117,20 @@ public class JournalistController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
+  }
+
+  @FXML
+  public void onSendMessage(ActionEvent event) {
+    String message = txtInput.getText().trim();
+    if (message.isEmpty()) {
+      return;
+    }
+    txtInput.clear();
+    try {
+      context.handleSendChatClick(txtaChat, message, "journalist");
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 }
