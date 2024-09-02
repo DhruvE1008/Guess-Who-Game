@@ -211,7 +211,6 @@ public class TourGuideController {
   private void onProfileClick(MouseEvent event) throws IOException {
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
-    System.out.println("Clicked on " + clickedImageView.getId());
   }
 
   /**

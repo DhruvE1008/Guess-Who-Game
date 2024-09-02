@@ -31,7 +31,10 @@ public class JournalistController {
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
   @FXML private Button arrowButton;
-  @FXML private VBox menu;
+  @FXML private VBox suspectMenu;
+  @FXML private Button btnObjectives;
+  @FXML private VBox objectiveMenu;
+  @FXML private Button objectiveClose;
 
   private static GameStateContext context = new GameStateContext();
 
@@ -61,44 +64,123 @@ public class JournalistController {
 
   @FXML
   private void toggleMenu() {
-    boolean isVisible = menu.isVisible();
+    boolean isVisible = suspectMenu.isVisible();
 
-    // Rotate animation for the arrow button
-    RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
-    rotateTransition.setByAngle(isVisible ? -180 : 180);
+    if (!isVisible) {
+      // Close the objectives menu if it's open
+      if (objectiveMenu.isVisible()) {
+        closeObjectivesMenu();
+      }
 
-    // Move the arrow button left or right
-    TranslateTransition translateTransition =
-        new TranslateTransition(Duration.millis(300), arrowButton);
-    translateTransition.setByX(isVisible ? -140 : 140);
+      // Rotate animation for the arrow button
+      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
+      rotateTransition.setByAngle(180);
 
-    // Slide the menu in or out
-    TranslateTransition menuTransition = new TranslateTransition(Duration.millis(300), menu);
+      // Move the arrow button left or right
+      TranslateTransition translateTransition =
+          new TranslateTransition(Duration.millis(300), arrowButton);
+      translateTransition.setByX(140);
 
-    if (isVisible) {
-      // Slide out
-      menuTransition.setFromX(0);
-      menuTransition.setToX(-menu.getWidth());
-    } else {
-      // Ensure the menu is off-screen before showing it
-      menu.setTranslateX(-menu.getWidth());
-      menu.setVisible(true);
-      menuTransition.setFromX(-menu.getWidth());
+      // Slide the menu in
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), suspectMenu);
+      suspectMenu.setTranslateX(-suspectMenu.getWidth());
+      suspectMenu.setVisible(true);
+      menuTransition.setFromX(-suspectMenu.getWidth());
       menuTransition.setToX(0);
+
+      // Play animations
+      rotateTransition.play();
+      translateTransition.play();
+      menuTransition.play();
+    } else {
+      // Slide out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), suspectMenu);
+      menuTransition.setFromX(0);
+      menuTransition.setToX(-suspectMenu.getWidth());
+
+      // Play animation
+      menuTransition.play();
+
+      // Toggle visibility after the animation completes (for sliding out)
+      menuTransition.setOnFinished(event -> suspectMenu.setVisible(false));
+
+      // Rotate and move the arrow button back
+      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
+      rotateTransition.setByAngle(-180);
+
+      TranslateTransition translateTransition =
+          new TranslateTransition(Duration.millis(300), arrowButton);
+      translateTransition.setByX(-140);
+
+      rotateTransition.play();
+      translateTransition.play();
     }
+  }
 
-    // Play animations
-    rotateTransition.play();
-    translateTransition.play();
-    menuTransition.play();
+  private void closeObjectivesMenu() {
+    if (objectiveMenu.isVisible()) {
+      // Slide the menu out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(0);
+      menuTransition.setToY(-objectiveMenu.getHeight());
 
-    // Toggle visibility after the animation completes (for sliding out)
-    menuTransition.setOnFinished(
-        event -> {
-          if (isVisible) {
-            menu.setVisible(false);
-          }
-        });
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(0);
+      closeTransition.setToY(-objectiveMenu.getHeight());
+
+      // Disable the close button and hide it once the menu is hidden
+      menuTransition.setOnFinished(
+          event -> {
+            objectiveMenu.setVisible(false);
+            objectiveClose.setVisible(false); // Hide the close button
+            objectiveClose.setDisable(true); // Disable the close button
+          });
+
+      // Play animation
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  @FXML
+  private void toggleObjectives() {
+    if (!objectiveMenu.isVisible()) {
+      // Close the suspect menu if it's open
+      if (suspectMenu.isVisible()) {
+        toggleMenu(); // This will close the suspectMenu
+      }
+
+      // Ensure the menu is off-screen before showing it
+      objectiveMenu.setTranslateY(-objectiveMenu.getHeight());
+      objectiveClose.setTranslateY(-objectiveMenu.getHeight());
+      objectiveMenu.setVisible(true);
+      objectiveClose.setVisible(true); // Show the close button
+      objectiveClose.setDisable(false); // Enable the close button
+
+      // Slide the menu in
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(-objectiveMenu.getHeight());
+      menuTransition.setToY(0);
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(-objectiveMenu.getHeight());
+      closeTransition.setToY(0);
+
+      // Play animations
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  @FXML
+  private void closeObjectives() {
+    closeObjectivesMenu();
   }
 
   /**
@@ -129,7 +211,6 @@ public class JournalistController {
   private void onProfileClick(MouseEvent event) throws IOException {
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
-    System.out.println("Clicked on " + clickedImageView.getId());
   }
 
   /**
