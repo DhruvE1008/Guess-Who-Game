@@ -1,13 +1,17 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import nz.ac.auckland.se206.GameStateContext;
 
 /**
@@ -26,6 +30,11 @@ public class RoomController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
+  @FXML private Button arrowButton;
+  @FXML private VBox suspectMenu;
+  @FXML private Button btnObjectives;
+  @FXML private VBox objectiveMenu;
+  @FXML private Button objectiveClose;
 
   private static GameStateContext context = new GameStateContext();
 
@@ -78,10 +87,130 @@ public class RoomController {
   }
 
   @FXML
+  private void toggleMenu() {
+    boolean isVisible = suspectMenu.isVisible();
+
+    if (!isVisible) {
+      // Close the objectives menu if it's open
+      if (objectiveMenu.isVisible()) {
+        closeObjectivesMenu();
+      }
+
+      // Rotate animation for the arrow button
+      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
+      rotateTransition.setByAngle(180);
+
+      // Move the arrow button left or right
+      TranslateTransition translateTransition =
+          new TranslateTransition(Duration.millis(300), arrowButton);
+      translateTransition.setByX(140);
+
+      // Slide the menu in
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), suspectMenu);
+      suspectMenu.setTranslateX(-suspectMenu.getWidth());
+      suspectMenu.setVisible(true);
+      menuTransition.setFromX(-suspectMenu.getWidth());
+      menuTransition.setToX(0);
+
+      // Play animations
+      rotateTransition.play();
+      translateTransition.play();
+      menuTransition.play();
+    } else {
+      // Slide out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), suspectMenu);
+      menuTransition.setFromX(0);
+      menuTransition.setToX(-suspectMenu.getWidth());
+
+      // Play animation
+      menuTransition.play();
+
+      // Toggle visibility after the animation completes (for sliding out)
+      menuTransition.setOnFinished(event -> suspectMenu.setVisible(false));
+
+      // Rotate and move the arrow button back
+      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
+      rotateTransition.setByAngle(-180);
+
+      TranslateTransition translateTransition =
+          new TranslateTransition(Duration.millis(300), arrowButton);
+      translateTransition.setByX(-140);
+
+      rotateTransition.play();
+      translateTransition.play();
+    }
+  }
+
+  private void closeObjectivesMenu() {
+    if (objectiveMenu.isVisible()) {
+      // Slide the menu out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(0);
+      menuTransition.setToY(-objectiveMenu.getHeight());
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(0);
+      closeTransition.setToY(-objectiveMenu.getHeight());
+
+      // Disable the close button and hide it once the menu is hidden
+      menuTransition.setOnFinished(
+          event -> {
+            objectiveMenu.setVisible(false);
+            objectiveClose.setVisible(false); // Hide the close button
+            objectiveClose.setDisable(true); // Disable the close button
+          });
+
+      // Play animation
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  @FXML
+  private void toggleObjectives() {
+    if (!objectiveMenu.isVisible()) {
+      // Close the suspect menu if it's open
+      if (suspectMenu.isVisible()) {
+        toggleMenu(); // This will close the suspectMenu
+      }
+
+      // Ensure the menu is off-screen before showing it
+      objectiveMenu.setTranslateY(-objectiveMenu.getHeight());
+      objectiveClose.setTranslateY(-objectiveMenu.getHeight());
+      objectiveMenu.setVisible(true);
+      objectiveClose.setVisible(true); // Show the close button
+      objectiveClose.setDisable(false); // Enable the close button
+
+      // Slide the menu in
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(-objectiveMenu.getHeight());
+      menuTransition.setToY(0);
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(-objectiveMenu.getHeight());
+      closeTransition.setToY(0);
+
+      // Play animations
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  @FXML
+  private void closeObjectives() {
+    closeObjectivesMenu();
+  }
+
+  @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
-    System.out.println("Clicked on " + clickedImageView.getId());
   }
 
   /**
