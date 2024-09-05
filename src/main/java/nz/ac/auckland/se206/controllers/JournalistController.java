@@ -1,6 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -15,7 +17,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
+import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
+import nz.ac.auckland.apiproxy.chat.openai.Choice;
+import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
+import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -42,6 +51,8 @@ public class JournalistController {
   @FXML private TextField txtInput;
 
   private static GameStateContext context = new GameStateContext();
+  private boolean isFirstTimeInit = true;
+  private ChatCompletionRequest chatCompletionRequest;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -56,12 +67,10 @@ public class JournalistController {
             onSendMessage(null);
           }
         });
-    // if (isFirstTimeInit) {
-    //   TextToSpeech.speak(
-    //       "Chat with the three customers, and guess who is the " +
-    // context.getProfessionToGuess());
-    //   isFirstTimeInit = false;
-    // }
+    if (isFirstTimeInit) {
+      getSystemPrompt();
+      isFirstTimeInit = false;
+    }
   }
 
   /**
@@ -248,6 +257,42 @@ public class JournalistController {
     context.handleGuessClick();
   }
 
+  private void getSystemPrompt() {
+    Map<String, String> map = new HashMap<>();
+    map.put("profession", "a journalist who desperately needs new stories");
+    map.put("shoeSize", "7");
+    map.put(
+        "reason",
+        "you lost your phone during an Amazon case a few days ago and you have been too busy to get"
+            + " a new one");
+    String message = PromptEngineering.getPrompt("chat.txt", map);
+    try {
+      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      chatCompletionRequest =
+          new ChatCompletionRequest(config)
+              .setN(1)
+              .setTemperature(0.2)
+              .setTopP(0.5)
+              .setMaxTokens(100);
+      runGpt(new ChatMessage("system", message));
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    chatCompletionRequest.addMessage(msg);
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   @FXML
   public void onSendMessage(ActionEvent event) {
     String message = txtInput.getText().trim();
@@ -256,8 +301,10 @@ public class JournalistController {
     }
     txtInput.clear();
     try {
-      context.handleSendChatClick(txtaChat, message, "journalist");
-    } catch (IOException e) {
+      ChatMessage msg = new ChatMessage("user", message);
+      ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+      context.handleSendChatClick(txtaChat, message, "Journalist", response.getContent());
+    } catch (IOException | ApiProxyException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
