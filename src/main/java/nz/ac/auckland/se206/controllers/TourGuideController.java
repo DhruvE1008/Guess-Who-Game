@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,8 +53,9 @@ public class TourGuideController {
   @FXML private TextField txtInput;
 
   private static GameStateContext context = new GameStateContext();
-  private boolean isFirstTimeInit = true;
-  private ChatCompletionRequest chatCompletionRequest;
+  private static boolean isFirstTimeInit = true;
+  private static boolean isFirstTime = true;
+  private static ChatCompletionRequest chatCompletionRequest;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -68,7 +71,22 @@ public class TourGuideController {
           }
         });
     if (isFirstTimeInit) {
-      getSystemPrompt();
+      Task<Void> getGreeting =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              Platform.runLater(
+                  () ->
+                      txtaChat.setText(
+                          "Tour Guide: I hope you find the idol because it has a special place in"
+                              + " my heart as I believe that it belongs to my ancestors"));
+              getSystemPrompt();
+              return null;
+            }
+          };
+      Thread thread = new Thread(getGreeting);
+      thread.setDaemon(true);
+      thread.start();
       isFirstTimeInit = false;
     }
   }
@@ -259,12 +277,9 @@ public class TourGuideController {
 
   private void getSystemPrompt() {
     Map<String, String> map = new HashMap<>();
-    map.put("tour gide", "a journalist who desperately needs new stories");
+    map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
     map.put("shoeSize", "7");
-    map.put(
-        "reason",
-        "you lost your phone during an Amazon case a few days ago and you have been too busy to get"
-            + " a new one");
+    map.put("reason", "you can’t afford a smartphone and you have a brick phone");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
@@ -295,6 +310,10 @@ public class TourGuideController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    if (isFirstTime) {
+      txtaChat.clear();
+      isFirstTime = false;
+    }
     String message = txtInput.getText().trim();
     if (message.isEmpty()) {
       return;
@@ -303,7 +322,7 @@ public class TourGuideController {
     try {
       ChatMessage msg = new ChatMessage("user", message);
       ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
-      context.handleSendChatClick(txtaChat, message, "Journalist", response.getContent());
+      context.handleSendChatClick(txtaChat, message, "Tour Guide", response.getContent());
     } catch (IOException | ApiProxyException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

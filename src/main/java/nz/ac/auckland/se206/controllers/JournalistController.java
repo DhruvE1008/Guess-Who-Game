@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,8 +53,9 @@ public class JournalistController {
   @FXML private TextField txtInput;
 
   private static GameStateContext context = new GameStateContext();
-  private boolean isFirstTimeInit = true;
-  private ChatCompletionRequest chatCompletionRequest;
+  private static boolean isFirstTimeInit = true;
+  private static boolean isFirstTime = true;
+  private static ChatCompletionRequest chatCompletionRequest;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -68,7 +71,23 @@ public class JournalistController {
           }
         });
     if (isFirstTimeInit) {
-      getSystemPrompt();
+      Task<Void> getGreeting =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              Platform.runLater(
+                  () ->
+                      txtaChat.setText(
+                          "Journalist: I was a really good journalist back in the day but there is"
+                              + " a lack of interesting stories these days. If you find the idol it"
+                              + " will be a good story for me"));
+              getSystemPrompt();
+              return null;
+            }
+          };
+      Thread thread = new Thread(getGreeting);
+      thread.setDaemon(true);
+      thread.start();
       isFirstTimeInit = false;
     }
   }
@@ -295,6 +314,10 @@ public class JournalistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    if (isFirstTime) {
+      txtaChat.clear();
+      isFirstTime = false;
+    }
     String message = txtInput.getText().trim();
     if (message.isEmpty()) {
       return;

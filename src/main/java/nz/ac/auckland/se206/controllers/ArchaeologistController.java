@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,8 +53,9 @@ public class ArchaeologistController {
   @FXML private TextField txtInput;
 
   private static GameStateContext context = new GameStateContext();
-  private boolean isFirstTimeInit = true;
-  private ChatCompletionRequest chatCompletionRequest;
+  private static boolean isFirstTimeInit = true;
+  private static boolean isFirstTime = true;
+  private static ChatCompletionRequest chatCompletionRequest;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -68,7 +71,23 @@ public class ArchaeologistController {
           }
         });
     if (isFirstTimeInit) {
-      getSystemPrompt();
+      Task<Void> getGreeting =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              Platform.runLater(
+                  () ->
+                      txtaChat.setText(
+                          "Archaeologist: It's terrible that my last excavation ended like this. I"
+                              + " can't afford to go on another one because I was recently denied"
+                              + " funding."));
+              getSystemPrompt();
+              return null;
+            }
+          };
+      Thread thread = new Thread(getGreeting);
+      thread.setDaemon(true);
+      thread.start();
       isFirstTimeInit = false;
     }
   }
@@ -294,6 +313,10 @@ public class ArchaeologistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    if (isFirstTime) {
+      txtaChat.clear();
+      isFirstTime = false;
+    }
     String message = txtInput.getText().trim();
     if (message.isEmpty()) {
       return;
@@ -303,7 +326,6 @@ public class ArchaeologistController {
       ChatMessage msg = new ChatMessage("user", message);
       ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
       context.handleSendChatClick(txtaChat, message, "Archaeologist", response.getContent());
-      System.out.println(response.getContent());
     } catch (IOException | ApiProxyException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
