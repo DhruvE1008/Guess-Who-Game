@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.RotateTransition;
@@ -17,6 +18,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
@@ -25,6 +28,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
@@ -56,6 +60,7 @@ public class JournalistController {
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
   private static ChatCompletionRequest chatCompletionRequest;
+  private MediaPlayer player;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -76,11 +81,23 @@ public class JournalistController {
             @Override
             protected Void call() throws Exception {
               Platform.runLater(
-                  () ->
-                      txtaChat.setText(
-                          "Journalist: I was a really good journalist back in the day but there is"
-                              + " a lack of interesting stories these days. If you find the idol it"
-                              + " will be a good story for me"));
+                  () -> {
+                    txtaChat.setText(
+                        "Journalist: I was a really good journalist back in the day but there is a"
+                            + " lack of interesting stories these days. If you find the idol it"
+                            + " will be a good story for me");
+                    Media sound = null;
+                    try {
+                      sound =
+                          new Media(
+                              App.class.getResource("/sounds/journalist.mp3").toURI().toString());
+                    } catch (URISyntaxException e) {
+                      // TODO Auto-generated catch block
+                      e.printStackTrace();
+                    }
+                    player = new MediaPlayer(sound);
+                    player.play();
+                  });
               getSystemPrompt();
               return null;
             }

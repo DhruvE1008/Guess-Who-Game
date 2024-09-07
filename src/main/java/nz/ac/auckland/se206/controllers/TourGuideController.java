@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.RotateTransition;
@@ -17,6 +18,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
@@ -25,6 +28,7 @@ import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
@@ -56,6 +60,7 @@ public class TourGuideController {
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
   private static ChatCompletionRequest chatCompletionRequest;
+  private MediaPlayer player;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -76,10 +81,21 @@ public class TourGuideController {
             @Override
             protected Void call() throws Exception {
               Platform.runLater(
-                  () ->
-                      txtaChat.setText(
-                          "Tour Guide: I hope you find the idol because it has a special place in"
-                              + " my heart as I believe that it belongs to my ancestors"));
+                  () -> {
+                    txtaChat.setText(
+                        "Tour Guide: I hope you find the idol because it has a special place in my"
+                            + " heart as I believe that it belongs to my ancestors");
+                    Media sound = null;
+                    try {
+                      sound =
+                          new Media(App.class.getResource("/sounds/guide.mp3").toURI().toString());
+                    } catch (URISyntaxException e) {
+                      // TODO Auto-generated catch block
+                      e.printStackTrace();
+                    }
+                    player = new MediaPlayer(sound);
+                    player.play();
+                  });
               getSystemPrompt();
               return null;
             }
