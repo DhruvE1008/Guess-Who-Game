@@ -55,6 +55,7 @@ public class TourGuideController {
   @FXML private Button objectiveClose;
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
+  @FXML private ImageView guidebubble;
 
   private static GameStateContext context = new GameStateContext();
   private static boolean isFirstTimeInit = true;
@@ -68,6 +69,7 @@ public class TourGuideController {
    */
   @FXML
   public void initialize() {
+    guidebubble.setVisible(false);
     txtaChat.clear();
     txtInput.setOnKeyPressed(
         event -> {
@@ -335,13 +337,26 @@ public class TourGuideController {
       return;
     }
     txtInput.clear();
-    try {
-      ChatMessage msg = new ChatMessage("user", message);
-      ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
-      context.handleSendChatClick(txtaChat, message, "Tour Guide", response.getContent());
-    } catch (IOException | ApiProxyException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    Task<Void> getResponse =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            Platform.runLater(() -> guidebubble.setVisible(true));
+            try {
+              ChatMessage msg = new ChatMessage("user", message);
+              ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              context.handleSendChatClick(
+                  txtaChat, message, "Archaeologist", response.getContent());
+              Platform.runLater(() -> guidebubble.setVisible(false));
+            } catch (IOException | ApiProxyException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            return null;
+          }
+        };
+    Thread thread = new Thread(getResponse);
+    thread.setDaemon(true);
+    thread.start();
   }
 }

@@ -48,8 +48,8 @@ public class GameStarted implements GameState {
 
   public void handleSendChatClick(
       TextArea chatTextArea, String userInput, String person, String aiResponse) {
-    chatTextArea.appendText("You: " + userInput + "\n");
-    chatTextArea.appendText(person + ": " + aiResponse + "\n");
+    chatTextArea.appendText("You: " + userInput + "\n\n");
+    chatTextArea.appendText(person + ": " + aiResponse + "\n\n");
   }
 
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {

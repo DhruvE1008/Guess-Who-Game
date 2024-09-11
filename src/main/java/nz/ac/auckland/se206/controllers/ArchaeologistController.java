@@ -55,6 +55,7 @@ public class ArchaeologistController {
   @FXML private Button objectiveClose;
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
+  @FXML private ImageView arcbubble;
 
   private static GameStateContext context = new GameStateContext();
   private static boolean isFirstTimeInit = true;
@@ -68,6 +69,7 @@ public class ArchaeologistController {
    */
   @FXML
   public void initialize() {
+    arcbubble.setVisible(false);
     txtaChat.clear();
     txtInput.setOnKeyPressed(
         event -> {
@@ -338,13 +340,26 @@ public class ArchaeologistController {
       return;
     }
     txtInput.clear();
-    try {
-      ChatMessage msg = new ChatMessage("user", message);
-      ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
-      context.handleSendChatClick(txtaChat, message, "Archaeologist", response.getContent());
-    } catch (IOException | ApiProxyException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    Task<Void> getResponse =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            Platform.runLater(() -> arcbubble.setVisible(true));
+            try {
+              ChatMessage msg = new ChatMessage("user", message);
+              ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              context.handleSendChatClick(
+                  txtaChat, message, "Archaeologist", response.getContent());
+              Platform.runLater(() -> arcbubble.setVisible(false));
+            } catch (IOException | ApiProxyException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            return null;
+          }
+        };
+    Thread thread = new Thread(getResponse);
+    thread.setDaemon(true);
+    thread.start();
   }
 }
