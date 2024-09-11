@@ -1,8 +1,13 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,9 +18,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
+import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
+import nz.ac.auckland.apiproxy.chat.openai.Choice;
+import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
+import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -40,8 +55,13 @@ public class ArchaeologistController {
   @FXML private Button objectiveClose;
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
+  @FXML private ImageView arcbubble;
 
   private static GameStateContext context = new GameStateContext();
+  private static boolean isFirstTimeInit = true;
+  private static boolean isFirstTime = true;
+  private static ChatCompletionRequest chatCompletionRequest;
+  private MediaPlayer player;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -49,6 +69,7 @@ public class ArchaeologistController {
    */
   @FXML
   public void initialize() {
+    arcbubble.setVisible(false);
     txtaChat.clear();
     txtInput.setOnKeyPressed(
         event -> {
@@ -56,12 +77,37 @@ public class ArchaeologistController {
             onSendMessage(null);
           }
         });
-    // if (isFirstTimeInit) {
-    //   TextToSpeech.speak(
-    //       "Chat with the three customers, and guess who is the " +
-    // context.getProfessionToGuess());
-    //   isFirstTimeInit = false;
-    // }
+    if (isFirstTimeInit) {
+      Task<Void> getGreeting =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              Platform.runLater(
+                  () -> {
+                    txtaChat.setText(
+                        "Archaeologist: It's terrible that my last excavation ended like this. I"
+                            + " can't afford to go on another one because I was recently denied"
+                            + " funding.");
+                    Media sound = null;
+                    try {
+                      sound =
+                          new Media(App.class.getResource("/sounds/arch.mp3").toURI().toString());
+                    } catch (URISyntaxException e) {
+                      // TODO Auto-generated catch block
+                      e.printStackTrace();
+                    }
+                    player = new MediaPlayer(sound);
+                    player.play();
+                  });
+              getSystemPrompt();
+              return null;
+            }
+          };
+      Thread thread = new Thread(getGreeting);
+      thread.setDaemon(true);
+      thread.start();
+      isFirstTimeInit = false;
+    }
   }
 
   /**
@@ -248,18 +294,72 @@ public class ArchaeologistController {
     context.handleGuessClick();
   }
 
+  private void getSystemPrompt() {
+    Map<String, String> map = new HashMap<>();
+    map.put("profession", "an archaeologist who was recently denied funding");
+    map.put("shoeSize", "8");
+    map.put(
+        "reason",
+        "your phone broke last week and you couldn’t get a replacement due to denied funding");
+    String message = PromptEngineering.getPrompt("chat.txt", map);
+    try {
+      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      chatCompletionRequest =
+          new ChatCompletionRequest(config)
+              .setN(1)
+              .setTemperature(0.2)
+              .setTopP(0.5)
+              .setMaxTokens(100);
+      runGpt(new ChatMessage("system", message));
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    chatCompletionRequest.addMessage(msg);
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   @FXML
   public void onSendMessage(ActionEvent event) {
+    if (isFirstTime) {
+      txtaChat.clear();
+      isFirstTime = false;
+    }
     String message = txtInput.getText().trim();
     if (message.isEmpty()) {
       return;
     }
     txtInput.clear();
-    try {
-      context.handleSendChatClick(txtaChat, message, "archaeologist");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    Task<Void> getResponse =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            Platform.runLater(() -> arcbubble.setVisible(true));
+            try {
+              ChatMessage msg = new ChatMessage("user", message);
+              ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              context.handleSendChatClick(
+                  txtaChat, message, "Archaeologist", response.getContent());
+              Platform.runLater(() -> arcbubble.setVisible(false));
+            } catch (IOException | ApiProxyException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+            return null;
+          }
+        };
+    Thread thread = new Thread(getResponse);
+    thread.setDaemon(true);
+    thread.start();
   }
 }

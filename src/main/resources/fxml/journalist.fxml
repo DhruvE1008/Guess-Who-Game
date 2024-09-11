@@ -25,6 +25,11 @@
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="171.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="77.0" />
       <Button fx:id="btnGuess" layoutX="445.0" layoutY="446.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
+      <ImageView fx:id="journbubble" fitHeight="150.0" fitWidth="200.0" layoutX="470.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/typing-texting.gif" />
+         </image>
+      </ImageView>
       <VBox fx:id="suspectMenu" layoutX="4.0" layoutY="92.0" prefHeight="400.0" prefWidth="143.0" styleClass="vbox" visible="false">
          <children>
             <ImageView fx:id="crimeScene" fitHeight="98.0" fitWidth="118.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="35.0">
@@ -61,7 +66,7 @@
             </ImageView>
          </children>
       </VBox>
-      <Button fx:id="arrowButton" layoutY="349.0" mnemonicParsing="false" onAction="#toggleMenu" prefHeight="56.0" styleClass="arrowButton" prefWidth="66.0" />
+      <Button fx:id="arrowButton" layoutY="349.0" mnemonicParsing="false" onAction="#toggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
        <Button fx:id="btnObjectives" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#toggleObjectives" prefHeight="36.0" prefWidth="167.0" styleClass="objectivesButton" text="Objectives" translateX="-3.0" translateY="-6.0" />
       <VBox fx:id="objectiveMenu" layoutX="1.0" layoutY="37.0" prefHeight="208.0" prefWidth="167.0" styleClass="vbox" visible="false">
          <children>
