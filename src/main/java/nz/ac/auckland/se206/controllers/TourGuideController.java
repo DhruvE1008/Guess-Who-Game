@@ -345,8 +345,7 @@ public class TourGuideController {
             try {
               ChatMessage msg = new ChatMessage("user", message);
               ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
-              context.handleSendChatClick(
-                  txtaChat, message, "Archaeologist", response.getContent());
+              context.handleSendChatClick(txtaChat, message, "Tour Guide", response.getContent());
               Platform.runLater(() -> guidebubble.setVisible(false));
             } catch (IOException | ApiProxyException e) {
               // TODO Auto-generated catch block
