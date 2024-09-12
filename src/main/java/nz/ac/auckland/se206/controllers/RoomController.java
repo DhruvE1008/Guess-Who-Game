@@ -6,10 +6,12 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
@@ -32,13 +34,21 @@ public class RoomController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
+  @FXML private ImageView closeButtonImage;
   @FXML private Button arrowButton;
   @FXML private VBox suspectMenu;
   @FXML private Button btnObjectives;
   @FXML private VBox objectiveMenu;
   @FXML private Button objectiveClose;
+  @FXML private Pane phonePopup;
+  @FXML private Label label1, label2, label3, label4, incorrectPin;
+  @FXML private Rectangle box1, box2, box3, box4;
+  private int currentBoxIndex = 0;
+  private String[] enteredPasscode = new String[4];
+  private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
+
 
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
@@ -61,6 +71,117 @@ public class RoomController {
     // context.getProfessionToGuess());
     //   isFirstTimeInit = false;
     // }
+  }
+
+  @FXML
+  private void handlePhoneClick() {
+    phonePopup.setVisible(true);
+    closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
+  }
+
+  @FXML
+  private void enterNumber(ActionEvent event) {
+    incorrectPin.setVisible(false);
+    if (currentBoxIndex >= 4) {
+      return; // Do nothing if all boxes are filled
+    }
+
+    Button clickedButton = (Button) event.getSource();
+    String number = clickedButton.getText();
+
+    // Update the corresponding rectangle (box) with the number
+    enteredPasscode[currentBoxIndex] = number;
+    fillBox(currentBoxIndex, number);
+    currentBoxIndex++;
+
+    // Check if the passcode is fully entered
+    if (currentBoxIndex >= 4) {
+      return;
+    }
+  }
+
+  private void fillBox(int index, String number) {
+    switch (index) {
+      case 0 -> {
+        label1.setText(number);
+      }
+      case 1 -> {
+        label2.setText(number);
+      }
+      case 2 -> {
+        label3.setText(number);
+      }
+      case 3 -> {
+        label4.setText(number);
+      }
+    }
+  }
+
+  @FXML
+  private void onCloseButtonPressed() {
+    phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    closeButtonImage.setVisible(false);
+  }
+
+  @FXML
+  private void handleOkButtonClick() {
+    if (currentBoxIndex < 4) {
+      return; // Do nothing if the passcode is not fully entered
+    } else {
+      checkPasscode();
+    }
+  }
+
+  @FXML
+  private void onBackspace() {
+    if (currentBoxIndex == 0) {
+      return; // Do nothing if there are no boxes to clear
+    }
+
+    currentBoxIndex--;
+    enteredPasscode[currentBoxIndex] = "";
+    clearBox(currentBoxIndex);
+  }
+
+  private void clearBox(int index) {
+    switch (index) {
+      case 0 -> {
+        label1.setText("");
+      }
+      case 1 -> {
+        label2.setText("");
+      }
+      case 2 -> {
+        label3.setText("");
+      }
+      case 3 -> {
+        label4.setText("");
+      }
+    }
+  }
+
+  private void checkPasscode() {
+    String entered = String.join("", enteredPasscode);
+    if (entered.equals(correctPasscode)) {
+      unlockPhone();
+    } else {
+      // Optional: reset if the passcode is wrong
+      clearBoxes();
+      incorrectPin.setVisible(true); // Show the incorrect pin message
+    }
+  }
+
+  private void clearBoxes() {
+    label1.setText("");
+    label2.setText("");
+    label3.setText("");
+    label4.setText("");
+    currentBoxIndex = 0;
+  }
+
+  private void unlockPhone() {
+    return; // Hide the lock screen
+    // Display the unlocked phone screen or image of the suspect here
   }
 
   /**
