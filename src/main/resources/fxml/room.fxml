@@ -141,8 +141,7 @@
      
    </children>
 </Pane>
-      <Rectangle fx:id="phone" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="25.0" layoutX="458.0" layoutY="513.0" onMouseClicked="#handlePhoneClick" stroke="TRANSPARENT" strokeType="INSIDE" width="38.0" />
-      <ImageView fx:id="closeButtonImage" fitHeight="56.0" fitWidth="44.0" layoutX="390.0" layoutY="77.0" onMouseClicked="#onCloseButtonPressed" preserveRatio="true" visible = "false">
+      <ImageView fx:id="closeButtonImage" fitHeight="56.0" fitWidth="44.0" layoutX="390.0" layoutY="77.0" onMouseClicked="#onCloseButtonPressed" preserveRatio="true" visible="false">
       <image>
          <Image url="@../images/cross.png" />
       </image>
@@ -159,5 +158,21 @@
          </image>
       </ImageView>
       <Rectangle fx:id="photoClueClose" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="44.0" layoutX="441.0" layoutY="226.0" onMouseClicked="#handleCloseClick" stroke="TRANSPARENT" strokeType="INSIDE" width="45.0" />
+      <Rectangle fx:id="phone" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="25.0" layoutX="458.0" layoutY="513.0" onMouseClicked="#handlePhoneClick" stroke="TRANSPARENT" strokeType="INSIDE" width="38.0" />
+      <ImageView fitHeight="44.0" fitWidth="66.0" layoutX="201.0" layoutY="505.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/picturecluehover.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="329.0" layoutY="607.0" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/footprintshover.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="22.0" fitWidth="30.0" layoutX="457.0" layoutY="518.0" onMouseClicked="#handlePhoneClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/phonehover.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
