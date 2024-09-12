@@ -6,11 +6,13 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.GameStateContext;
 
@@ -35,8 +37,13 @@ public class RoomController {
   @FXML private Button btnObjectives;
   @FXML private VBox objectiveMenu;
   @FXML private Button objectiveClose;
+  @FXML private ImageView photoClue;
+  @FXML private ImageView cross;
 
   private static GameStateContext context = new GameStateContext();
+  private Image frontImage;
+  private Image backImage;
+  private boolean clueVisible = false;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -44,6 +51,10 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
+    frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
+    backImage = new Image(getClass().getResourceAsStream("/images/suspect2.png"));
+    photoClue.setImage(frontImage);
+    // photoClue.setImage(frontImage);
     // if (isFirstTimeInit) {
     //   TextToSpeech.speak(
     //       "Chat with the three customers, and guess who is the " +
@@ -208,6 +219,40 @@ public class RoomController {
   }
 
   @FXML
+  public void rotate() {
+    if (!clueVisible) {
+      return;
+    }
+    RotateTransition rotateOut = new RotateTransition(Duration.millis(250), photoClue);
+    rotateOut.setByAngle(90);
+    rotateOut.setAxis(Rotate.X_AXIS);
+
+    RotateTransition rotateIn = new RotateTransition(Duration.millis(250), photoClue);
+    rotateIn.setByAngle(90);
+    rotateIn.setAxis(Rotate.X_AXIS);
+
+    rotateOut.setOnFinished(
+        event -> {
+          if (photoClue.getImage().equals(frontImage)) {
+            photoClue.setImage(backImage);
+          } else {
+            photoClue.setImage(frontImage);
+          }
+          rotateIn.play();
+        });
+    rotateOut.play();
+  }
+
+  @FXML
+  private void handleCloseClick(MouseEvent event) {
+    if (clueVisible) {
+      clueVisible = false;
+      photoClue.setVisible(false);
+      cross.setVisible(false);
+    }
+  }
+
+  @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
@@ -223,6 +268,15 @@ public class RoomController {
   private void handleRectangleClick(MouseEvent event) throws IOException {
     Rectangle clickedRectangle = (Rectangle) event.getSource();
     context.handleRectangleClick(event, clickedRectangle.getId());
+  }
+
+  @FXML
+  private void handlePhotoClueClick(MouseEvent event) {
+    if (!clueVisible) {
+      clueVisible = true;
+      photoClue.setVisible(true);
+      cross.setVisible(true);
+    }
   }
 
   /**
