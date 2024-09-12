@@ -2,14 +2,18 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ChatController;
+import nz.ac.auckland.se206.controllers.RoomController;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
 /**
@@ -71,6 +75,16 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    RoomController controller = loader.getController();
+    scene.setOnKeyPressed(
+        new EventHandler<KeyEvent>() {
+          @Override
+          public void handle(KeyEvent event) {
+            if (event.getCode() == KeyCode.F) {
+              controller.rotate();
+            }
+          }
+        });
     stage.setScene(scene);
     stage.show();
   }
@@ -115,8 +129,19 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    Parent root = loadFxml("room");
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/room.fxml"));
+    Parent root = loader.load();
+    RoomController controller = loader.getController();
     scene = new Scene(root);
+    scene.setOnKeyPressed(
+        new EventHandler<KeyEvent>() {
+          @Override
+          public void handle(KeyEvent event) {
+            if (event.getCode() == KeyCode.F) {
+              controller.rotate();
+            }
+          }
+        });
     stage.setScene(scene);
     stage.show();
     stage.setOnCloseRequest(event -> handleWindowClose(event));
