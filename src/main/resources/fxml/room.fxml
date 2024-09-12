@@ -79,6 +79,7 @@
          <font>
             <Font size="40.0" />
          </font></Button>
+     
          <Pane fx:id="phonePopup" layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="200.0" visible="false">
    <children>
       <!-- Phone lock screen background -->
@@ -146,5 +147,17 @@
          <Image url="@../images/cross.png" />
       </image>
    </ImageView>
+      <ImageView fx:id="photoClue" fitHeight="208.0" fitWidth="229.0" layoutX="230.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/photoClue.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="photoClueRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="56.0" layoutX="203.0" layoutY="497.0" onMouseClicked="#handlePhotoClueClick" stroke="TRANSPARENT" strokeType="INSIDE" width="66.0" />
+      <ImageView fx:id="cross" fitHeight="56.0" fitWidth="52.0" layoutX="437.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/cross.png" />
+         </image>
+      </ImageView>
+      <Rectangle fx:id="photoClueClose" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="44.0" layoutX="441.0" layoutY="226.0" onMouseClicked="#handleCloseClick" stroke="TRANSPARENT" strokeType="INSIDE" width="45.0" />
    </children>
 </Pane>
