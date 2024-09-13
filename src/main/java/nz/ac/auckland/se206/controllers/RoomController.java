@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
 /**
@@ -48,7 +49,6 @@ public class RoomController {
   private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
-
 
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
@@ -209,6 +209,7 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1.2);
     hoveredImageView.setScaleY(1.2);
+    App.changeCursor("hover");
   }
 
   @FXML
@@ -216,6 +217,7 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1);
     hoveredImageView.setScaleY(1);
+    App.changeCursor("default");
   }
 
   @FXML
