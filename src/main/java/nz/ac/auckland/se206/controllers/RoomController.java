@@ -14,9 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.ObjectivesManager;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -41,6 +43,8 @@ public class RoomController {
   @FXML private VBox objectiveMenu;
   @FXML private Button objectiveClose;
   @FXML private Pane phonePopup;
+  @FXML private Text objective1Label;
+  @FXML private Text objective2Label;
   @FXML private Label label1, label2, label3, label4, incorrectPin;
   @FXML private Rectangle box1, box2, box3, box4;
   private int currentBoxIndex = 0;
@@ -49,11 +53,11 @@ public class RoomController {
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
 
-
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
   private boolean clueVisible = false;
+  private ObjectivesManager objectivesManager;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -64,6 +68,10 @@ public class RoomController {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/suspect2.png"));
     photoClue.setImage(frontImage);
+    objectivesManager = ObjectivesManager.getInstance();
+    objectivesManager.initializeObjectives(2); // For example, two objectives
+
+    updateObjectiveLabels();
     // photoClue.setImage(frontImage);
     // if (isFirstTimeInit) {
     //   TextToSpeech.speak(
@@ -73,8 +81,23 @@ public class RoomController {
     // }
   }
 
+  // Update the objective labels
+  public void updateObjectiveLabels() {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
+    }
+  }
+
   @FXML
   private void handlePhoneClick() {
+    objectivesManager.completeObjective(1);
+    updateObjectiveLabels();
     phonePopup.setVisible(true);
     closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
   }
