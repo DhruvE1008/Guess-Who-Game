@@ -173,5 +173,15 @@
             <Image url="@../images/phonehover.png" />
          </image>
       </ImageView>
+      <Label layoutX="265.0" layoutY="432.0" text="Press F to Flip" textFill="#8ee807" visible="false">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="unlockedPhone" fitHeight="400.0" fitWidth="200.0" layoutX="200.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/emailwithanony.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
