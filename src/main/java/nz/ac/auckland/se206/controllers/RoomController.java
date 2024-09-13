@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 
 /**
@@ -48,12 +49,13 @@ public class RoomController {
   private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
-
+  @FXML private ImageView unlockedPhone;
 
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
   private boolean clueVisible = false;
+  private boolean isPinCorrect = false;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -75,7 +77,11 @@ public class RoomController {
 
   @FXML
   private void handlePhoneClick() {
-    phonePopup.setVisible(true);
+    if (isPinCorrect) {
+      unlockedPhone.setVisible(true);
+    } else {
+      phonePopup.setVisible(true);
+    }
     closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
   }
 
@@ -119,7 +125,11 @@ public class RoomController {
 
   @FXML
   private void onCloseButtonPressed() {
-    phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    if (isPinCorrect) {
+      unlockedPhone.setVisible(false);
+    } else {
+      phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    }
     closeButtonImage.setVisible(false);
   }
 
@@ -180,6 +190,9 @@ public class RoomController {
   }
 
   private void unlockPhone() {
+    phonePopup.setVisible(false);
+    unlockedPhone.setVisible(true);
+    isPinCorrect = true;
     return; // Hide the lock screen
     // Display the unlocked phone screen or image of the suspect here
   }
@@ -209,6 +222,7 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1.2);
     hoveredImageView.setScaleY(1.2);
+    App.changeCursor("hover");
   }
 
   @FXML
@@ -216,6 +230,7 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1);
     hoveredImageView.setScaleY(1);
+    App.changeCursor("default");
   }
 
   @FXML
