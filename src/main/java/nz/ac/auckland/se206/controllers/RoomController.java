@@ -13,6 +13,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -36,6 +39,7 @@ public class RoomController {
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
   @FXML private ImageView closeButtonImage;
+  @FXML private ImageView closeButtonImage1;
   @FXML private Button arrowButton;
   @FXML private VBox suspectMenu;
   @FXML private Button btnObjectives;
@@ -50,7 +54,9 @@ public class RoomController {
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
   @FXML private ImageView unlockedPhone;
+  @FXML private MediaView mediaView;
 
+  private MediaPlayer mediaPlayer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
@@ -64,7 +70,7 @@ public class RoomController {
   @FXML
   public void initialize() {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
-    backImage = new Image(getClass().getResourceAsStream("/images/suspect2.png"));
+    backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
     photoClue.setImage(frontImage);
     // photoClue.setImage(frontImage);
     // if (isFirstTimeInit) {
@@ -73,6 +79,41 @@ public class RoomController {
     // context.getProfessionToGuess());
     //   isFirstTimeInit = false;
     // }
+    try {
+      mediaView.setVisible(false);
+      Media media =
+          new Media(this.getClass().getResource("/images/footprintAH.mp4").toExternalForm());
+      mediaPlayer = new MediaPlayer(media);
+      mediaPlayer.setAutoPlay(false);
+      mediaView.setMediaPlayer(mediaPlayer);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    System.out.println("Resource URL: " + getClass().getResource("/images/footprintAH.mp4"));
+  }
+
+  @FXML
+  private void playVideo() {
+    if (mediaPlayer != null) {
+      mediaPlayer.stop(); // Stop the video if it's playing
+      mediaPlayer.seek(Duration.ZERO); // Rewind to the beginning
+      mediaPlayer.setAutoPlay(true);
+      mediaPlayer.play();
+    }
+  }
+
+  @FXML
+  private void stopVideo() {
+    if (mediaPlayer != null) {
+      mediaPlayer.stop();
+    }
+  }
+
+  @FXML
+  private void handleFootClick() {
+    mediaView.setVisible(true);
+    playVideo(); // Show the phone popup when the phone is clicked
+    closeButtonImage1.setVisible(true);
   }
 
   @FXML
@@ -131,6 +172,12 @@ public class RoomController {
       phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
     }
     closeButtonImage.setVisible(false);
+  }
+
+  @FXML
+  private void onCloseButton1Pressed() {
+    mediaView.setVisible(false);
+    closeButtonImage1.setVisible(false);
   }
 
   @FXML
