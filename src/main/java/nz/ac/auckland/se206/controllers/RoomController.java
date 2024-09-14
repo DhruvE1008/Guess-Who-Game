@@ -69,9 +69,11 @@ public class RoomController {
     backImage = new Image(getClass().getResourceAsStream("/images/suspect2.png"));
     photoClue.setImage(frontImage);
     objectivesManager = ObjectivesManager.getInstance();
-    objectivesManager.initializeObjectives(2); // For example, two objectives
+    updateObjectiveLabels(); // Initial update
 
-    updateObjectiveLabels();
+    // Register this controller as an observer to update the UI when objectives are completed
+    objectivesManager.addObserver(this::updateObjectiveLabels);
+
     // photoClue.setImage(frontImage);
     // if (isFirstTimeInit) {
     //   TextToSpeech.speak(
@@ -97,7 +99,6 @@ public class RoomController {
   @FXML
   private void handlePhoneClick() {
     objectivesManager.completeObjective(1);
-    updateObjectiveLabels();
     phonePopup.setVisible(true);
     closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
   }

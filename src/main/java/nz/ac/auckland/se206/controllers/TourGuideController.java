@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
@@ -30,6 +31,7 @@ import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
@@ -52,6 +54,8 @@ public class TourGuideController {
   @FXML private VBox suspectMenu;
   @FXML private Button btnObjectives;
   @FXML private VBox objectiveMenu;
+  @FXML private Text objective1Label;
+  @FXML private Text objective2Label;
   @FXML private Button objectiveClose;
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
@@ -62,6 +66,7 @@ public class TourGuideController {
   private static boolean isFirstTime = true;
   private static ChatCompletionRequest chatCompletionRequest;
   private MediaPlayer player;
+  private ObjectivesManager objectivesManager;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -106,6 +111,23 @@ public class TourGuideController {
       thread.setDaemon(true);
       thread.start();
       isFirstTimeInit = false;
+    }
+    objectivesManager = ObjectivesManager.getInstance();
+    updateObjectiveLabels(); // Initial update
+
+    // Register this controller as an observer to update the UI when objectives are completed
+    objectivesManager.addObserver(this::updateObjectiveLabels);
+  }
+
+  public void updateObjectiveLabels() {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
     }
   }
 
