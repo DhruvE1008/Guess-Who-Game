@@ -70,7 +70,7 @@ public class RoomController {
   @FXML
   public void initialize() {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
-    backImage = new Image(getClass().getResourceAsStream("/images/suspect2.png"));
+    backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
     photoClue.setImage(frontImage);
     // photoClue.setImage(frontImage);
     // if (isFirstTimeInit) {
