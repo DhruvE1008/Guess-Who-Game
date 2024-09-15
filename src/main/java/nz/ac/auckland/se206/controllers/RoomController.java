@@ -61,7 +61,6 @@ public class RoomController {
   @FXML private MediaView mediaView;
   @FXML private Label flipLabel;
 
-=======
   private MediaPlayer mediaPlayer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
@@ -69,7 +68,6 @@ public class RoomController {
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
-
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
