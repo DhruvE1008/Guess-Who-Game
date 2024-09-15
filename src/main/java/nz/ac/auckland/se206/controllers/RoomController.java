@@ -123,6 +123,7 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
+    objectivesManager.completeObjectiveStep(1);
     handleCloseClick(null);
     onCloseButtonPressed();
     mediaView.setVisible(true);
@@ -487,6 +488,7 @@ public class RoomController {
 
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
+    objectivesManager.completeObjectiveStep(1);
     onCloseButtonPressed();
     onCloseButton1Pressed();
     if (!clueVisible) {
