@@ -350,6 +350,7 @@ public class TourGuideController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    objectivesManager.completeObjectiveStep(0);
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;

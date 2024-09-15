@@ -98,7 +98,7 @@ public class RoomController {
 
   @FXML
   private void handlePhoneClick() {
-    objectivesManager.completeObjective(1);
+    objectivesManager.completeObjectiveStep(1);
     phonePopup.setVisible(true);
     closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
   }
