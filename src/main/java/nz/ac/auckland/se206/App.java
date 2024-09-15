@@ -2,6 +2,7 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -91,6 +92,16 @@ public class App extends Application {
             }
           }
         });
+    stage.setScene(scene);
+    stage.show();
+  }
+
+  public static void changeGuessing(ActionEvent event) throws IOException {
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
+    Parent root = loader.load();
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    scene = new Scene(root);
+    scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
