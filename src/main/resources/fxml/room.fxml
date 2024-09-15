@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -20,7 +21,7 @@
          </image>
       </ImageView>
       <Rectangle fx:id="rectCashier" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="222.0" layoutY="262.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="38.0" />
-      <Rectangle fx:id="rectPerson1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="128.0" layoutX="241.0" layoutY="277.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="109.0" />
+      <Rectangle fx:id="rectPerson1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="128.0" layoutX="280.0" layoutY="35.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="109.0" />
       <Rectangle fx:id="rectPerson3" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="135.0" layoutX="587.0" layoutY="284.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="91.0" />
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="44.0" />
@@ -144,6 +145,7 @@
    </children>
 </Pane>
       <Rectangle fx:id="phone" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="25.0" layoutX="458.0" layoutY="513.0" onMouseClicked="#handlePhoneClick" stroke="TRANSPARENT" strokeType="INSIDE" width="38.0" />
+
       <ImageView fx:id="closeButtonImage" fitHeight="56.0" fitWidth="44.0" layoutX="390.0" layoutY="77.0" onMouseClicked="#onCloseButtonPressed" preserveRatio="true" visible="false">
       <image>
          <Image url="@../images/cross.png" />
@@ -154,12 +156,43 @@
             <Image url="@../images/photoClue.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="photoClueRectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="56.0" layoutX="203.0" layoutY="497.0" onMouseClicked="#handlePhotoClueClick" stroke="TRANSPARENT" strokeType="INSIDE" width="66.0" />
       <ImageView fx:id="cross" fitHeight="56.0" fitWidth="52.0" layoutX="437.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/cross.png" />
          </image>
       </ImageView>
       <Rectangle fx:id="photoClueClose" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="44.0" layoutX="441.0" layoutY="226.0" onMouseClicked="#handleCloseClick" stroke="TRANSPARENT" strokeType="INSIDE" width="45.0" />
+      <Rectangle fx:id="phone" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="25.0" layoutX="458.0" layoutY="513.0" onMouseClicked="#handlePhoneClick" stroke="TRANSPARENT" strokeType="INSIDE" width="38.0" />
+      <ImageView fitHeight="44.0" fitWidth="66.0" layoutX="201.0" layoutY="505.0" onMouseClicked="#handlePhotoClueClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/picturecluehover.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="329.0" layoutY="607.0" onMouseClicked="#handleFootClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/footprintshover.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="22.0" fitWidth="30.0" layoutX="457.0" layoutY="518.0" onMouseClicked="#handlePhoneClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/phonehover.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="flipLabel" layoutX="265.0" layoutY="432.0" text="Press F to Flip" textFill="#8ee807" visible="false">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="unlockedPhone" fitHeight="400.0" fitWidth="300.0" layoutX="190.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/emailwithanony.png" />
+         </image>
+      </ImageView>
+      <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="246.0" layoutY="263.0" />
+      <ImageView fx:id="closeButtonImage1" fitHeight="56.0" fitWidth="44.0" layoutX="415.0" layoutY="240.0" onMouseClicked="#onCloseButton1Pressed" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/cross.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

@@ -326,6 +326,7 @@ public class JournalistController {
         "reason",
         "you lost your phone during an Amazon case a few days ago and you have been too busy to get"
             + " a new one");
+    map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();

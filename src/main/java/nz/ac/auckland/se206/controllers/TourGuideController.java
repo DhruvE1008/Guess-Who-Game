@@ -320,6 +320,7 @@ public class TourGuideController {
     map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
     map.put("shoeSize", "7");
     map.put("reason", "you can’t afford a smartphone and you have a brick phone");
+    map.put("kids", "no kids");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();

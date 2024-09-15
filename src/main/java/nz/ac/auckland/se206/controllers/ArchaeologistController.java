@@ -324,6 +324,7 @@ public class ArchaeologistController {
     map.put(
         "reason",
         "your phone broke last week and you couldn’t get a replacement due to denied funding");
+    map.put("kids", "a 9 year old daughter");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();

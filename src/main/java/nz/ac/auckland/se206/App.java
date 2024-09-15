@@ -4,9 +4,12 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +51,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
@@ -57,6 +61,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
@@ -66,6 +71,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
@@ -87,6 +93,15 @@ public class App extends Application {
         });
     stage.setScene(scene);
     stage.show();
+  }
+
+  public static void changeCursor(String cursor) {
+    if (cursor.equals("hover")) {
+      scene.setCursor(
+          new ImageCursor(new Image(App.class.getResourceAsStream("/images/cursor.png"))));
+    } else {
+      scene.setCursor(Cursor.DEFAULT);
+    }
   }
 
   /**

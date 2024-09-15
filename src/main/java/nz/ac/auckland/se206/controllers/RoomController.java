@@ -13,10 +13,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.ObjectivesManager;
 
@@ -37,6 +41,7 @@ public class RoomController {
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
   @FXML private ImageView closeButtonImage;
+  @FXML private ImageView closeButtonImage1;
   @FXML private Button arrowButton;
   @FXML private VBox suspectMenu;
   @FXML private Button btnObjectives;
@@ -52,12 +57,19 @@ public class RoomController {
   private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
+  @FXML private ImageView unlockedPhone;
+  @FXML private MediaView mediaView;
+  @FXML private Label flipLabel;
 
+=======
+  private MediaPlayer mediaPlayer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
+  private boolean isPinCorrect = false;
+
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -66,7 +78,7 @@ public class RoomController {
   @FXML
   public void initialize() {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
-    backImage = new Image(getClass().getResourceAsStream("/images/suspect2.png"));
+    backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
     photoClue.setImage(frontImage);
     objectivesManager = ObjectivesManager.getInstance();
     updateObjectiveLabels(); // Initial update
@@ -81,6 +93,43 @@ public class RoomController {
     // context.getProfessionToGuess());
     //   isFirstTimeInit = false;
     // }
+    try {
+      mediaView.setVisible(false);
+      Media media =
+          new Media(this.getClass().getResource("/images/footprintAH.mp4").toExternalForm());
+      mediaPlayer = new MediaPlayer(media);
+      mediaPlayer.setAutoPlay(false);
+      mediaView.setMediaPlayer(mediaPlayer);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    System.out.println("Resource URL: " + getClass().getResource("/images/footprintAH.mp4"));
+  }
+
+  @FXML
+  private void playVideo() {
+    if (mediaPlayer != null) {
+      mediaPlayer.stop(); // Stop the video if it's playing
+      mediaPlayer.seek(Duration.ZERO); // Rewind to the beginning
+      mediaPlayer.setAutoPlay(true);
+      mediaPlayer.play();
+    }
+  }
+
+  @FXML
+  private void stopVideo() {
+    if (mediaPlayer != null) {
+      mediaPlayer.stop();
+    }
+  }
+
+  @FXML
+  private void handleFootClick() {
+    handleCloseClick(null);
+    onCloseButtonPressed();
+    mediaView.setVisible(true);
+    playVideo(); // Show the phone popup when the phone is clicked
+    closeButtonImage1.setVisible(true);
   }
 
   // Update the objective labels
@@ -100,6 +149,13 @@ public class RoomController {
   private void handlePhoneClick() {
     objectivesManager.completeObjectiveStep(1);
     phonePopup.setVisible(true);
+    handleCloseClick(null);
+    onCloseButton1Pressed();
+    if (isPinCorrect) {
+      unlockedPhone.setVisible(true);
+    } else {
+      phonePopup.setVisible(true);
+    }
     closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
   }
 
@@ -143,8 +199,18 @@ public class RoomController {
 
   @FXML
   private void onCloseButtonPressed() {
-    phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    if (isPinCorrect) {
+      unlockedPhone.setVisible(false);
+    } else {
+      phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    }
     closeButtonImage.setVisible(false);
+  }
+
+  @FXML
+  private void onCloseButton1Pressed() {
+    mediaView.setVisible(false);
+    closeButtonImage1.setVisible(false);
   }
 
   @FXML
@@ -204,6 +270,9 @@ public class RoomController {
   }
 
   private void unlockPhone() {
+    phonePopup.setVisible(false);
+    unlockedPhone.setVisible(true);
+    isPinCorrect = true;
     return; // Hide the lock screen
     // Display the unlocked phone screen or image of the suspect here
   }
@@ -233,6 +302,7 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1.2);
     hoveredImageView.setScaleY(1.2);
+    App.changeCursor("hover");
   }
 
   @FXML
@@ -240,6 +310,7 @@ public class RoomController {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1);
     hoveredImageView.setScaleY(1);
+    App.changeCursor("default");
   }
 
   @FXML
@@ -392,6 +463,7 @@ public class RoomController {
   private void handleCloseClick(MouseEvent event) {
     if (clueVisible) {
       clueVisible = false;
+      flipLabel.setVisible(false);
       photoClue.setVisible(false);
       cross.setVisible(false);
     }
@@ -417,8 +489,11 @@ public class RoomController {
 
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
     if (!clueVisible) {
       clueVisible = true;
+      flipLabel.setVisible(true);
       photoClue.setVisible(true);
       cross.setVisible(true);
     }
