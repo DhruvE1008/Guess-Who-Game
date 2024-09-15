@@ -174,6 +174,16 @@
             <Image url="@../images/phonehover.png" />
          </image>
       </ImageView>
+      <Label fx:id="flipLabel" layoutX="265.0" layoutY="432.0" text="Press F to Flip" textFill="#8ee807" visible="false">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="unlockedPhone" fitHeight="400.0" fitWidth="300.0" layoutX="190.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/emailwithanony.png" />
+         </image>
+      </ImageView>
       <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="246.0" layoutY="263.0" />
       <ImageView fx:id="closeButtonImage1" fitHeight="56.0" fitWidth="44.0" layoutX="415.0" layoutY="240.0" onMouseClicked="#onCloseButton1Pressed" preserveRatio="true" visible="false">
          <image>

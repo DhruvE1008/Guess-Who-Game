@@ -55,6 +55,7 @@ public class RoomController {
   @FXML private ImageView cross;
   @FXML private ImageView unlockedPhone;
   @FXML private MediaView mediaView;
+  @FXML private Label flipLabel;
 
   private MediaPlayer mediaPlayer;
   private static GameStateContext context = new GameStateContext();
@@ -111,6 +112,8 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
+    handleCloseClick(null);
+    onCloseButtonPressed();
     mediaView.setVisible(true);
     playVideo(); // Show the phone popup when the phone is clicked
     closeButtonImage1.setVisible(true);
@@ -118,6 +121,8 @@ public class RoomController {
 
   @FXML
   private void handlePhoneClick() {
+    handleCloseClick(null);
+    onCloseButton1Pressed();
     if (isPinCorrect) {
       unlockedPhone.setVisible(true);
     } else {
@@ -430,6 +435,7 @@ public class RoomController {
   private void handleCloseClick(MouseEvent event) {
     if (clueVisible) {
       clueVisible = false;
+      flipLabel.setVisible(false);
       photoClue.setVisible(false);
       cross.setVisible(false);
     }
@@ -455,8 +461,11 @@ public class RoomController {
 
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
     if (!clueVisible) {
       clueVisible = true;
+      flipLabel.setVisible(true);
       photoClue.setVisible(true);
       cross.setVisible(true);
     }
