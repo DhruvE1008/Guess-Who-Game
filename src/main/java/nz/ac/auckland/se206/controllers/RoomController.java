@@ -505,6 +505,6 @@ public class RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
-    context.handleGuessClick();
+    App.changeGuessing(event);
   }
 }
