@@ -17,10 +17,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.ObjectivesManager;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -46,6 +48,8 @@ public class RoomController {
   @FXML private VBox objectiveMenu;
   @FXML private Button objectiveClose;
   @FXML private Pane phonePopup;
+  @FXML private Text objective1Label;
+  @FXML private Text objective2Label;
   @FXML private Label label1, label2, label3, label4, incorrectPin;
   @FXML private Rectangle box1, box2, box3, box4;
   private int currentBoxIndex = 0;
@@ -57,12 +61,15 @@ public class RoomController {
   @FXML private MediaView mediaView;
   @FXML private Label flipLabel;
 
+=======
   private MediaPlayer mediaPlayer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
   private boolean clueVisible = false;
+  private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
+
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -73,6 +80,12 @@ public class RoomController {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
     photoClue.setImage(frontImage);
+    objectivesManager = ObjectivesManager.getInstance();
+    updateObjectiveLabels(); // Initial update
+
+    // Register this controller as an observer to update the UI when objectives are completed
+    objectivesManager.addObserver(this::updateObjectiveLabels);
+
     // photoClue.setImage(frontImage);
     // if (isFirstTimeInit) {
     //   TextToSpeech.speak(
@@ -119,8 +132,23 @@ public class RoomController {
     closeButtonImage1.setVisible(true);
   }
 
+  // Update the objective labels
+  public void updateObjectiveLabels() {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
+    }
+  }
+
   @FXML
   private void handlePhoneClick() {
+    objectivesManager.completeObjectiveStep(1);
+    phonePopup.setVisible(true);
     handleCloseClick(null);
     onCloseButton1Pressed();
     if (isPinCorrect) {
