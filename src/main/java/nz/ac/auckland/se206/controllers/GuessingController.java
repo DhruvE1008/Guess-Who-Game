@@ -1,6 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +13,8 @@ public class GuessingController {
   @FXML private Circle arcborder;
   @FXML private Circle journborder;
   @FXML private Circle guideborder;
+  @FXML private TextArea textArea;
+  @FXML private Button submit;
 
   private int suspect = 0;
 
@@ -117,6 +121,21 @@ public class GuessingController {
       journborder.setVisible(false);
       guideborder.setVisible(true);
       suspect = 3;
+    }
+    checkSubmitEnabled();
+  }
+
+  @FXML
+  private void changeText() {
+    checkSubmitEnabled();
+  }
+
+  @FXML
+  private void checkSubmitEnabled() {
+    if (suspect != 0 && !textArea.getText().isEmpty()) {
+      submit.setDisable(false);
+    } else {
+      submit.setDisable(true);
     }
   }
 }

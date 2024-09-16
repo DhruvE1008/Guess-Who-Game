@@ -60,7 +60,7 @@
       <Label layoutX="178.0" layoutY="306.0" text="Archaeologist" />
       <Label layoutX="336.0" layoutY="306.0" text="Journalist" />
       <Label layoutX="473.0" layoutY="306.0" text="Tour Guide" />
-      <TextArea layoutX="168.0" layoutY="376.0" prefHeight="155.0" prefWidth="371.0" />
-      <Button layoutX="327.0" layoutY="547.0" mnemonicParsing="false" text="Submit" />
+      <TextArea fx:id="textArea" layoutX="168.0" layoutY="376.0" onKeyPressed="#changeText" prefHeight="155.0" prefWidth="371.0" promptText="Enter Reason" wrapText="true" />
+      <Button fx:id="submit" disable="true" layoutX="327.0" layoutY="547.0" mnemonicParsing="false" text="Submit" />
    </children>
 </Pane>
