@@ -25,7 +25,6 @@ import nz.ac.auckland.se206.speech.FreeTextToSpeech;
  * application.
  */
 public class App extends Application {
-
   private static Scene scene;
 
   /**
@@ -80,9 +79,10 @@ public class App extends Application {
   public static void changeCrimeScene(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
     Parent root = loader.load();
+    RoomController controller = loader.getController();
+
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
-    RoomController controller = loader.getController();
     scene.setOnKeyPressed(
         new EventHandler<KeyEvent>() {
           @Override
@@ -155,6 +155,8 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
+    TimerManager.initializeTimer(5); // Initialize with 5 minutes countdown
+    TimerManager.startTimer(); // Start the timer
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/room.fxml"));
     Parent root = loader.load();
     RoomController controller = loader.getController();

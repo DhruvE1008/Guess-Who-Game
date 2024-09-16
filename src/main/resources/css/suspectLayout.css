@@ -43,3 +43,25 @@
   /* Ensures the image does not repeat */
   -fx-cursor: hand;
 }
+
+.timerLabel {
+  -fx-background-color: #d9b881;
+  /* Golden background */
+  -fx-text-fill: black;
+  /* Black text color */
+  -fx-font-size: 24px;
+  /* Font size */
+  -fx-font-weight: bold;
+  /* Bold font */
+  -fx-padding: 10px;
+  /* Padding around the text *
+  /* Rounded corners */
+  -fx-background-radius: 5px;
+  /* Rounded corners for background */
+  -fx-alignment: center;
+  /* Center align text */
+  -fx-min-width: 100px;
+  /* Minimum width */
+  -fx-min-height: 50px;
+  /* Minimum height */
+}

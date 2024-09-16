@@ -7,10 +7,12 @@ import java.util.Map;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -31,7 +33,9 @@ import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
+import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
@@ -60,8 +64,10 @@ public class JournalistController {
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
   @FXML private ImageView journbubble;
+  @FXML private Label timerLabel;
 
   private static GameStateContext context = new GameStateContext();
+  private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
   private static ChatCompletionRequest chatCompletionRequest;
@@ -74,6 +80,20 @@ public class JournalistController {
    */
   @FXML
   public void initialize() {
+    gameTimer = TimerManager.getGameTimer();
+
+    // Bind the timer label to display the time in minutes and seconds
+    timerLabel
+        .textProperty()
+        .bind(
+            Bindings.createStringBinding(
+                () -> {
+                  int totalSeconds = gameTimer.getTimeInSeconds();
+                  int minutes = totalSeconds / 60;
+                  int seconds = totalSeconds % 60;
+                  return String.format("%02d:%02d", minutes, seconds);
+                },
+                gameTimer.timeInSecondsProperty()));
     journbubble.setVisible(false);
     txtaChat.clear();
     txtInput.setOnKeyPressed(
