@@ -194,5 +194,15 @@
             <Image url="@../images/cross.png" />
          </image>
       </ImageView>
+      <Label fx:id="timerLabel" layoutX="677.0" layoutY="10.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-91.0" translateY="-4.0">
+         <font>
+            <Font size="56.0" />
+         </font>
+      </Label>
+      <Label layoutX="531.0" layoutY="-2.0" minWidth="92.0" prefHeight="51.0" prefWidth="103.0" styleClass="timerLabel" text="Timer :" textFill="#f60707" translateX="-30.0" translateY="8.0">
+         <font>
+            <Font size="56.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

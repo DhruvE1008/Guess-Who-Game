@@ -3,6 +3,7 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,7 +23,9 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
+import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
+import nz.ac.auckland.se206.TimerManager;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -52,6 +55,7 @@ public class RoomController {
   @FXML private Text objective2Label;
   @FXML private Label label1, label2, label3, label4, incorrectPin;
   @FXML private Rectangle box1, box2, box3, box4;
+  @FXML private Label timerLabel;
   private int currentBoxIndex = 0;
   private String[] enteredPasscode = new String[4];
   private final String correctPasscode = "0411";
@@ -62,6 +66,7 @@ public class RoomController {
   @FXML private Label flipLabel;
 
   private MediaPlayer mediaPlayer;
+  private GameTimer gameTimer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
@@ -75,6 +80,20 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
+    gameTimer = TimerManager.getGameTimer();
+
+    // Bind the timer label to display the time in minutes and seconds
+    timerLabel
+        .textProperty()
+        .bind(
+            Bindings.createStringBinding(
+                () -> {
+                  int totalSeconds = gameTimer.getTimeInSeconds();
+                  int minutes = totalSeconds / 60;
+                  int seconds = totalSeconds % 60;
+                  return String.format("%02d:%02d", minutes, seconds);
+                },
+                gameTimer.timeInSecondsProperty()));
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
     photoClue.setImage(frontImage);
