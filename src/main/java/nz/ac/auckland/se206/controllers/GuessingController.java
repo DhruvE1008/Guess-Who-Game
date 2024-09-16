@@ -1,5 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -137,5 +138,10 @@ public class GuessingController {
     } else {
       submit.setDisable(true);
     }
+  }
+
+  @FXML
+  private void handleSubmit(MouseEvent event) throws IOException {
+    App.changeGameOver(event);
   }
 }
