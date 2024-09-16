@@ -110,6 +110,8 @@ public class App extends Application {
     if (cursor.equals("hover")) {
       scene.setCursor(
           new ImageCursor(new Image(App.class.getResourceAsStream("/images/cursor.png"))));
+    } else if (cursor.equals("HAND")) {
+      scene.setCursor(Cursor.HAND);
     } else {
       scene.setCursor(Cursor.DEFAULT);
     }

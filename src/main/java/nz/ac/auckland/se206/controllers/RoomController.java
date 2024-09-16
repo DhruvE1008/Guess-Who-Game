@@ -123,12 +123,12 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
-    objectivesManager.completeObjectiveStep(1);
     handleCloseClick(null);
     onCloseButtonPressed();
     mediaView.setVisible(true);
     playVideo(); // Show the phone popup when the phone is clicked
     closeButtonImage1.setVisible(true);
+    objectivesManager.completeObjectiveStep(1);
   }
 
   // Update the objective labels
@@ -507,6 +507,8 @@ public class RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
+    // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
     App.changeGuessing(event);
+    // }
   }
 }
