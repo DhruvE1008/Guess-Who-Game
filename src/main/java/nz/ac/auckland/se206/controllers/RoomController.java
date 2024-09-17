@@ -84,7 +84,6 @@ public class RoomController {
   @FXML
   public void initialize() {
     if (isFirstInit) {
-      // Initialize with 5 minutes countdown on a background thread
       Task<Void> timerTask =
           new Task<Void>() {
             @Override
@@ -93,7 +92,7 @@ public class RoomController {
               return null;
             }
           };
-      new Thread(timerTask).start(); // Run timer in background
+      new Thread(timerTask).start();
       isFirstInit = false;
     }
 
@@ -122,7 +121,6 @@ public class RoomController {
     // Register this controller as an observer to update the UI when objectives are completed
     objectivesManager.addObserver(this::updateObjectiveLabels);
 
-    // Load media in background thread
     Task<Void> mediaTask =
         new Task<Void>() {
           @Override
@@ -134,7 +132,6 @@ public class RoomController {
               mediaPlayer = new MediaPlayer(media);
               mediaPlayer.setAutoPlay(false);
 
-              // Run media player setup on UI thread
               Platform.runLater(() -> mediaView.setMediaPlayer(mediaPlayer));
 
             } catch (Exception e) {
@@ -144,7 +141,7 @@ public class RoomController {
           }
         };
 
-    new Thread(mediaTask).start(); // Run media setup in background
+    new Thread(mediaTask).start();
 
     System.out.println("Resource URL: " + getClass().getResource("/images/footprintAH.mp4"));
   }
@@ -552,8 +549,8 @@ public class RoomController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
-    // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
-    App.changeGuessing(event);
-    // }
+    if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
+      App.changeGuessing(event);
+    }
   }
 }

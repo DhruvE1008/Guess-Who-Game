@@ -2,6 +2,8 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -79,23 +81,46 @@ public class App extends Application {
   }
 
   public static void changeCrimeScene(MouseEvent event) throws IOException {
-    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
-    Parent root = loader.load();
-    RoomController controller = loader.getController();
-
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    scene = new Scene(root);
-    scene.setOnKeyPressed(
-        new EventHandler<KeyEvent>() {
+    Task<Void> loadSceneTask =
+        new Task<Void>() {
           @Override
-          public void handle(KeyEvent event) {
-            if (event.getCode() == KeyCode.F) {
-              controller.rotate();
-            }
+          protected Void call() throws Exception {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
+            Parent root = loader.load();
+            RoomController controller = loader.getController();
+
+            Platform.runLater(
+                () -> {
+                  try {
+                    // Get the current stage
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    // Create a new scene and set up the key event handler
+                    Scene scene = new Scene(root);
+                    scene.setOnKeyPressed(
+                        new EventHandler<KeyEvent>() {
+                          @Override
+                          public void handle(KeyEvent event) {
+                            if (event.getCode() == KeyCode.F) {
+                              controller.rotate(); // Rotate the room when 'F' key is pressed
+                            }
+                          }
+                        });
+
+                    // Set the new scene on the stage
+                    stage.setScene(scene);
+                    stage.show();
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                  }
+                });
+
+            return null;
           }
-        });
-    stage.setScene(scene);
-    stage.show();
+        };
+
+    Thread backgroundThread = new Thread(loadSceneTask);
+    backgroundThread.setDaemon(true);
+    backgroundThread.start();
   }
 
   public static void changeGuessing(ActionEvent event) throws IOException {
