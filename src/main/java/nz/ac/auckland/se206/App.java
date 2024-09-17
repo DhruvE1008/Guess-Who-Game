@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ChatController;
 import nz.ac.auckland.se206.controllers.GameOverController;
+import nz.ac.auckland.se206.controllers.MenuController;
 import nz.ac.auckland.se206.controllers.RoomController;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
@@ -172,21 +173,12 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    TimerManager.initializeTimer(5); // Initialize with 5 minutes countdown
-    TimerManager.startTimer(); // Start the timer
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/room.fxml"));
+    TimerManager.initializeTimer(5);
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
     Parent root = loader.load();
-    RoomController controller = loader.getController();
+    MenuController controller = loader.getController();
+
     scene = new Scene(root);
-    scene.setOnKeyPressed(
-        new EventHandler<KeyEvent>() {
-          @Override
-          public void handle(KeyEvent event) {
-            if (event.getCode() == KeyCode.F) {
-              controller.rotate();
-            }
-          }
-        });
     stage.setScene(scene);
     stage.show();
     stage.setOnCloseRequest(event -> handleWindowClose(event));

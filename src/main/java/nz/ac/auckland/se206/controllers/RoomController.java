@@ -3,7 +3,9 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -73,6 +75,7 @@ public class RoomController {
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
+  private boolean isFirstInit = true;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -80,6 +83,20 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
+    if (isFirstInit) {
+      // Initialize with 5 minutes countdown on a background thread
+      Task<Void> timerTask =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              TimerManager.startTimer();
+              return null;
+            }
+          };
+      new Thread(timerTask).start(); // Run timer in background
+      isFirstInit = false;
+    }
+
     gameTimer = TimerManager.getGameTimer();
 
     // Bind the timer label to display the time in minutes and seconds
@@ -94,32 +111,41 @@ public class RoomController {
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
+
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
     photoClue.setImage(frontImage);
+
     objectivesManager = ObjectivesManager.getInstance();
     updateObjectiveLabels(); // Initial update
 
     // Register this controller as an observer to update the UI when objectives are completed
     objectivesManager.addObserver(this::updateObjectiveLabels);
 
-    // photoClue.setImage(frontImage);
-    // if (isFirstTimeInit) {
-    //   TextToSpeech.speak(
-    //       "Chat with the three customers, and guess who is the " +
-    // context.getProfessionToGuess());
-    //   isFirstTimeInit = false;
-    // }
-    try {
-      mediaView.setVisible(false);
-      Media media =
-          new Media(this.getClass().getResource("/images/footprintAH.mp4").toExternalForm());
-      mediaPlayer = new MediaPlayer(media);
-      mediaPlayer.setAutoPlay(false);
-      mediaView.setMediaPlayer(mediaPlayer);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    // Load media in background thread
+    Task<Void> mediaTask =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            try {
+              mediaView.setVisible(false);
+              Media media =
+                  new Media(getClass().getResource("/images/footprintAH.mp4").toExternalForm());
+              mediaPlayer = new MediaPlayer(media);
+              mediaPlayer.setAutoPlay(false);
+
+              // Run media player setup on UI thread
+              Platform.runLater(() -> mediaView.setMediaPlayer(mediaPlayer));
+
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+            return null;
+          }
+        };
+
+    new Thread(mediaTask).start(); // Run media setup in background
+
     System.out.println("Resource URL: " + getClass().getResource("/images/footprintAH.mp4"));
   }
 
