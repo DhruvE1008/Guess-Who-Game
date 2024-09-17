@@ -1,6 +1,9 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -8,7 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
+import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
+import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
+import nz.ac.auckland.apiproxy.chat.openai.Choice;
+import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
+import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class GuessingController {
   @FXML private Circle arcborder;
@@ -18,12 +28,53 @@ public class GuessingController {
   @FXML private Button submit;
 
   private int suspect = 0;
+  private static ChatCompletionRequest chatCompletionRequest;
 
   @FXML
-  private void initialize() {
+  private void initialize() throws IOException, URISyntaxException {
     arcborder.setVisible(false);
     journborder.setVisible(false);
     guideborder.setVisible(false);
+    try {
+      String txt =
+          PromptEngineering.loadTemplate(
+              PromptEngineering.class
+                  .getClassLoader()
+                  .getResource("prompts/guessChat.txt")
+                  .toURI());
+      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      chatCompletionRequest =
+          new ChatCompletionRequest(config)
+              .setN(1)
+              .setTemperature(0.2)
+              .setTopP(0.5)
+              .setMaxTokens(100);
+      Task<Void> setup =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              runGpt(new ChatMessage("system", txt));
+              return null;
+            }
+          };
+      Thread thread = new Thread(setup);
+      thread.start();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    chatCompletionRequest.addMessage(msg);
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @FXML
@@ -142,6 +193,24 @@ public class GuessingController {
 
   @FXML
   private void handleSubmit(MouseEvent event) throws IOException {
-    App.changeGameOver(event);
+    Task<Void> getResponse =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            ChatMessage feedback = runGpt(new ChatMessage("system", textArea.getText()));
+            Platform.runLater(
+                () -> {
+                  try {
+                    App.changeGameOver(event, suspect, feedback.getContent());
+                  } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+                });
+            return null;
+          }
+        };
+    Thread thread = new Thread(getResponse);
+    thread.start();
   }
 }

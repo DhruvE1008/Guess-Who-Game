@@ -32,12 +32,12 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <Label layoutX="428.0" layoutY="127.0" text="Correctly" textFill="#109407">
+      <Label fx:id="correctLabel" layoutX="428.0" layoutY="127.0" text="Correctly" textFill="#109407" visible="false">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label layoutX="428.0" layoutY="127.0" text="Incorrectly" textFill="#fc0202">
+      <Label fx:id="incorrectLabel" layoutX="428.0" layoutY="127.0" text="Incorrectly" textFill="#fc0202" visible="false">
          <font>
             <Font size="25.0" />
          </font>
@@ -53,6 +53,6 @@
             <Image url="@../images/exit_button.png" />
          </image>
       </ImageView>
-      <TextArea layoutX="168.0" layoutY="210.0" prefHeight="200.0" prefWidth="399.0" />
+      <TextArea fx:id="textArea" editable="false" layoutX="168.0" layoutY="210.0" prefHeight="200.0" prefWidth="399.0" text="The wrong thief has been selected." wrapText="true" />
    </children>
 </Pane>

@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ChatController;
+import nz.ac.auckland.se206.controllers.GameOverController;
 import nz.ac.auckland.se206.controllers.RoomController;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
@@ -106,11 +107,15 @@ public class App extends Application {
     stage.show();
   }
 
-  public static void changeGameOver(MouseEvent event) throws IOException {
+  public static void changeGameOver(MouseEvent event, int suspect, String feedback)
+      throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    GameOverController controller = loader.getController();
+    controller.setSuspect(suspect);
+    controller.setFeedback(feedback);
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
