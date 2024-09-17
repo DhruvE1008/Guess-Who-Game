@@ -6,6 +6,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <Pane fx:id="guessing" focusTraversable="true" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" prefHeight="693.0" prefWidth="697.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.GuessingController">
@@ -37,17 +38,21 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="157.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+      <Circle fx:id="arcborder" fill="#32972d" layoutX="215.0" layoutY="238.0" radius="63.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="journborder" fill="#32972d" layoutX="362.0" layoutY="238.0" radius="63.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fx:id="guideborder" fill="#32972d" layoutX="503.0" layoutY="238.0" radius="63.0" stroke="BLACK" strokeType="INSIDE" />
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+      <ImageView fx:id="arc" fitHeight="115.0" fitWidth="115.0" layoutX="158.0" layoutY="180.0" onMouseClicked="#onClick" onMouseEntered="#onArcHover" onMouseExited="#onArcExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/arc_circle.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="304.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="journ" fitHeight="115.0" fitWidth="115.0" layoutX="304.0" layoutY="180.0" onMouseClicked="#onClick" onMouseEntered="#onJournHover" onMouseExited="#onJournExit" pickOnBounds="true" preserveRatio="true" style="-fx-border-color: black; -fx-border-width: 20px; -fx-border-style: solid;">
          <image>
             <Image url="@../images/journ_circle.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="445.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="guide" fitHeight="115.0" fitWidth="115.0" layoutX="445.0" layoutY="180.0" onMouseClicked="#onClick" onMouseEntered="#onGuideHover" onMouseExited="#onGuideExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/guide_circ.png" />
          </image>
@@ -55,7 +60,7 @@
       <Label layoutX="178.0" layoutY="306.0" text="Archaeologist" />
       <Label layoutX="336.0" layoutY="306.0" text="Journalist" />
       <Label layoutX="473.0" layoutY="306.0" text="Tour Guide" />
-      <TextArea layoutX="168.0" layoutY="376.0" prefHeight="155.0" prefWidth="371.0" />
-      <Button layoutX="327.0" layoutY="547.0" mnemonicParsing="false" text="Submit" />
+      <TextArea fx:id="textArea" layoutX="168.0" layoutY="376.0" onKeyPressed="#changeText" prefHeight="155.0" prefWidth="371.0" promptText="Enter Reason" wrapText="true" />
+      <Button fx:id="submit" disable="true" layoutX="327.0" layoutY="547.0" mnemonicParsing="false" onMouseClicked="#handleSubmit" text="Submit" />
    </children>
 </Pane>

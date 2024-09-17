@@ -1,0 +1,4 @@
+The user has identified the suspect to be the journalist for a robbery of a golden idol.
+They will provide a reason only once and you will have to provide feedback on it.
+The correct reasoning will be that the journalist has size 7 feet which matches with the footprints found
+at the crimescene and that the email said that the person has a 9 year old child.

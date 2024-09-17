@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="gameOver" focusTraversable="true" prefHeight="693.0" prefWidth="697.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.GameOverController">
+   <children>
+      <ImageView fitHeight="696.0" fitWidth="728.0" layoutX="1.0" layoutY="1.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/background%20with%20cluesv2.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="arrowButton" layoutX="1.0" layoutY="335.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
+       <Button fx:id="btnObjectives" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="167.0" styleClass="objectivesButton" text="Objectives" translateX="-3.0" translateY="-6.0" />
+      <ImageView fitHeight="693.0" fitWidth="715.0" layoutX="2.0" layoutY="3.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/black%20image.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="556.0" fitWidth="482.0" layoutX="121.0" layoutY="75.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/menu.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="180.0" layoutY="127.0" text="You guessed the thief">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="correctLabel" layoutX="428.0" layoutY="127.0" text="Correctly" textFill="#109407" visible="false">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="incorrectLabel" layoutX="428.0" layoutY="127.0" text="Incorrectly" textFill="#fc0202" visible="false">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="180.0" layoutY="178.0" text="Feedback:" />
+      <ImageView fitHeight="71.0" fitWidth="192.0" layoutX="180.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/restart_button.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="71.0" fitWidth="124.0" layoutX="415.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/exit_button.png" />
+         </image>
+      </ImageView>
+      <TextArea fx:id="textArea" editable="false" layoutX="168.0" layoutY="210.0" prefHeight="200.0" prefWidth="399.0" text="The wrong thief has been selected." wrapText="true" />
+   </children>
+</Pane>
