@@ -3,9 +3,11 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +20,8 @@ import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameTimer;
+import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class GuessingController {
@@ -26,12 +30,28 @@ public class GuessingController {
   @FXML private Circle guideborder;
   @FXML private TextArea textArea;
   @FXML private Button submit;
+  @FXML private Label timerLabel;
 
   private int suspect = 0;
   private static ChatCompletionRequest chatCompletionRequest;
+  private GameTimer gameTimer;
 
   @FXML
   private void initialize() throws IOException, URISyntaxException {
+    gameTimer = TimerManager.getGameTimer();
+
+    // Bind the timer label to display the time in minutes and seconds
+    timerLabel
+        .textProperty()
+        .bind(
+            Bindings.createStringBinding(
+                () -> {
+                  int totalSeconds = gameTimer.getTimeInSeconds();
+                  int minutes = totalSeconds / 60;
+                  int seconds = totalSeconds % 60;
+                  return String.format("%02d:%02d", minutes, seconds);
+                },
+                gameTimer.timeInSecondsProperty()));
     arcborder.setVisible(false);
     journborder.setVisible(false);
     guideborder.setVisible(false);

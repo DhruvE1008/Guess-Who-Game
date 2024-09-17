@@ -36,6 +36,10 @@ public class GameTimer {
     timeline.stop(); // Stop the timer
   }
 
+  public void guessState() {
+    timeline.pause(); // Pause the timer
+  }
+
   public void reset() {
     timeline.stop();
     // Reinitialize with the starting time (5 minutes by default)
