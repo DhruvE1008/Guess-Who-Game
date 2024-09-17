@@ -43,12 +43,12 @@
          </font>
       </Label>
       <Label layoutX="180.0" layoutY="178.0" text="Feedback:" />
-      <ImageView fitHeight="71.0" fitWidth="192.0" layoutX="180.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="71.0" fitWidth="192.0" layoutX="180.0" layoutY="510.0" onMouseClicked="#handleRestart" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/restart_button.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="71.0" fitWidth="124.0" layoutX="415.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="71.0" fitWidth="124.0" layoutX="415.0" layoutY="510.0" onMouseClicked="#handleExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/exit_button.png" />
          </image>

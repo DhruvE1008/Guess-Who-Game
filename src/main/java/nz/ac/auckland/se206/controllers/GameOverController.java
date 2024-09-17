@@ -3,6 +3,8 @@ package nz.ac.auckland.se206.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
+import nz.ac.auckland.se206.App;
 
 public class GameOverController {
 
@@ -27,5 +29,15 @@ public class GameOverController {
     if (suspect == 2) {
       textArea.setText(feedback);
     }
+  }
+
+  @FXML
+  public void handleRestart(MouseEvent event) {
+    App.restartGame();
+  }
+
+  @FXML
+  private void handleExit(MouseEvent event) {
+    App.exitGame();
   }
 }
