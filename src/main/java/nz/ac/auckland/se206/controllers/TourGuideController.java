@@ -91,6 +91,9 @@ public class TourGuideController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
+                  if (totalSeconds == 0) {
+                    App.changeGuessing();
+                  }
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
