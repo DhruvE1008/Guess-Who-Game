@@ -102,9 +102,6 @@ public class App extends Application {
   }
 
   public static void changeGuessing() throws IOException {
-    TimerManager.resetTimerToOneMinute();
-    TimerManager.startTimer();
-
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
     Parent root = loader.load();
 

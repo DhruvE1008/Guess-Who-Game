@@ -2,8 +2,9 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -20,8 +22,6 @@ import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
-import nz.ac.auckland.se206.GameTimer;
-import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class GuessingController {
@@ -31,64 +31,93 @@ public class GuessingController {
   @FXML private TextArea textArea;
   @FXML private Button submit;
   @FXML private Label timerLabel;
+  private Timeline timeline;
+  private int timeSeconds = 60;
 
   private int suspect = 0;
   private static ChatCompletionRequest chatCompletionRequest;
-  private GameTimer gameTimer;
+  private static boolean isInitialized = false;
 
   @FXML
   private void initialize() throws IOException, URISyntaxException {
-    gameTimer = TimerManager.getGameTimer();
-
-    // Bind the timer label to display the time in minutes and seconds
-    timerLabel
-        .textProperty()
-        .bind(
-            Bindings.createStringBinding(
-                () -> {
-                  int totalSeconds = gameTimer.getTimeInSeconds();
-                  int minutes = totalSeconds / 60;
-                  int seconds = totalSeconds % 60;
-                  if (totalSeconds == 0) {
-                    try {
-                      App.changeGameOver(0, "You ran out of time!");
-                    } catch (IOException e) {
-                      e.printStackTrace();
-                    }
-                  }
-                  return String.format("%02d:%02d", minutes, seconds);
-                },
-                gameTimer.timeInSecondsProperty()));
     arcborder.setVisible(false);
     journborder.setVisible(false);
     guideborder.setVisible(false);
+    if (!isInitialized) {
+      startTimer(); // Start the timer only if not already initialized
+
+      try {
+        String txt =
+            PromptEngineering.loadTemplate(
+                PromptEngineering.class
+                    .getClassLoader()
+                    .getResource("prompts/guessChat.txt")
+                    .toURI());
+        ApiProxyConfig config = ApiProxyConfig.readConfig();
+        chatCompletionRequest =
+            new ChatCompletionRequest(config)
+                .setN(1)
+                .setTemperature(0.2)
+                .setTopP(0.5)
+                .setMaxTokens(100);
+        Task<Void> setup =
+            new Task<Void>() {
+              @Override
+              protected Void call() throws Exception {
+                runGpt(new ChatMessage("system", txt));
+                return null;
+              }
+            };
+        Thread thread = new Thread(setup);
+        thread.start();
+      } catch (ApiProxyException e) {
+        e.printStackTrace();
+      }
+
+      isInitialized = true; // Set this to true after initialization is done
+    }
+  }
+
+  private void startTimer() {
+    timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(1),
+                event -> {
+                  timeSeconds--;
+                  timerLabel.setText(formatTime(timeSeconds));
+                  if (timeSeconds <= 0) {
+                    timeline.stop();
+                    handleTimerEnd(); // Call the method to handle when the timer ends
+                  }
+                }));
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  private String formatTime(int seconds) {
+    int minutes = seconds / 60;
+    int remainingSeconds = seconds % 60;
+    return String.format("%02d:%02d", minutes, remainingSeconds);
+  }
+
+  private void handleTimerEnd() {
+    stopTimer();
+
     try {
-      String txt =
-          PromptEngineering.loadTemplate(
-              PromptEngineering.class
-                  .getClassLoader()
-                  .getResource("prompts/guessChat.txt")
-                  .toURI());
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
-          new ChatCompletionRequest(config)
-              .setN(1)
-              .setTemperature(0.2)
-              .setTopP(0.5)
-              .setMaxTokens(100);
-      Task<Void> setup =
-          new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-              runGpt(new ChatMessage("system", txt));
-              return null;
-            }
-          };
-      Thread thread = new Thread(setup);
-      thread.start();
-    } catch (ApiProxyException e) {
+      App.changeGameOver(0, "ran out of time, you didnt make a guess!!");
+    } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void stopTimer() {
+    Platform.runLater(
+        () -> {
+          if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) {
+            timeline.stop(); // Stop the timer
+          }
+        });
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
@@ -220,6 +249,7 @@ public class GuessingController {
 
   @FXML
   private void handleSubmit(MouseEvent event) throws IOException {
+    stopTimer();
     Task<Void> getResponse =
         new Task<Void>() {
           @Override
