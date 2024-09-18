@@ -45,7 +45,17 @@ public class ObjectivesManager {
         objectivesCompleted[index] = true;
         notifyObservers();
       }
+      enableGuessButton();
     }
+  }
+
+  public void enableGuessButton() {
+    for (int i = 0; i < objectivesCompleted.length; i++) {
+      if (!objectivesCompleted[i]) {
+        return;
+      }
+    }
+    App.setGuessButton();
   }
 
   public void addObserver(Runnable observer) {

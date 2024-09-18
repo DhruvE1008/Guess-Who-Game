@@ -509,6 +509,11 @@ public class RoomController {
     }
   }
 
+  @FXML
+  public void setGuessButton() {
+    btnGuess.setDisable(false);
+  }
+
   /**
    * Handles the guess button click event.
    *

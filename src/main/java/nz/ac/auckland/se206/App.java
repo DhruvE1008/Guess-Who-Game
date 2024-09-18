@@ -28,6 +28,7 @@ import nz.ac.auckland.se206.speech.FreeTextToSpeech;
  */
 public class App extends Application {
   private static Scene scene;
+  private static RoomController roomController;
 
   /**
    * The main method that launches the JavaFX application.
@@ -81,7 +82,7 @@ public class App extends Application {
   public static void changeCrimeScene(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
     Parent root = loader.load();
-    RoomController controller = loader.getController();
+    roomController = loader.getController();
 
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
@@ -90,7 +91,7 @@ public class App extends Application {
           @Override
           public void handle(KeyEvent event) {
             if (event.getCode() == KeyCode.F) {
-              controller.rotate();
+              roomController.rotate();
             }
           }
         });
@@ -173,6 +174,10 @@ public class App extends Application {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public static void setGuessButton() {
+    roomController.setGuessButton();
   }
 
   public static void exitGame() {
