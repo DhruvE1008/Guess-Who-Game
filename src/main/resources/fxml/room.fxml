@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -188,7 +187,6 @@
             <Image url="@../images/emailwithanony.png" />
          </image>
       </ImageView>
-      <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="246.0" layoutY="263.0" />
       <ImageView fx:id="closeButtonImage1" fitHeight="56.0" fitWidth="44.0" layoutX="415.0" layoutY="240.0" onMouseClicked="#onCloseButton1Pressed" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/cross.png" />
@@ -204,5 +202,15 @@
             <Font size="56.0" />
          </font>
       </Label>
+      <ImageView fx:id="scanningFootprint" fitHeight="222.0" fitWidth="177.0" layoutX="255.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/footprint%20gif.gif" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="scanComplete" fitHeight="215.0" fitWidth="177.0" layoutX="255.0" layoutY="291.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/scancomplete.jpg" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
