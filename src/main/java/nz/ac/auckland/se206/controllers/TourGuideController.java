@@ -339,8 +339,8 @@ public class TourGuideController {
     Map<String, String> map = new HashMap<>();
     map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
     map.put("shoeSize", "7");
-    map.put("reason", "you can’t afford a smartphone and you have a brick phone");
-    map.put("kids", "no kids");
+    map.put("reason", "you were alone at your workplace reviewing the tours for the day alone");
+    map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();

@@ -64,6 +64,8 @@ public class RoomController {
   @FXML private Label flipLabel;
   @FXML private ImageView scanningFootprint;
   @FXML private ImageView scanComplete;
+  @FXML private ImageView startScan;
+  @FXML private Label scanLabel;
 
   private GameTimer gameTimer;
   private static GameStateContext context = new GameStateContext();
@@ -73,6 +75,7 @@ public class RoomController {
   private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
   private boolean isFirstInit = true;
+  private boolean isFootprintVisible = false;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -124,7 +127,23 @@ public class RoomController {
   private void handleFootClick() {
     handleCloseClick(null);
     onCloseButtonPressed();
+    startScan.setVisible(true);
+    scanLabel.setVisible(true);
+    isFootprintVisible = true;
+    closeButtonImage1.setVisible(true);
+    objectivesManager.completeObjectiveStep(1);
+  }
+
+  @FXML
+  public void scanFootprint() {
+    if (!isFootprintVisible) {
+      return;
+    }
+    System.out.println("Scanning footprint...");
+    startScan.setVisible(false);
     scanningFootprint.setVisible(true);
+    scanningFootprint.setVisible(false);
+    scanLabel.setVisible(false);
     PauseTransition pause = new PauseTransition(Duration.seconds(4));
     pause.setOnFinished(
         event -> {
@@ -132,12 +151,11 @@ public class RoomController {
           if (scanningFootprint.isVisible()) {
             scanningFootprint.setVisible(false);
             scanComplete.setVisible(true);
+            scanLabel.setVisible(true);
           }
           System.out.println("Scan complete");
         });
     pause.play();
-    closeButtonImage1.setVisible(true);
-    objectivesManager.completeObjectiveStep(1);
   }
 
   // Update the objective labels
@@ -217,6 +235,9 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
+    isFootprintVisible = false;
+    scanLabel.setVisible(false);
+    startScan.setVisible(false);
     scanningFootprint.setVisible(false);
     scanComplete.setVisible(false);
     closeButtonImage1.setVisible(false);

@@ -341,9 +341,7 @@ public class ArchaeologistController {
     Map<String, String> map = new HashMap<>();
     map.put("profession", "an archaeologist who was recently denied funding");
     map.put("shoeSize", "8");
-    map.put(
-        "reason",
-        "your phone broke last week and you couldn’t get a replacement due to denied funding");
+    map.put("reason", "you were at here at the lab alone analysing some artefacts");
     map.put("kids", "a 9 year old daughter");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {

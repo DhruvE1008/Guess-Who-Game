@@ -92,6 +92,8 @@ public class App extends Application {
           public void handle(KeyEvent event) {
             if (event.getCode() == KeyCode.F) {
               roomController.rotate();
+            } else if (event.getCode() == KeyCode.S) {
+              roomController.scanFootprint();
             }
           }
         });
