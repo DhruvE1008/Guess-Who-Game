@@ -24,7 +24,7 @@ public class GameOverController {
 
   @FXML
   public void setFeedback(String feedback) {
-    if (suspect == 2) {
+    if (suspect == 2 || suspect == 0) {
       textArea.setText(feedback);
     }
   }

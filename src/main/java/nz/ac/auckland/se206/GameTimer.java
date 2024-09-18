@@ -36,10 +36,19 @@ public class GameTimer {
     timeline.stop(); // Stop the timer
   }
 
+  public void guessState() {
+    timeline.pause(); // Pause the timer
+  }
+
   public void reset() {
     timeline.stop();
     // Reinitialize with the starting time (5 minutes by default)
     timeInSeconds.set(timeInSeconds.get() + 5 * 60);
+  }
+
+  public void resetToOneMinute() {
+    timeline.stop(); // Stop any ongoing timeline
+    timeInSeconds.set(60); // Set the timer to 60 seconds (1 minute)
   }
 
   public IntegerProperty timeInSecondsProperty() {

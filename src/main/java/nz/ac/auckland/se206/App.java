@@ -4,7 +4,6 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -29,6 +28,7 @@ import nz.ac.auckland.se206.speech.FreeTextToSpeech;
  * application.
  */
 public class App extends Application {
+  private static Stage primaryStage;
   private static Scene scene;
 
   /**
@@ -48,6 +48,10 @@ public class App extends Application {
    */
   public static void setRoot(String fxml) throws IOException {
     scene.setRoot(loadFxml(fxml));
+  }
+
+  public static Stage getPrimaryStage() {
+    return primaryStage;
   }
 
   public static void changeArchaeologist(MouseEvent event) throws IOException {
@@ -123,21 +127,23 @@ public class App extends Application {
     backgroundThread.start();
   }
 
-  public static void changeGuessing(ActionEvent event) throws IOException {
+  public static void changeGuessing() throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
     Parent root = loader.load();
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    scene = new Scene(root);
+
+    Stage stage =
+        (Stage) App.getPrimaryStage().getScene().getWindow(); // Adjusted to use App's primary stage
+    Scene scene = new Scene(root);
+
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
 
-  public static void changeGameOver(MouseEvent event, int suspect, String feedback)
-      throws IOException {
+  public static void changeGameOver(int suspect, String feedback) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
     Parent root = loader.load();
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    Stage stage = (Stage) App.getPrimaryStage().getScene().getWindow();
     scene = new Scene(root);
     GameOverController controller = loader.getController();
     controller.setSuspect(suspect);
@@ -200,6 +206,7 @@ public class App extends Application {
   public void start(final Stage stage) throws IOException {
     TimerManager.initializeTimer(5);
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
+    primaryStage = stage;
     Parent root = loader.load();
     MenuController controller = loader.getController();
 
