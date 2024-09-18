@@ -49,6 +49,13 @@ public class GuessingController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
+                  if (totalSeconds == 0) {
+                    try {
+                      App.changeGameOver(0, "You ran out of time!");
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+                  }
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
@@ -221,7 +228,7 @@ public class GuessingController {
             Platform.runLater(
                 () -> {
                   try {
-                    App.changeGameOver(event, suspect, feedback.getContent());
+                    App.changeGameOver(suspect, feedback.getContent());
                   } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
