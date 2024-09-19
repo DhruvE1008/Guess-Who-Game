@@ -314,6 +314,9 @@ public class ArchaeologistController {
 
   @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
+    if (player != null) {
+      player.stop();
+    }
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
   }
