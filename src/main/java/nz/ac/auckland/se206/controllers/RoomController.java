@@ -77,6 +77,7 @@ public class RoomController {
   private Image fifthSlide;
   private Image sixthSlide;
 
+  private static int button = 1;
   private static int current = 1;
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
@@ -130,6 +131,12 @@ public class RoomController {
 
     // Register this controller as an observer to update the UI when objectives are completed
     objectivesManager.addObserver(this::updateObjectiveLabels);
+
+    if (button == 1) {
+      btnGuess.setDisable(true);
+    } else {
+      btnGuess.setDisable(false);
+    }
   }
 
   @FXML
@@ -480,7 +487,14 @@ public class RoomController {
 
   @FXML
   public void setGuessButton() {
+    button = 2;
     btnGuess.setDisable(false);
+    System.out.println("hi");
+  }
+
+  @FXML
+  public static void resetGuessButton() {
+    button = 1;
   }
 
   /**

@@ -149,6 +149,10 @@ public class ArchaeologistController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
+  public static void setisFirstTime() {
+    isFirstTimeInit = true;
+  }
+
   // Update the objective labels
   public void updateObjectiveLabels() {
     // Update the first objective label
@@ -381,6 +385,11 @@ public class ArchaeologistController {
       e.printStackTrace();
       return null;
     }
+  }
+
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
   }
 
   @FXML

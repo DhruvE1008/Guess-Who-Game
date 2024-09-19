@@ -150,6 +150,10 @@ public class JournalistController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
+  public static void setisFirstTime() {
+    isFirstTimeInit = true;
+  }
+
   // Update the objective labels
   public void updateObjectiveLabels() {
     // Update the first objective label
@@ -385,6 +389,11 @@ public class JournalistController {
       e.printStackTrace();
       return null;
     }
+  }
+
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
   }
 
   @FXML

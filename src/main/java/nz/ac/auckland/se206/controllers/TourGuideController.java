@@ -148,6 +148,10 @@ public class TourGuideController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
+  public static void setisFirstTime() {
+    isFirstTimeInit = true;
+  }
+
   public void updateObjectiveLabels() {
     // Update the first objective label
     if (objectivesManager.isObjectiveCompleted(0)) {
@@ -379,6 +383,11 @@ public class TourGuideController {
       e.printStackTrace();
       return null;
     }
+  }
+
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
   }
 
   @FXML
