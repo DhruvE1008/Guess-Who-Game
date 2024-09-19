@@ -8,11 +8,12 @@ import javafx.util.Duration;
 
 public class GameTimer {
   private final IntegerProperty timeInSeconds;
-  private Timeline timeline = new Timeline();
+  private final int initialTimeInSeconds;
+  private Timeline timeline;
 
   public GameTimer(int startMinutes) {
-    timeInSeconds =
-        new SimpleIntegerProperty(startMinutes * 60); // Initialize with countdown time in seconds
+    initialTimeInSeconds = startMinutes * 60;
+    timeInSeconds = new SimpleIntegerProperty(initialTimeInSeconds);
     timeline =
         new Timeline(
             new KeyFrame(
@@ -42,8 +43,7 @@ public class GameTimer {
 
   public void reset() {
     timeline.stop();
-    // Reinitialize with the starting time (5 minutes by default)
-    timeInSeconds.set(timeInSeconds.get() + 5 * 60);
+    timeInSeconds.set(initialTimeInSeconds); // Reset to initial time
   }
 
   public void resetToOneMinute() {

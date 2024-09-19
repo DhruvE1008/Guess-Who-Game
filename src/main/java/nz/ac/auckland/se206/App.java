@@ -196,6 +196,21 @@ public class App extends Application {
     stage.show();
   }
 
+  public static void restartGame() {
+    try {
+      exitGame();
+      App app = new App();
+      app.start(new Stage());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void exitGame() {
+    Stage stage = (Stage) scene.getWindow();
+    stage.close();
+  }
+
   /**
    * This method is invoked when the application starts. It loads and shows the "room" scene.
    *
