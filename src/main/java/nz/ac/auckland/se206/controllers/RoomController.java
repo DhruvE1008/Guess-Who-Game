@@ -47,6 +47,7 @@ public class RoomController {
   @FXML private ImageView guide;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
+  @FXML private ImageView closeButtonImage2;
   @FXML private Button arrowButton;
   @FXML private VBox suspectMenu;
   @FXML private Button btnObjectives;
@@ -62,16 +63,26 @@ public class RoomController {
   private String[] enteredPasscode = new String[4];
   private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
+  @FXML private ImageView camSlide;
   @FXML private ImageView cross;
   @FXML private ImageView unlockedPhone;
   @FXML private MediaView mediaView;
   @FXML private Label flipLabel;
+  @FXML private ImageView pictureBackground;
 
   private MediaPlayer mediaPlayer;
   private GameTimer gameTimer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
+  private Image firstSlide;
+  private Image secondSlide;
+  private Image thirdSlide;
+  private Image fourthSlide;
+  private Image fifthSlide;
+  private Image sixthSlide;
+
+  private static int current = 1;
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
@@ -95,7 +106,8 @@ public class RoomController {
       new Thread(timerTask).start();
       isFirstInit = false;
     }
-
+    closeButtonImage2.setVisible(false);
+    pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
 
     // Bind the timer label to display the time in minutes and seconds
@@ -117,6 +129,13 @@ public class RoomController {
 
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
+
+    firstSlide = new Image(getClass().getResourceAsStream("/images/720.png"));
+    secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));
+    thirdSlide = new Image(getClass().getResourceAsStream("/images/740.png"));
+    fourthSlide = new Image(getClass().getResourceAsStream("/images/750.png"));
+    fifthSlide = new Image(getClass().getResourceAsStream("/images/static.png"));
+    sixthSlide = new Image(getClass().getResourceAsStream("/images/stolen.png"));
     photoClue.setImage(frontImage);
 
     objectivesManager = ObjectivesManager.getInstance();
@@ -171,6 +190,7 @@ public class RoomController {
   private void handleFootClick() {
     handleCloseClick(null);
     onCloseButtonPressed();
+    onCloseButton2Pressed();
     mediaView.setVisible(true);
     playVideo(); // Show the phone popup when the phone is clicked
     closeButtonImage1.setVisible(true);
@@ -202,6 +222,65 @@ public class RoomController {
       phonePopup.setVisible(true);
     }
     closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
+  }
+
+  @FXML
+  private void onCamClicked() {
+    handleCloseClick(null);
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
+    closeButtonImage1.setVisible(false);
+    objectivesManager.completeObjectiveStep(1);
+    pictureBackground.setVisible(false);
+    camSlide.setVisible(true);
+    closeButtonImage2.setVisible(true);
+    current = 1;
+    camSlide.setImage(secondSlide);
+
+    System.out.println("hi");
+  }
+
+  @FXML
+  private void onCloseButton2Pressed() {
+    pictureBackground.setVisible(true);
+    camSlide.setVisible(false);
+    closeButtonImage2.setVisible(false);
+  }
+
+  @FXML
+  public void nxtImg() {
+    System.out.println(current);
+    current = current + 1;
+    if (current == 2) {
+      camSlide.setImage(thirdSlide);
+    } else if (current == 3) {
+      camSlide.setImage(fourthSlide);
+    } else if (current == 4) {
+      camSlide.setImage(fifthSlide);
+    } else if (current == 5) {
+      camSlide.setImage(sixthSlide);
+    } else {
+      current = 5;
+      camSlide.setImage(sixthSlide);
+    }
+  }
+
+  @FXML
+  public void prevImg() {
+    System.out.println(current);
+    current = current - 1;
+    if (current == 2) {
+      camSlide.setImage(thirdSlide);
+    } else if (current == 3) {
+      camSlide.setImage(fourthSlide);
+    } else if (current == 4) {
+      camSlide.setImage(fifthSlide);
+    } else if (current == 5) {
+      camSlide.setImage(sixthSlide);
+    } else {
+      current = 1;
+      camSlide.setImage(secondSlide);
+    }
   }
 
   @FXML
@@ -537,6 +616,7 @@ public class RoomController {
     objectivesManager.completeObjectiveStep(1);
     onCloseButtonPressed();
     onCloseButton1Pressed();
+    onCloseButton2Pressed();
     if (!clueVisible) {
       clueVisible = true;
       flipLabel.setVisible(true);
