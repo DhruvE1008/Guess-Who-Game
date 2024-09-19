@@ -17,10 +17,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import nz.ac.auckland.se206.controllers.ArchaeologistController;
 import nz.ac.auckland.se206.controllers.ChatController;
 import nz.ac.auckland.se206.controllers.GameOverController;
+import nz.ac.auckland.se206.controllers.JournalistController;
 import nz.ac.auckland.se206.controllers.MenuController;
 import nz.ac.auckland.se206.controllers.RoomController;
+import nz.ac.auckland.se206.controllers.TourGuideController;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
 
 /**
@@ -144,7 +147,6 @@ public class App extends Application {
     stage.show();
   }
 
-
   public static void changeBackStory(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/backStory.fxml"));
     Parent root = loader.load();
@@ -154,7 +156,6 @@ public class App extends Application {
     stage.setScene(scene);
     stage.show();
   }
-
 
   public static void changeGameOver(int suspect, String feedback) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
@@ -213,6 +214,14 @@ public class App extends Application {
   }
 
   public static void restartGame() {
+    JournalistController.setFirstMessage();
+    ArchaeologistController.setFirstMessage();
+    TourGuideController.setFirstMessage();
+
+    ArchaeologistController.setisFirstTime();
+    TourGuideController.setisFirstTime();
+    JournalistController.setisFirstTime();
+    RoomController.resetGuessButton();
     try {
       exitGame();
       App app = new App();
