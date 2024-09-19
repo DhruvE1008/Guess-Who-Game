@@ -86,7 +86,7 @@ public class BackStoryController {
     mediaPlayer.setOnEndOfMedia(
         () -> {
           changeImage("/images/suspects.png");
-          image.setX(100);
+          image.setX(70);
           Media secondSound =
               new Media(getClass().getResource("/sounds/backstory2.mp3").toExternalForm());
           MediaPlayer secondMediaPlayer = new MediaPlayer(secondSound);
@@ -99,13 +99,13 @@ public class BackStoryController {
   private void showSubtitlesForFirstAudio() {
     String firstSubtitles =
         "A priceless golden idol has been stolen from an ancient egyptian tomb...";
-    typeSubtitles(firstSubtitles, 1000); // Call the typing animation for first audio
+    typeSubtitles(firstSubtitles, 0); // Call the typing animation for first audio
   }
 
   // Method to display subtitles while the second audio is playing
   private void showSubtitlesForSecondAudio() {
     String secondSubtitles = "The last three people at the scene are the main suspects...";
-    typeSubtitles(secondSubtitles, 700);
+    typeSubtitles(secondSubtitles, 0);
     continueButton.setDisable(false);
     skipButton.setDisable(true); // Enable the continue button after the second audio
   }
