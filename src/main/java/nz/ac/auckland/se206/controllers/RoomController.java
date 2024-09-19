@@ -141,8 +141,8 @@ public class RoomController {
     }
     System.out.println("Scanning footprint...");
     startScan.setVisible(false);
+    scanComplete.setVisible(false);
     scanningFootprint.setVisible(true);
-    scanningFootprint.setVisible(false);
     scanLabel.setVisible(false);
     PauseTransition pause = new PauseTransition(Duration.seconds(4));
     pause.setOnFinished(

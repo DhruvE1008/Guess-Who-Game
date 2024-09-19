@@ -70,6 +70,7 @@ public class ArchaeologistController {
   private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
+  private static boolean isFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
@@ -342,7 +343,7 @@ public class ArchaeologistController {
     map.put("profession", "an archaeologist who was recently denied funding");
     map.put("shoeSize", "8");
     map.put("reason", "you were at here at the lab alone analysing some artefacts");
-    map.put("kids", "a 9 year old daughter");
+    map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
@@ -373,8 +374,10 @@ public class ArchaeologistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
-
-    objectivesManager.completeObjectiveStep(0);
+    if (isFirstMessage) {
+      objectivesManager.completeObjectiveStep(0);
+      isFirstMessage = false;
+    }
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;

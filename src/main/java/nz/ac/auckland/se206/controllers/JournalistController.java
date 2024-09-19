@@ -70,6 +70,7 @@ public class JournalistController {
   private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
+  private static boolean isFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
@@ -377,7 +378,10 @@ public class JournalistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
-    objectivesManager.completeObjectiveStep(0);
+    if (isFirstMessage) {
+      objectivesManager.completeObjectiveStep(0);
+      isFirstMessage = false;
+    }
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;
