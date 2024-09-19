@@ -36,7 +36,6 @@ public class GuessingController {
 
   private int suspect = 0;
   private static ChatCompletionRequest chatCompletionRequest;
-  private static boolean isInitialized = false;
 
   @FXML
   private void initialize() throws IOException, URISyntaxException {

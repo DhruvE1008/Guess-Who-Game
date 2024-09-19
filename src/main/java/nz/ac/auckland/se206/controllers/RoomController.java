@@ -5,7 +5,6 @@ import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -83,7 +82,6 @@ public class RoomController {
   private ObjectivesManager objectivesManager;
   private boolean isFootprintVisible = false;
 
-
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
    * via text-to-speech.
@@ -105,10 +103,13 @@ public class RoomController {
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
                   if (totalSeconds == 0) {
-                    App.changeGameOver(
-                        0, "ran out of time, you didn't interact with the scenes enough!");
+                    if (!App.getObjectiveCompleted()) {
+                      App.changeGameOver(
+                          0, "ran out of time, you didn't interact with the scenes enough!");
+                    } else {
+                      App.changeGuessing();
+                    }
                   }
-
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
