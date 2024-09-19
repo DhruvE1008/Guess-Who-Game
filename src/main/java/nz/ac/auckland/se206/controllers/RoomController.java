@@ -1,9 +1,9 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -16,9 +16,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
@@ -64,10 +61,12 @@ public class RoomController {
   @FXML private ImageView photoClue;
   @FXML private ImageView cross;
   @FXML private ImageView unlockedPhone;
-  @FXML private MediaView mediaView;
   @FXML private Label flipLabel;
+  @FXML private ImageView scanningFootprint;
+  @FXML private ImageView scanComplete;
+  @FXML private ImageView startScan;
+  @FXML private Label scanLabel;
 
-  private MediaPlayer mediaPlayer;
   private GameTimer gameTimer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
@@ -76,6 +75,7 @@ public class RoomController {
   private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
   private boolean isFirstInit = true;
+  private boolean isFootprintVisible = false;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -124,57 +124,41 @@ public class RoomController {
 
     // Register this controller as an observer to update the UI when objectives are completed
     objectivesManager.addObserver(this::updateObjectiveLabels);
-
-    Task<Void> mediaTask =
-        new Task<Void>() {
-          @Override
-          protected Void call() throws Exception {
-            try {
-              mediaView.setVisible(false);
-              Media media =
-                  new Media(getClass().getResource("/images/footprintAH.mp4").toExternalForm());
-              mediaPlayer = new MediaPlayer(media);
-              mediaPlayer.setAutoPlay(false);
-
-              Platform.runLater(() -> mediaView.setMediaPlayer(mediaPlayer));
-
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-            return null;
-          }
-        };
-
-    new Thread(mediaTask).start();
-
-    System.out.println("Resource URL: " + getClass().getResource("/images/footprintAH.mp4"));
-  }
-
-  @FXML
-  private void playVideo() {
-    if (mediaPlayer != null) {
-      mediaPlayer.stop(); // Stop the video if it's playing
-      mediaPlayer.seek(Duration.ZERO); // Rewind to the beginning
-      mediaPlayer.setAutoPlay(true);
-      mediaPlayer.play();
-    }
-  }
-
-  @FXML
-  private void stopVideo() {
-    if (mediaPlayer != null) {
-      mediaPlayer.stop();
-    }
   }
 
   @FXML
   private void handleFootClick() {
     handleCloseClick(null);
     onCloseButtonPressed();
-    mediaView.setVisible(true);
-    playVideo(); // Show the phone popup when the phone is clicked
+    startScan.setVisible(true);
+    scanLabel.setVisible(true);
+    isFootprintVisible = true;
     closeButtonImage1.setVisible(true);
     objectivesManager.completeObjectiveStep(1);
+  }
+
+  @FXML
+  public void scanFootprint() {
+    if (!isFootprintVisible) {
+      return;
+    }
+    System.out.println("Scanning footprint...");
+    startScan.setVisible(false);
+    scanComplete.setVisible(false);
+    scanningFootprint.setVisible(true);
+    scanLabel.setVisible(false);
+    PauseTransition pause = new PauseTransition(Duration.seconds(4));
+    pause.setOnFinished(
+        event -> {
+          // Make phonePopup invisible and unlockedPhone visible after 4 seconds
+          if (scanningFootprint.isVisible()) {
+            scanningFootprint.setVisible(false);
+            scanComplete.setVisible(true);
+            scanLabel.setVisible(true);
+          }
+          System.out.println("Scan complete");
+        });
+    pause.play();
   }
 
   // Update the objective labels
@@ -254,7 +238,11 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
-    mediaView.setVisible(false);
+    isFootprintVisible = false;
+    scanLabel.setVisible(false);
+    startScan.setVisible(false);
+    scanningFootprint.setVisible(false);
+    scanComplete.setVisible(false);
     closeButtonImage1.setVisible(false);
   }
 
@@ -543,6 +531,11 @@ public class RoomController {
       photoClue.setVisible(true);
       cross.setVisible(true);
     }
+  }
+
+  @FXML
+  public void setGuessButton() {
+    btnGuess.setDisable(false);
   }
 
   /**
