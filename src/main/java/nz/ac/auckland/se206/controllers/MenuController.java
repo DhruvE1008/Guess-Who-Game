@@ -12,8 +12,7 @@ public class MenuController {
   @FXML
   private void onClick(MouseEvent event) throws IOException {
     // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
-    App.changeCrimeScene(event);
-    System.out.println("Clicked");
+    App.changeBackStory(event);
     // }
   }
 }
