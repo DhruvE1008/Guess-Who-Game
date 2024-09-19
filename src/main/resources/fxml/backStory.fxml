@@ -15,8 +15,8 @@
          </image>
       </ImageView>
       <Label fx:id="backstoryLabel" layoutX="95.0" layoutY="87.0" prefHeight="553.0" prefWidth="583.0" styleClass="backStoryLabel" text="Label" />
-      <Button fx:id="skipButton" layoutX="79.0" layoutY="673.0" mnemonicParsing="false" onMouseClicked="#handleSkip" prefHeight="55.0" prefWidth="133.0" text="Skip" />
-      <Button fx:id="continueButton" layoutX="571.0" layoutY="660.0" mnemonicParsing="false" onMouseClicked="#handleContinue" prefHeight="57.0" prefWidth="145.0" text="Continue" />
+      <Button fx:id="skipButton" layoutX="79.0" layoutY="673.0" styleClass ="backStoryButton" mnemonicParsing="false" onMouseClicked="#handleSkip" prefHeight="55.0" prefWidth="133.0" text="Skip" />
+      <Button fx:id="continueButton" layoutX="571.0" layoutY="660.0" styleClass ="backStoryButton" mnemonicParsing="false" onMouseClicked="#handleContinue" prefHeight="57.0" prefWidth="145.0" text="Continue" />
       <Label layoutX="239.0" layoutY="101.0" prefHeight="125.0" prefWidth="313.0" styleClass="label" text="Backstory" translateX="30.0">
          <font>
             <Font size="60.0" />
@@ -27,5 +27,16 @@
             <Image url="@../images/crime_scene.jpg" />
          </image>
       </ImageView>
+      <Label fx:id="subTitles" layoutX="233.0" layoutY="566.0" prefHeight="35.0" prefWidth="313.0" wrapText="true" />
+       <Label fx:id="timerLabel" layoutX="677.0" layoutY="10.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-30.0" translateY="-4.0">
+         <font>
+            <Font size="56.0" />
+         </font>
+      </Label>
+      <Label layoutX="531.0" layoutY="-2.0" minWidth="92.0" prefHeight="51.0" prefWidth="100.0" styleClass="timerLabel" text="Timer :" textFill="#f60707" translateX="31.0" translateY="8.0">
+         <font>
+            <Font size="56.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
