@@ -26,62 +26,6 @@
       <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="44.0" />
       <Button fx:id="btnGuess" layoutX="480.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
-      <VBox fx:id="suspectMenu" layoutX="4.0" layoutY="92.0" prefHeight="400.0" prefWidth="143.0" styleClass="vbox" visible="false">
-         <children>
-            <ImageView fx:id="crimeScene" fitHeight="98.0" fitWidth="118.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="35.0">
-               <image>
-                  <Image url="@../images/crime_scene.jpg" />
-               </image>
-              <clip>
-                <Circle centerX="50.0" centerY="40.0" radius="40.0" />
-              </clip>
-            </ImageView>
-            <ImageView fx:id="archaeologist" fitHeight="100.0" fitWidth="139.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="20.0">
-               <image>
-                  <Image url="@../images/suspect1.png" />
-               </image>
-              <clip>
-                <Circle centerX="60.0" centerY="40.0" radius="40.0" />
-              </clip>
-            </ImageView>
-                  <ImageView fx:id="guide" fitHeight="111.0" fitWidth="135.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="6.0">
-               <image>
-                  <Image url="@../images/suspect3.png" />
-               </image>
-              <clip>
-                <Circle centerX="55.0" centerY="50.0" radius="40.0" />
-              </clip>
-            </ImageView>
-            <ImageView fx:id="journalist" fitHeight="111.0" fitWidth="100.0" layoutX="10.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-15.0">
-               <image>
-                  <Image url="@../images/suspect2.png" />
-               </image>
-              <clip>
-                <Circle centerX="50.0" centerY="45" radius="40.0" />
-              </clip>
-            </ImageView>
-         </children>
-      </VBox>
-      <Button fx:id="arrowButton" layoutX="1.0" layoutY="335.0" mnemonicParsing="false" onAction="#toggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
-
-      <Button fx:id="btnObjectives" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#toggleObjectives" prefHeight="36.0" prefWidth="167.0" styleClass="objectivesButton" text="Objectives" translateX="-3.0" translateY="-6.0" />
-      <VBox fx:id="objectiveMenu" layoutX="1.0" layoutY="37.0" prefHeight="208.0" prefWidth="167.0" styleClass="vbox" visible="false">
-         <children>
-            <Text fx:id="objective1Label" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Interact with all the suspects" translateY="40.0" wrappingWidth="137.01888275146484">
-               <font>
-                  <Font size="13.0" />
-               </font></Text>
-            <Text fx:id="objective2Label" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Interact with atleast one clue in the crime scene" translateY="55.0" wrappingWidth="141.2766876220703">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-         </children>
-      </VBox>
-      <Button fx:id="objectiveClose" layoutX="1.0" layoutY="242.0" mnemonicParsing="false" onMouseClicked="#closeObjectives" prefHeight="25.0" prefWidth="167.0" styleClass="objectivesButton" text=" CLOSE" translateY="6.0" visible="false">
-         <font>
-            <Font size="40.0" />
-         </font></Button>
      
          <Pane fx:id="phonePopup" layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="200.0" visible="false">
    <children>
@@ -217,5 +161,61 @@
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="31.0" layoutX="108.0" layoutY="347.0" onMouseClicked="#prevImg" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="33.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="31.0" layoutX="465.0" layoutY="347.0" onMouseClicked="#nxtImg" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="33.0" />
+      <VBox fx:id="suspectMenu" layoutX="4.0" layoutY="92.0" prefHeight="400.0" prefWidth="143.0" styleClass="vbox" visible="false">
+         <children>
+            <ImageView fx:id="crimeScene" fitHeight="98.0" fitWidth="118.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="35.0">
+               <image>
+                  <Image url="@../images/crime_scene.jpg" />
+               </image>
+              <clip>
+                <Circle centerX="50.0" centerY="40.0" radius="40.0" />
+              </clip>
+            </ImageView>
+            <ImageView fx:id="archaeologist" fitHeight="100.0" fitWidth="139.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="20.0">
+               <image>
+                  <Image url="@../images/suspect1.png" />
+               </image>
+              <clip>
+                <Circle centerX="60.0" centerY="40.0" radius="40.0" />
+              </clip>
+            </ImageView>
+                  <ImageView fx:id="guide" fitHeight="111.0" fitWidth="135.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="6.0">
+               <image>
+                  <Image url="@../images/suspect3.png" />
+               </image>
+              <clip>
+                <Circle centerX="55.0" centerY="50.0" radius="40.0" />
+              </clip>
+            </ImageView>
+            <ImageView fx:id="journalist" fitHeight="111.0" fitWidth="100.0" layoutX="10.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-15.0">
+               <image>
+                  <Image url="@../images/suspect2.png" />
+               </image>
+              <clip>
+                <Circle centerX="50.0" centerY="45" radius="40.0" />
+              </clip>
+            </ImageView>
+         </children>
+      </VBox>
+      <Button fx:id="arrowButton" layoutX="1.0" layoutY="335.0" mnemonicParsing="false" onAction="#toggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
+
+      <Button fx:id="btnObjectives" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#toggleObjectives" prefHeight="36.0" prefWidth="167.0" styleClass="objectivesButton" text="Objectives" translateX="-3.0" translateY="-6.0" />
+      <VBox fx:id="objectiveMenu" layoutX="1.0" layoutY="37.0" prefHeight="208.0" prefWidth="167.0" styleClass="vbox" visible="false">
+         <children>
+            <Text fx:id="objective1Label" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Interact with all the suspects" translateY="40.0" wrappingWidth="137.01888275146484">
+               <font>
+                  <Font size="13.0" />
+               </font></Text>
+            <Text fx:id="objective2Label" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Interact with atleast one clue in the crime scene" translateY="55.0" wrappingWidth="141.2766876220703">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <Button fx:id="objectiveClose" layoutX="1.0" layoutY="242.0" mnemonicParsing="false" onMouseClicked="#closeObjectives" prefHeight="25.0" prefWidth="167.0" styleClass="objectivesButton" text=" CLOSE" translateY="6.0" visible="false">
+         <font>
+            <Font size="40.0" />
+         </font></Button>
    </children>
 </Pane>

@@ -226,6 +226,7 @@ public class RoomController {
 
   @FXML
   private void onCamClicked() {
+    toggleMenu();
     handleCloseClick(null);
     onCloseButtonPressed();
     onCloseButton1Pressed();
@@ -440,6 +441,7 @@ public class RoomController {
   @FXML
   private void toggleMenu() {
     boolean isVisible = suspectMenu.isVisible();
+    onCloseButton2Pressed();
 
     if (!isVisible) {
       // Close the objectives menu if it's open
