@@ -232,7 +232,7 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    TimerManager.initializeTimer(1);
+    TimerManager.initializeTimer(5);
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
     primaryStage = stage;
     Parent root = loader.load();
