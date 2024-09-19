@@ -108,7 +108,8 @@ public class RoomController {
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
                   if (totalSeconds == 0) {
-                    App.changeGuessing();
+                    App.changeGameOver(
+                        0, "ran out of time, you didn't interact with the scenes enough!");
                   }
 
                   return String.format("%02d:%02d", minutes, seconds);

@@ -31,6 +31,7 @@ public class App extends Application {
   private static Stage primaryStage;
   private static Scene scene;
   private static RoomController roomController;
+  private static boolean isObjectiveCompleted = false;
 
   /**
    * The main method that launches the JavaFX application.
@@ -211,6 +212,11 @@ public class App extends Application {
 
   public static void setGuessButton() {
     roomController.setGuessButton();
+    isObjectiveCompleted = true;
+  }
+
+  public static boolean getObjectiveCompleted() {
+    return isObjectiveCompleted;
   }
 
   public static void exitGame() {
@@ -226,7 +232,7 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    TimerManager.initializeTimer(5);
+    TimerManager.initializeTimer(1);
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
     primaryStage = stage;
     Parent root = loader.load();

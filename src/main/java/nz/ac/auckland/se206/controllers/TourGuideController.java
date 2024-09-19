@@ -93,7 +93,12 @@ public class TourGuideController {
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
                   if (totalSeconds == 0) {
-                    App.changeGuessing();
+                    if (!App.getObjectiveCompleted()) {
+                      App.changeGameOver(
+                          0, "ran out of time, you didn't interact with the scenes enough!");
+                    } else {
+                      App.changeGuessing();
+                    }
                   }
                   return String.format("%02d:%02d", minutes, seconds);
                 },
