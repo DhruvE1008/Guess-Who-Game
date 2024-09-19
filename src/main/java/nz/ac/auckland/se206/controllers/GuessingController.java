@@ -43,39 +43,37 @@ public class GuessingController {
     arcborder.setVisible(false);
     journborder.setVisible(false);
     guideborder.setVisible(false);
-    if (!isInitialized) {
-      startTimer(); // Start the timer only if not already initialized
+    startTimer(); // Start the timer only if not already initialized
 
-      try {
-        String txt =
-            PromptEngineering.loadTemplate(
-                PromptEngineering.class
-                    .getClassLoader()
-                    .getResource("prompts/guessChat.txt")
-                    .toURI());
-        ApiProxyConfig config = ApiProxyConfig.readConfig();
-        chatCompletionRequest =
-            new ChatCompletionRequest(config)
-                .setN(1)
-                .setTemperature(0.2)
-                .setTopP(0.5)
-                .setMaxTokens(100);
-        Task<Void> setup =
-            new Task<Void>() {
-              @Override
-              protected Void call() throws Exception {
-                runGpt(new ChatMessage("system", txt));
-                return null;
-              }
-            };
-        Thread thread = new Thread(setup);
-        thread.start();
-      } catch (ApiProxyException e) {
-        e.printStackTrace();
-      }
-
-      isInitialized = true; // Set this to true after initialization is done
+    try {
+      String txt =
+          PromptEngineering.loadTemplate(
+              PromptEngineering.class
+                  .getClassLoader()
+                  .getResource("prompts/guessChat.txt")
+                  .toURI());
+      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      chatCompletionRequest =
+          new ChatCompletionRequest(config)
+              .setN(1)
+              .setTemperature(0.2)
+              .setTopP(0.5)
+              .setMaxTokens(100);
+      Task<Void> setup =
+          new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+              runGpt(new ChatMessage("system", txt));
+              return null;
+            }
+          };
+      Thread thread = new Thread(setup);
+      thread.start();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
     }
+
+    isInitialized = true; // Set this to true after initialization is done
   }
 
   private void startTimer() {

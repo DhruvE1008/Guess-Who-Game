@@ -31,6 +31,7 @@ public class App extends Application {
   private static Stage primaryStage;
   private static Scene scene;
   private static RoomController roomController;
+  private static boolean isObjectiveCompleted = false;
 
   /**
    * The main method that launches the JavaFX application.
@@ -211,6 +212,11 @@ public class App extends Application {
 
   public static void setGuessButton() {
     roomController.setGuessButton();
+    isObjectiveCompleted = true;
+  }
+
+  public static boolean getObjectiveCompleted() {
+    return isObjectiveCompleted;
   }
 
   public static void exitGame() {
