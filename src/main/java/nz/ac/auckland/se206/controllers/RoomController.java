@@ -1,9 +1,9 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -16,9 +16,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
@@ -47,6 +44,7 @@ public class RoomController {
   @FXML private ImageView guide;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
+  @FXML private ImageView closeButtonImage2;
   @FXML private Button arrowButton;
   @FXML private VBox suspectMenu;
   @FXML private Button btnObjectives;
@@ -58,23 +56,33 @@ public class RoomController {
   @FXML private Label label1, label2, label3, label4, incorrectPin;
   @FXML private Rectangle box1, box2, box3, box4;
   @FXML private Label timerLabel;
-  private int currentBoxIndex = 0;
-  private String[] enteredPasscode = new String[4];
-  private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
+  @FXML private ImageView camSlide;
   @FXML private ImageView cross;
   @FXML private ImageView unlockedPhone;
-  @FXML private MediaView mediaView;
   @FXML private Label flipLabel;
+  @FXML private ImageView pictureBackground;
+  @FXML private ImageView scanningFootprint;
+  @FXML private ImageView scanComplete;
+  @FXML private ImageView startScan;
+  @FXML private Label scanLabel;
 
-  private MediaPlayer mediaPlayer;
   private GameTimer gameTimer;
   private static GameStateContext context = new GameStateContext();
   private Image frontImage;
   private Image backImage;
+  private Image firstSlide;
+  private Image secondSlide;
+  private Image thirdSlide;
+  private Image fourthSlide;
+  private Image fifthSlide;
+  private Image sixthSlide;
+
+  private static int current = 1;
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
-  private boolean isPinCorrect = false;
+  private boolean isFootprintVisible = false;
+
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -83,6 +91,8 @@ public class RoomController {
   @FXML
   public void initialize() {
 
+    closeButtonImage2.setVisible(false);
+    pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
 
     // Bind the timer label to display the time in minutes and seconds
@@ -94,12 +104,24 @@ public class RoomController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
+                  if (totalSeconds == 0) {
+                    App.changeGameOver(
+                        0, "ran out of time, you didn't interact with the scenes enough!");
+                  }
+
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
 
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
+
+    firstSlide = new Image(getClass().getResourceAsStream("/images/720.png"));
+    secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));
+    thirdSlide = new Image(getClass().getResourceAsStream("/images/740.png"));
+    fourthSlide = new Image(getClass().getResourceAsStream("/images/750.png"));
+    fifthSlide = new Image(getClass().getResourceAsStream("/images/static.png"));
+    sixthSlide = new Image(getClass().getResourceAsStream("/images/stolen.png"));
     photoClue.setImage(frontImage);
 
     objectivesManager = ObjectivesManager.getInstance();
@@ -107,59 +129,41 @@ public class RoomController {
 
     // Register this controller as an observer to update the UI when objectives are completed
     objectivesManager.addObserver(this::updateObjectiveLabels);
-
-    // Load media in background thread
-    Task<Void> mediaTask =
-        new Task<Void>() {
-          @Override
-          protected Void call() throws Exception {
-            try {
-              mediaView.setVisible(false);
-              Media media =
-                  new Media(getClass().getResource("/images/footprintAH.mp4").toExternalForm());
-              mediaPlayer = new MediaPlayer(media);
-              mediaPlayer.setAutoPlay(false);
-
-              // Run media player setup on UI thread
-              Platform.runLater(() -> mediaView.setMediaPlayer(mediaPlayer));
-
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-            return null;
-          }
-        };
-
-    new Thread(mediaTask).start(); // Run media setup in background
-
-    System.out.println("Resource URL: " + getClass().getResource("/images/footprintAH.mp4"));
-  }
-
-  @FXML
-  private void playVideo() {
-    if (mediaPlayer != null) {
-      mediaPlayer.stop(); // Stop the video if it's playing
-      mediaPlayer.seek(Duration.ZERO); // Rewind to the beginning
-      mediaPlayer.setAutoPlay(true);
-      mediaPlayer.play();
-    }
-  }
-
-  @FXML
-  private void stopVideo() {
-    if (mediaPlayer != null) {
-      mediaPlayer.stop();
-    }
   }
 
   @FXML
   private void handleFootClick() {
     handleCloseClick(null);
-    onCloseButtonPressed();
-    mediaView.setVisible(true);
-    playVideo(); // Show the phone popup when the phone is clicked
+    onCloseButton2Pressed();
+    startScan.setVisible(true);
+    scanLabel.setVisible(true);
+    isFootprintVisible = true;
     closeButtonImage1.setVisible(true);
     objectivesManager.completeObjectiveStep(1);
+  }
+
+  @FXML
+  public void scanFootprint() {
+    if (!isFootprintVisible) {
+      return;
+    }
+    System.out.println("Scanning footprint...");
+    startScan.setVisible(false);
+    scanComplete.setVisible(false);
+    scanningFootprint.setVisible(true);
+    scanLabel.setVisible(false);
+    PauseTransition pause = new PauseTransition(Duration.seconds(4));
+    pause.setOnFinished(
+        event -> {
+          // Make phonePopup invisible and unlockedPhone visible after 4 seconds
+          if (scanningFootprint.isVisible()) {
+            scanningFootprint.setVisible(false);
+            scanComplete.setVisible(true);
+            scanLabel.setVisible(true);
+          }
+          System.out.println("Scan complete");
+        });
+    pause.play();
   }
 
   // Update the objective labels
@@ -176,135 +180,74 @@ public class RoomController {
   }
 
   @FXML
-  private void handlePhoneClick() {
-    objectivesManager.completeObjectiveStep(1);
-    phonePopup.setVisible(true);
+  private void onCamClicked() {
+    if (suspectMenu.isVisible()) {
+      toggleMenu();
+    }
     handleCloseClick(null);
     onCloseButton1Pressed();
-    if (isPinCorrect) {
-      unlockedPhone.setVisible(true);
-    } else {
-      phonePopup.setVisible(true);
-    }
-    closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
+    closeButtonImage1.setVisible(false);
+    objectivesManager.completeObjectiveStep(1);
+    pictureBackground.setVisible(false);
+    camSlide.setVisible(true);
+    closeButtonImage2.setVisible(true);
+    current = 1;
+    camSlide.setImage(secondSlide);
+
+    System.out.println("hi");
   }
 
   @FXML
-  private void enterNumber(ActionEvent event) {
-    incorrectPin.setVisible(false);
-    if (currentBoxIndex >= 4) {
-      return; // Do nothing if all boxes are filled
-    }
-
-    Button clickedButton = (Button) event.getSource();
-    String number = clickedButton.getText();
-
-    // Update the corresponding rectangle (box) with the number
-    enteredPasscode[currentBoxIndex] = number;
-    fillBox(currentBoxIndex, number);
-    currentBoxIndex++;
-
-    // Check if the passcode is fully entered
-    if (currentBoxIndex >= 4) {
-      return;
-    }
+  private void onCloseButton2Pressed() {
+    pictureBackground.setVisible(true);
+    camSlide.setVisible(false);
+    closeButtonImage2.setVisible(false);
   }
 
-  private void fillBox(int index, String number) {
-    switch (index) {
-      case 0 -> {
-        label1.setText(number);
-      }
-      case 1 -> {
-        label2.setText(number);
-      }
-      case 2 -> {
-        label3.setText(number);
-      }
-      case 3 -> {
-        label4.setText(number);
-      }
+  @FXML
+  public void nxtImg() {
+    System.out.println(current);
+    current = current + 1;
+    if (current == 2) {
+      camSlide.setImage(thirdSlide);
+    } else if (current == 3) {
+      camSlide.setImage(fourthSlide);
+    } else if (current == 4) {
+      camSlide.setImage(fifthSlide);
+    } else if (current == 5) {
+      camSlide.setImage(sixthSlide);
+    } else {
+      current = 5;
+      camSlide.setImage(sixthSlide);
     }
   }
 
   @FXML
-  private void onCloseButtonPressed() {
-    if (isPinCorrect) {
-      unlockedPhone.setVisible(false);
+  public void prevImg() {
+    System.out.println(current);
+    current = current - 1;
+    if (current == 2) {
+      camSlide.setImage(thirdSlide);
+    } else if (current == 3) {
+      camSlide.setImage(fourthSlide);
+    } else if (current == 4) {
+      camSlide.setImage(fifthSlide);
+    } else if (current == 5) {
+      camSlide.setImage(sixthSlide);
     } else {
-      phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+      current = 1;
+      camSlide.setImage(secondSlide);
     }
-    closeButtonImage.setVisible(false);
   }
 
   @FXML
   private void onCloseButton1Pressed() {
-    mediaView.setVisible(false);
+    isFootprintVisible = false;
+    scanLabel.setVisible(false);
+    startScan.setVisible(false);
+    scanningFootprint.setVisible(false);
+    scanComplete.setVisible(false);
     closeButtonImage1.setVisible(false);
-  }
-
-  @FXML
-  private void handleOkButtonClick() {
-    if (currentBoxIndex < 4) {
-      return; // Do nothing if the passcode is not fully entered
-    } else {
-      checkPasscode();
-    }
-  }
-
-  @FXML
-  private void onBackspace() {
-    if (currentBoxIndex == 0) {
-      return; // Do nothing if there are no boxes to clear
-    }
-
-    currentBoxIndex--;
-    enteredPasscode[currentBoxIndex] = "";
-    clearBox(currentBoxIndex);
-  }
-
-  private void clearBox(int index) {
-    switch (index) {
-      case 0 -> {
-        label1.setText("");
-      }
-      case 1 -> {
-        label2.setText("");
-      }
-      case 2 -> {
-        label3.setText("");
-      }
-      case 3 -> {
-        label4.setText("");
-      }
-    }
-  }
-
-  private void checkPasscode() {
-    String entered = String.join("", enteredPasscode);
-    if (entered.equals(correctPasscode)) {
-      unlockPhone();
-    } else {
-      // Optional: reset if the passcode is wrong
-      clearBoxes();
-      incorrectPin.setVisible(true); // Show the incorrect pin message
-    }
-  }
-
-  private void clearBoxes() {
-    label1.setText("");
-    label2.setText("");
-    label3.setText("");
-    label4.setText("");
-    currentBoxIndex = 0;
-  }
-
-  private void unlockPhone() {
-    phonePopup.setVisible(false);
-    unlockedPhone.setVisible(true);
-    isPinCorrect = true;
-    return; // Hide the lock screen
-    // Display the unlocked phone screen or image of the suspect here
   }
 
   /**
@@ -345,7 +288,11 @@ public class RoomController {
 
   @FXML
   private void toggleMenu() {
+    if (camSlide.isVisible()) {
+      onCloseButton2Pressed();
+    }
     boolean isVisible = suspectMenu.isVisible();
+    onCloseButton2Pressed();
 
     if (!isVisible) {
       // Close the objectives menu if it's open
@@ -520,14 +467,19 @@ public class RoomController {
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
     objectivesManager.completeObjectiveStep(1);
-    onCloseButtonPressed();
     onCloseButton1Pressed();
+    onCloseButton2Pressed();
     if (!clueVisible) {
       clueVisible = true;
       flipLabel.setVisible(true);
       photoClue.setVisible(true);
       cross.setVisible(true);
     }
+  }
+
+  @FXML
+  public void setGuessButton() {
+    btnGuess.setDisable(false);
   }
 
   /**
@@ -539,7 +491,7 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
-    App.changeGuessing(event);
+    App.changeGuessing();
     // }
   }
 }

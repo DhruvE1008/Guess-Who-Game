@@ -70,6 +70,7 @@ public class JournalistController {
   private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
+  private static boolean isFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
@@ -91,6 +92,14 @@ public class JournalistController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
+                  if (totalSeconds == 0) {
+                    if (!App.getObjectiveCompleted()) {
+                      App.changeGameOver(
+                          0, "ran out of time, you didn't interact with the scenes enough!");
+                    } else {
+                      App.changeGuessing();
+                    }
+                  }
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
@@ -311,6 +320,9 @@ public class JournalistController {
 
   @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
+    if (player != null) {
+      player.stop();
+    }
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
   }
@@ -344,8 +356,8 @@ public class JournalistController {
     map.put("shoeSize", "7");
     map.put(
         "reason",
-        "you lost your phone during an Amazon case a few days ago and you have been too busy to get"
-            + " a new one");
+        "you had a big story to cover the next day, so you were at home all night preparing for"
+            + " it");
     map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
@@ -377,7 +389,10 @@ public class JournalistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
-    objectivesManager.completeObjectiveStep(0);
+    if (isFirstMessage) {
+      objectivesManager.completeObjectiveStep(0);
+      isFirstMessage = false;
+    }
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;

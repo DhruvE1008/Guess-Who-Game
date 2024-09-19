@@ -2,7 +2,8 @@ package nz.ac.auckland.se206;
 
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -27,7 +28,10 @@ import nz.ac.auckland.se206.speech.FreeTextToSpeech;
  * application.
  */
 public class App extends Application {
+  private static Stage primaryStage;
   private static Scene scene;
+  private static RoomController roomController;
+  private static boolean isObjectiveCompleted = false;
 
   /**
    * The main method that launches the JavaFX application.
@@ -46,6 +50,10 @@ public class App extends Application {
    */
   public static void setRoot(String fxml) throws IOException {
     scene.setRoot(loadFxml(fxml));
+  }
+
+  public static Stage getPrimaryStage() {
+    return primaryStage;
   }
 
   public static void changeArchaeologist(MouseEvent event) throws IOException {
@@ -79,34 +87,63 @@ public class App extends Application {
   }
 
   public static void changeCrimeScene(MouseEvent event) throws IOException {
-    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
-    Parent root = loader.load();
-    RoomController controller = loader.getController();
-
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    scene = new Scene(root);
-    scene.setOnKeyPressed(
-        new EventHandler<KeyEvent>() {
+    Task<Void> loadSceneTask =
+        new Task<Void>() {
           @Override
-          public void handle(KeyEvent event) {
-            if (event.getCode() == KeyCode.F) {
-              controller.rotate();
-            }
+          protected Void call() throws Exception {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
+            Parent root = loader.load();
+            roomController = loader.getController();
+
+            Platform.runLater(
+                () -> {
+                  try {
+                    // Get the current stage
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    // Create a new scene and set up the key event handler
+                    scene = new Scene(root);
+                    scene.setOnKeyPressed(
+                        new EventHandler<KeyEvent>() {
+                          @Override
+                          public void handle(KeyEvent event) {
+                            if (event.getCode() == KeyCode.F) {
+                              roomController.rotate(); // Rotate the room when 'F' key is pressed
+                            } else if (event.getCode() == KeyCode.S) {
+                              roomController.scanFootprint();
+                            }
+                          }
+                        });
+
+                    // Set the new scene on the stage
+                    stage.setScene(scene);
+                    stage.show();
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                  }
+                });
+
+            return null;
           }
-        });
-    stage.setScene(scene);
-    stage.show();
+        };
+
+    Thread backgroundThread = new Thread(loadSceneTask);
+    backgroundThread.setDaemon(true);
+    backgroundThread.start();
   }
 
-  public static void changeGuessing(ActionEvent event) throws IOException {
+  public static void changeGuessing() throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
     Parent root = loader.load();
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+    Stage stage =
+        (Stage) App.getPrimaryStage().getScene().getWindow(); // Adjusted to use App's primary stage
     scene = new Scene(root);
+
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
+
 
   public static void changeBackStory(MouseEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/backStory.fxml"));
@@ -118,11 +155,11 @@ public class App extends Application {
     stage.show();
   }
 
-  public static void changeGameOver(MouseEvent event, int suspect, String feedback)
-      throws IOException {
-    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/backStory.fxml"));
+
+  public static void changeGameOver(int suspect, String feedback) throws IOException {
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
     Parent root = loader.load();
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    Stage stage = (Stage) App.getPrimaryStage().getScene().getWindow();
     scene = new Scene(root);
     GameOverController controller = loader.getController();
     controller.setSuspect(suspect);
@@ -185,6 +222,15 @@ public class App extends Application {
     }
   }
 
+  public static void setGuessButton() {
+    roomController.setGuessButton();
+    isObjectiveCompleted = true;
+  }
+
+  public static boolean getObjectiveCompleted() {
+    return isObjectiveCompleted;
+  }
+
   public static void exitGame() {
     Stage stage = (Stage) scene.getWindow();
     stage.close();
@@ -200,6 +246,7 @@ public class App extends Application {
   public void start(final Stage stage) throws IOException {
     TimerManager.initializeTimer(5);
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
+    primaryStage = stage;
     Parent root = loader.load();
     MenuController controller = loader.getController();
 
