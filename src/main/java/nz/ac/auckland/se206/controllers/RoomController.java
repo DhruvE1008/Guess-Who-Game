@@ -189,7 +189,6 @@ public class RoomController {
   @FXML
   private void handleFootClick() {
     handleCloseClick(null);
-    onCloseButtonPressed();
     onCloseButton2Pressed();
     mediaView.setVisible(true);
     playVideo(); // Show the phone popup when the phone is clicked
@@ -211,26 +210,11 @@ public class RoomController {
   }
 
   @FXML
-  private void handlePhoneClick() {
-    objectivesManager.completeObjectiveStep(1);
-    phonePopup.setVisible(true);
-    handleCloseClick(null);
-    onCloseButton1Pressed();
-    if (isPinCorrect) {
-      unlockedPhone.setVisible(true);
-    } else {
-      phonePopup.setVisible(true);
-    }
-    closeButtonImage.setVisible(true); // Show the phone popup when the phone is clicked
-  }
-
-  @FXML
   private void onCamClicked() {
     if (suspectMenu.isVisible()) {
       toggleMenu();
     }
     handleCloseClick(null);
-    onCloseButtonPressed();
     onCloseButton1Pressed();
     closeButtonImage1.setVisible(false);
     objectivesManager.completeObjectiveStep(1);
@@ -287,121 +271,9 @@ public class RoomController {
   }
 
   @FXML
-  private void enterNumber(ActionEvent event) {
-    incorrectPin.setVisible(false);
-    if (currentBoxIndex >= 4) {
-      return; // Do nothing if all boxes are filled
-    }
-
-    Button clickedButton = (Button) event.getSource();
-    String number = clickedButton.getText();
-
-    // Update the corresponding rectangle (box) with the number
-    enteredPasscode[currentBoxIndex] = number;
-    fillBox(currentBoxIndex, number);
-    currentBoxIndex++;
-
-    // Check if the passcode is fully entered
-    if (currentBoxIndex >= 4) {
-      return;
-    }
-  }
-
-  private void fillBox(int index, String number) {
-    switch (index) {
-      case 0 -> {
-        label1.setText(number);
-      }
-      case 1 -> {
-        label2.setText(number);
-      }
-      case 2 -> {
-        label3.setText(number);
-      }
-      case 3 -> {
-        label4.setText(number);
-      }
-    }
-  }
-
-  @FXML
-  private void onCloseButtonPressed() {
-    if (isPinCorrect) {
-      unlockedPhone.setVisible(false);
-    } else {
-      phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
-    }
-    closeButtonImage.setVisible(false);
-  }
-
-  @FXML
   private void onCloseButton1Pressed() {
     mediaView.setVisible(false);
     closeButtonImage1.setVisible(false);
-  }
-
-  @FXML
-  private void handleOkButtonClick() {
-    if (currentBoxIndex < 4) {
-      return; // Do nothing if the passcode is not fully entered
-    } else {
-      checkPasscode();
-    }
-  }
-
-  @FXML
-  private void onBackspace() {
-    if (currentBoxIndex == 0) {
-      return; // Do nothing if there are no boxes to clear
-    }
-
-    currentBoxIndex--;
-    enteredPasscode[currentBoxIndex] = "";
-    clearBox(currentBoxIndex);
-  }
-
-  private void clearBox(int index) {
-    switch (index) {
-      case 0 -> {
-        label1.setText("");
-      }
-      case 1 -> {
-        label2.setText("");
-      }
-      case 2 -> {
-        label3.setText("");
-      }
-      case 3 -> {
-        label4.setText("");
-      }
-    }
-  }
-
-  private void checkPasscode() {
-    String entered = String.join("", enteredPasscode);
-    if (entered.equals(correctPasscode)) {
-      unlockPhone();
-    } else {
-      // Optional: reset if the passcode is wrong
-      clearBoxes();
-      incorrectPin.setVisible(true); // Show the incorrect pin message
-    }
-  }
-
-  private void clearBoxes() {
-    label1.setText("");
-    label2.setText("");
-    label3.setText("");
-    label4.setText("");
-    currentBoxIndex = 0;
-  }
-
-  private void unlockPhone() {
-    phonePopup.setVisible(false);
-    unlockedPhone.setVisible(true);
-    isPinCorrect = true;
-    return; // Hide the lock screen
-    // Display the unlocked phone screen or image of the suspect here
   }
 
   /**
@@ -621,7 +493,6 @@ public class RoomController {
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
     objectivesManager.completeObjectiveStep(1);
-    onCloseButtonPressed();
     onCloseButton1Pressed();
     onCloseButton2Pressed();
     if (!clueVisible) {

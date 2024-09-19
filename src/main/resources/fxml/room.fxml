@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
@@ -20,81 +19,7 @@
             <Image url="@../images/background%20with%20cluesv5.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="rectCashier" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="222.0" layoutY="262.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="38.0" />
-      <Rectangle fx:id="rectPerson1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="128.0" layoutX="280.0" layoutY="35.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="109.0" />
-      <Rectangle fx:id="rectPerson3" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="135.0" layoutX="587.0" layoutY="284.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="91.0" />
-      <Rectangle fx:id="rectWaitress" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="251.0" layoutX="463.0" layoutY="237.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="73.0" layoutX="368.0" layoutY="305.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="44.0" />
       <Button fx:id="btnGuess" layoutX="480.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
-     
-         <Pane fx:id="phonePopup" layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="200.0" visible="false">
-   <children>
-      <!-- Phone lock screen background -->
-      <ImageView fitHeight="400.0" fitWidth="200.0" preserveRatio="true">
-         <image>
-            <Image url="@../images/Phone.png" />
-         </image>
-      </ImageView>
-      
-      <!-- Passcode display boxes -->
-      <HBox layoutX="29.0" layoutY="107.0" spacing="10.0">
-  <children>
-    <VBox>
-      <Rectangle fx:id="box1" arcHeight="5.0" arcWidth="5.0" fill="lightgray" height="30.0" stroke="BLACK" width="30.0" />
-      <Label fx:id="label1" alignment="CENTER" translateX="10.0" translateY="-31.0">
-                        <font>
-                           <Font size="21.0" />
-                        </font></Label>
-    </VBox>
-    <VBox>
-      <Rectangle fx:id="box2" arcHeight="5.0" arcWidth="5.0" fill="lightgray" height="30.0" stroke="BLACK" width="30.0" />
-      <Label fx:id="label2" alignment="CENTER" text="" translateX="10.0" translateY="-31.0">
-                        <font>
-                           <Font size="21.0" />
-                        </font></Label>
-    </VBox>
-    <VBox>
-      <Rectangle fx:id="box3" arcHeight="5.0" arcWidth="5.0" fill="lightgray" height="30.0" stroke="BLACK" width="30.0" />
-      <Label fx:id="label3" alignment="CENTER" text="" translateX="10.0" translateY="-31.0">
-                        <font>
-                           <Font size="21.0" />
-                        </font></Label>
-    </VBox>
-    <VBox>
-      <Rectangle fx:id="box4" arcHeight="5.0" arcWidth="5.0" fill="lightgray" height="30.0" stroke="BLACK" width="30.0" />
-      <Label fx:id="label4" alignment="CENTER" textFill="#282828" translateX="10.0" translateY="-31.0">
-                        <font>
-                           <Font size="21.0" />
-                        </font></Label>
-    </VBox>
-  </children>
-</HBox>
-      
- 
-     
-            <Button layoutX="35.0" layoutY="160.0" onAction="#enterNumber" opacity="0.0" prefHeight="31.0" prefWidth="31.0" text="1" />
-            <Button layoutX="85.0" layoutY="159.0" onAction="#enterNumber" opacity="0.0" prefHeight="33.0" prefWidth="33.0" text="2" />
-            <Button layoutX="135.0" layoutY="159.0" onAction="#enterNumber" opacity="0.0" prefHeight="32.0" prefWidth="34.0" text="3" />
-            <Button layoutX="35.0" layoutY="205.0" onAction="#enterNumber" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="4" />
-            <Button layoutX="86.0" layoutY="205.0" onAction="#enterNumber" opacity="0.0" prefHeight="29.0" prefWidth="30.0" text="5" />
-            <Button layoutX="136.0" layoutY="203.0" onAction="#enterNumber" opacity="0.0" prefHeight="32.0" prefWidth="32.0" text="6" />
-            <Button layoutX="32.0" layoutY="248.0" onAction="#enterNumber" opacity="0.0" prefHeight="34.0" prefWidth="36.0" text="7" />
-            <Button layoutX="84.0" layoutY="252.0" onAction="#enterNumber" opacity="0.0" prefHeight="28.0" prefWidth="34.0" text="8" />
-            <Button layoutX="137.0" layoutY="249.0" onAction="#enterNumber" opacity="0.0" prefHeight="32.0" prefWidth="30.0" text="9" />
-            <Button layoutX="85.0" layoutY="295.0" onAction="#enterNumber" opacity="0.0" prefHeight="30.0" prefWidth="30.0" text="0" />
-            <Button layoutX="137.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleOkButtonClick" opacity="0.0" prefHeight="28.0" prefWidth="30.0" />
-            <Label fx:id="incorrectPin" layoutX="68.0" layoutY="58.0" prefHeight="17.0" prefWidth="109.0" text="Incorrect pin !" textFill="#ed4c0e" visible="false" />
-            <Button layoutX="35.0" layoutY="295.0" mnemonicParsing="false" onAction="#onBackspace" opacity="0.0" prefHeight="28.0" prefWidth="30.0" />
-     
-   </children>
-</Pane>
-      <Rectangle fx:id="phone" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="25.0" layoutX="458.0" layoutY="513.0" onMouseClicked="#handlePhoneClick" stroke="TRANSPARENT" strokeType="INSIDE" width="38.0" />
-
-      <ImageView fx:id="closeButtonImage" fitHeight="56.0" fitWidth="44.0" layoutX="390.0" layoutY="77.0" onMouseClicked="#onCloseButtonPressed" preserveRatio="true" visible="false">
-      <image>
-         <Image url="@../images/cross.png" />
-      </image>
-   </ImageView>
       <ImageView fx:id="photoClue" fitHeight="208.0" fitWidth="229.0" layoutX="230.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/photoClue.png" />
@@ -106,7 +31,6 @@
          </image>
       </ImageView>
       <Rectangle fx:id="photoClueClose" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="44.0" layoutX="441.0" layoutY="226.0" onMouseClicked="#handleCloseClick" stroke="TRANSPARENT" strokeType="INSIDE" width="45.0" />
-      <Rectangle fx:id="phone" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="25.0" layoutX="458.0" layoutY="513.0" onMouseClicked="#handlePhoneClick" stroke="TRANSPARENT" strokeType="INSIDE" width="38.0" />
       <ImageView fx:id="camSlide" fitHeight="411.0" fitWidth="505.0" layoutX="97.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="pictureBackground" fitHeight="44.0" fitWidth="66.0" layoutX="201.0" layoutY="505.0" onMouseClicked="#handlePhotoClueClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -118,21 +42,11 @@
             <Image url="@../images/footprintshover.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="22.0" fitWidth="30.0" layoutX="457.0" layoutY="518.0" onMouseClicked="#handlePhoneClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../images/phonehover.png" />
-         </image>
-      </ImageView>
       <Label fx:id="flipLabel" layoutX="265.0" layoutY="432.0" text="Press F to Flip" textFill="#8ee807" visible="false">
          <font>
             <Font size="21.0" />
          </font>
       </Label>
-      <ImageView fx:id="unlockedPhone" fitHeight="400.0" fitWidth="300.0" layoutX="190.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../images/emailwithanony.png" />
-         </image>
-      </ImageView>
       <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" layoutX="235.0" layoutY="266.0" />
       <ImageView fx:id="closeButtonImage1" fitHeight="56.0" fitWidth="44.0" layoutX="415.0" layoutY="240.0" onMouseClicked="#onCloseButton1Pressed" preserveRatio="true" visible="false">
          <image>
