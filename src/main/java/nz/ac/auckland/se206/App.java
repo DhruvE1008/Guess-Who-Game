@@ -101,7 +101,7 @@ public class App extends Application {
                     // Get the current stage
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     // Create a new scene and set up the key event handler
-                    Scene scene = new Scene(root);
+                    scene = new Scene(root);
                     scene.setOnKeyPressed(
                         new EventHandler<KeyEvent>() {
                           @Override
@@ -137,7 +137,7 @@ public class App extends Application {
 
     Stage stage =
         (Stage) App.getPrimaryStage().getScene().getWindow(); // Adjusted to use App's primary stage
-    Scene scene = new Scene(root);
+    scene = new Scene(root);
 
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);

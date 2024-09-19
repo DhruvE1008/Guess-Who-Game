@@ -356,8 +356,8 @@ public class JournalistController {
     map.put("shoeSize", "7");
     map.put(
         "reason",
-        "you were at the office alone writing a story about software students pushing to main"
-            + " branch");
+        "you had a big story to cover the next day, so you were at home all night preparing for"
+            + " it");
     map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     try {
