@@ -19,6 +19,12 @@ public class TimerManager {
     }
   }
 
+  public static void resetTimerToOneMinute() {
+    if (gameTimer != null) {
+      gameTimer.resetToOneMinute();
+    }
+  }
+
   public static void stopTimer() {
     if (gameTimer != null) {
       gameTimer.stop();

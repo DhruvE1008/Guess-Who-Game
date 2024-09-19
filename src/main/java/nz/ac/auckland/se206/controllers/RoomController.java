@@ -84,7 +84,6 @@ public class RoomController {
   @FXML
   public void initialize() {
     if (isFirstInit) {
-      // Initialize with 5 minutes countdown on a background thread
       Task<Void> timerTask =
           new Task<Void>() {
             @Override
@@ -93,7 +92,7 @@ public class RoomController {
               return null;
             }
           };
-      new Thread(timerTask).start(); // Run timer in background
+      new Thread(timerTask).start();
       isFirstInit = false;
     }
 
@@ -108,6 +107,10 @@ public class RoomController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
+                  if (totalSeconds == 0) {
+                    App.changeGuessing();
+                  }
+
                   return String.format("%02d:%02d", minutes, seconds);
                 },
                 gameTimer.timeInSecondsProperty()));
@@ -544,7 +547,7 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
-    App.changeGuessing(event);
+    App.changeGuessing();
     // }
   }
 }

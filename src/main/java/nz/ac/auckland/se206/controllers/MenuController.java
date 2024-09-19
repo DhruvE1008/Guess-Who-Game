@@ -1,6 +1,7 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -11,9 +12,13 @@ public class MenuController {
 
   @FXML
   private void onClick(MouseEvent event) throws IOException {
-    // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
-    App.changeCrimeScene(event);
-    System.out.println("Clicked");
-    // }
+    Platform.runLater(
+        () -> {
+          try {
+            App.changeCrimeScene(event);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
   }
 }

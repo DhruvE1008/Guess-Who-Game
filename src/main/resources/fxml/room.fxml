@@ -212,9 +212,9 @@
             <Font size="21.0" />
          </font>
       </Label>
-      <ImageView fx:id="startScan" fitHeight="179.0" fitWidth="185.0" layoutX="273.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="startScan" fitHeight="179.0" fitWidth="185.0" layoutX="257.0" layoutY="291.0" pickOnBounds="true" visible="false">
          <image>
-            <Image url="@../images/footprintshover.png" />
+            <Image url="@../images/footprintblack.png" />
          </image>
       </ImageView>
    </children>

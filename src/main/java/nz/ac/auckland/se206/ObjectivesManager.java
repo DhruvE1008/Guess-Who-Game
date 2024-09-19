@@ -7,9 +7,9 @@ public class ObjectivesManager {
 
   private static ObjectivesManager instance;
   private boolean[] objectivesCompleted;
-  private int[] objectivesProgress; // New: Track progress for each objective
+  private int[] objectivesProgress; // Track progress for each objective
   private int[]
-      stepsRequiredForObjectives; // New: Specify how many steps are required for each objective
+      stepsRequiredForObjectives; // Specify how many steps are required for each objective
   private List<Runnable> observers = new ArrayList<>();
 
   private ObjectivesManager() {
@@ -56,6 +56,15 @@ public class ObjectivesManager {
       }
     }
     App.setGuessButton();
+  }
+
+  // New: Reset all objectives to their initial state
+  public void resetObjectives() {
+    for (int i = 0; i < objectivesCompleted.length; i++) {
+      objectivesCompleted[i] = false; // Reset completion status
+      objectivesProgress[i] = 0; // Reset progress
+    }
+    notifyObservers(); // Notify any observers that objectives have been reset
   }
 
   public void addObserver(Runnable observer) {
