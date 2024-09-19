@@ -54,6 +54,8 @@ public class GameStarted implements GameState {
   }
 
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {
+    // switches scenes based on the profile clicked
+    // uses the App class to switch scenes
     switch (profile) {
       case "archaeologist":
         App.changeArchaeologist(event);

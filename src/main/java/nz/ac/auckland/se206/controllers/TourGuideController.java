@@ -352,12 +352,14 @@ public class TourGuideController {
   }
 
   private void getSystemPrompt() {
+    // sets the values for the system prompt
     Map<String, String> map = new HashMap<>();
     map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
     map.put("shoeSize", "7");
     map.put("reason", "you were alone at your workplace reviewing the tours for the day alone");
     map.put("kids", "a 9 year old daughter");
     String message = PromptEngineering.getPrompt("chat.txt", map);
+    // configures the AI for the chat and sends the system prompt
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
@@ -373,7 +375,9 @@ public class TourGuideController {
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds the message to AI history
     chatCompletionRequest.addMessage(msg);
+    // gets the AI response and returns it
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
@@ -392,15 +396,18 @@ public class TourGuideController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    // if this is the first message, complete the first objective step
     if (isFirstMessage) {
       objectivesManager.completeObjectiveStep(0);
       isFirstMessage = false;
     }
+    // if this is the first time talking to the suspect, you should clear the chat
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;
     }
     String message = txtInput.getText().trim();
+    // if the message is empty, do nothing
     if (message.isEmpty()) {
       return;
     }
@@ -409,10 +416,12 @@ public class TourGuideController {
         new Task<Void>() {
           @Override
           protected Void call() throws Exception {
+            // set the guide bubble to visible
             Platform.runLater(() -> guidebubble.setVisible(true));
             try {
               ChatMessage msg = new ChatMessage("user", message);
               ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              // add the user message and AI response to the chat area
               context.handleSendChatClick(txtaChat, message, "Tour Guide", response.getContent());
               Platform.runLater(() -> guidebubble.setVisible(false));
             } catch (IOException | ApiProxyException e) {

@@ -355,6 +355,7 @@ public class JournalistController {
   }
 
   private void getSystemPrompt() {
+    // stores all the values for the prompt
     Map<String, String> map = new HashMap<>();
     map.put("profession", "a journalist who desperately needs new stories");
     map.put("shoeSize", "7");
@@ -364,6 +365,7 @@ public class JournalistController {
             + " it");
     map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
+    // sets up the AI chat
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
@@ -379,7 +381,9 @@ public class JournalistController {
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds the message to the AI history
     chatCompletionRequest.addMessage(msg);
+    // gets the response from the AI based on the requirements
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
@@ -398,15 +402,18 @@ public class JournalistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    // Complete the first objective step if it's the first message
     if (isFirstMessage) {
       objectivesManager.completeObjectiveStep(0);
       isFirstMessage = false;
     }
+    // if its the first time talking to the journalist clear the chat
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;
     }
     String message = txtInput.getText().trim();
+    // if the message is empty do nothing
     if (message.isEmpty()) {
       return;
     }
@@ -415,10 +422,12 @@ public class JournalistController {
         new Task<Void>() {
           @Override
           protected Void call() throws Exception {
+            // set the talking bubble to visible
             Platform.runLater(() -> journbubble.setVisible(true));
             try {
               ChatMessage msg = new ChatMessage("user", message);
               ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              // add the user message and the AI response to the chat
               context.handleSendChatClick(txtaChat, message, "Journalist", response.getContent());
               Platform.runLater(() -> journbubble.setVisible(false));
             } catch (IOException | ApiProxyException e) {

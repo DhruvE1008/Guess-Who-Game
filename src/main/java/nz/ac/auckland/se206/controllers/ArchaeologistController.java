@@ -354,12 +354,14 @@ public class ArchaeologistController {
   }
 
   private void getSystemPrompt() {
+    // sets the values for the system prompt
     Map<String, String> map = new HashMap<>();
     map.put("profession", "an archaeologist who was recently denied funding");
     map.put("shoeSize", "8");
     map.put("reason", "you were at here at the lab alone analysing some artefacts");
     map.put("kids", "a 9 year old son");
     String message = PromptEngineering.getPrompt("chat.txt", map);
+    // sets up the chat with the system prompt
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
@@ -375,7 +377,9 @@ public class ArchaeologistController {
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds the message to the AI history
     chatCompletionRequest.addMessage(msg);
+    // runs the AI model and gets the response from our prompt
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
@@ -394,15 +398,18 @@ public class ArchaeologistController {
 
   @FXML
   public void onSendMessage(ActionEvent event) {
+    // if it's the first message, complete the first objective step for the archaeologist
     if (isFirstMessage) {
       objectivesManager.completeObjectiveStep(0);
       isFirstMessage = false;
     }
+    // if it's the first time, clear the chat area before sending the first message
     if (isFirstTime) {
       txtaChat.clear();
       isFirstTime = false;
     }
     String message = txtInput.getText().trim();
+    // if the message is empty, do nothing
     if (message.isEmpty()) {
       return;
     }
@@ -411,10 +418,12 @@ public class ArchaeologistController {
         new Task<Void>() {
           @Override
           protected Void call() throws Exception {
+            // show the loading bubble
             Platform.runLater(() -> arcbubble.setVisible(true));
             try {
               ChatMessage msg = new ChatMessage("user", message);
               ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              // update the chat area with the user's message and the system's response
               context.handleSendChatClick(
                   txtaChat, message, "Archaeologist", response.getContent());
               Platform.runLater(() -> arcbubble.setVisible(false));
