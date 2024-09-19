@@ -144,6 +144,18 @@ public class App extends Application {
     stage.show();
   }
 
+
+  public static void changeBackStory(MouseEvent event) throws IOException {
+    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/backStory.fxml"));
+    Parent root = loader.load();
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    scene = new Scene(root);
+    scene.setCursor(Cursor.DEFAULT);
+    stage.setScene(scene);
+    stage.show();
+  }
+
+
   public static void changeGameOver(int suspect, String feedback) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
     Parent root = loader.load();

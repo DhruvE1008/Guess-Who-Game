@@ -81,8 +81,8 @@ public class RoomController {
   private static int current = 1;
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
-  private boolean isFirstInit = true;
   private boolean isFootprintVisible = false;
+
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -90,18 +90,7 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
-    if (isFirstInit) {
-      Task<Void> timerTask =
-          new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-              TimerManager.startTimer();
-              return null;
-            }
-          };
-      new Thread(timerTask).start();
-      isFirstInit = false;
-    }
+
     closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();

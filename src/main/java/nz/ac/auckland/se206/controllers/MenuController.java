@@ -12,13 +12,6 @@ public class MenuController {
 
   @FXML
   private void onClick(MouseEvent event) throws IOException {
-    Platform.runLater(
-        () -> {
-          try {
-            App.changeCrimeScene(event);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        });
+    App.changeBackStory(event);
   }
 }
