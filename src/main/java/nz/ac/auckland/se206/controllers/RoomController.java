@@ -59,9 +59,6 @@ public class RoomController {
   @FXML private Label label1, label2, label3, label4, incorrectPin;
   @FXML private Rectangle box1, box2, box3, box4;
   @FXML private Label timerLabel;
-  private int currentBoxIndex = 0;
-  private String[] enteredPasscode = new String[4];
-  private final String correctPasscode = "0411";
   @FXML private ImageView photoClue;
   @FXML private ImageView camSlide;
   @FXML private ImageView cross;
@@ -85,7 +82,6 @@ public class RoomController {
   private static int current = 1;
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
-  private boolean isPinCorrect = false;
   private boolean isFirstInit = true;
 
   /**
