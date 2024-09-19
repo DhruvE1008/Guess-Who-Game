@@ -226,7 +226,9 @@ public class RoomController {
 
   @FXML
   private void onCamClicked() {
-    toggleMenu();
+    if (suspectMenu.isVisible()) {
+      toggleMenu();
+    }
     handleCloseClick(null);
     onCloseButtonPressed();
     onCloseButton1Pressed();
@@ -440,6 +442,9 @@ public class RoomController {
 
   @FXML
   private void toggleMenu() {
+    if (camSlide.isVisible()) {
+      onCloseButton2Pressed();
+    }
     boolean isVisible = suspectMenu.isVisible();
     onCloseButton2Pressed();
 
