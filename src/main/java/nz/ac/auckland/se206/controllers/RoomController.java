@@ -75,7 +75,6 @@ public class RoomController {
   private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
   private boolean isPinCorrect = false;
-  private boolean isFirstInit = true;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -83,19 +82,6 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
-    if (isFirstInit) {
-      // Initialize with 5 minutes countdown on a background thread
-      Task<Void> timerTask =
-          new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-              TimerManager.startTimer();
-              return null;
-            }
-          };
-      new Thread(timerTask).start(); // Run timer in background
-      isFirstInit = false;
-    }
 
     gameTimer = TimerManager.getGameTimer();
 
