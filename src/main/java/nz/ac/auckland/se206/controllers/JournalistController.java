@@ -133,14 +133,13 @@ public class JournalistController {
   }
 
   @FXML
-  private void handleToggleMenu() {
+  private void onToggleMenu() {
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
   }
 
   @FXML
   private void toggleObjectives() {
-    SuspectOverlay.toggleObjectives(
-        objectiveMenu, objectiveClose, suspectMenu, this::handleToggleMenu);
+    SuspectOverlay.toggleObjectives(objectiveMenu, objectiveClose, suspectMenu, this::onToggleMenu);
   }
 
   @FXML

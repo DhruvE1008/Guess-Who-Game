@@ -80,7 +80,7 @@
             </ImageView>
          </children>
       </VBox>
-      <Button fx:id="arrowButton" layoutX="1.0" layoutY="335.0" mnemonicParsing="false" onAction="#handleToggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
+      <Button fx:id="arrowButton" layoutX="1.0" layoutY="335.0" mnemonicParsing="false" onAction="#onToggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
 
       <Button fx:id="btnObjectives" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#toggleObjectives" prefHeight="36.0" prefWidth="167.0" styleClass="objectivesButton" text="Objectives" translateX="-3.0" translateY="-6.0" />
       <VBox fx:id="objectiveMenu" layoutX="1.0" layoutY="37.0" prefHeight="208.0" prefWidth="167.0" styleClass="vbox" visible="false">

@@ -24,6 +24,10 @@ import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
+/**
+ * Controller class for the guessing view. Handles user interactions within the room where the user
+ * can guess the profession of the suspect.
+ */
 public class GuessingController {
   private static ChatCompletionRequest chatCompletionRequest;
   @FXML private Button submit;
@@ -37,6 +41,12 @@ public class GuessingController {
   private int timeSeconds = 60;
   private int suspect = 0;
 
+  /**
+   * Initializes the guessing view.
+   *
+   * @throws IOException if an I/O error occurs
+   * @throws URISyntaxException if a URI syntax error occurs
+   */
   @FXML
   private void initialize() throws IOException, URISyntaxException {
     arcborder.setVisible(false);
@@ -73,6 +83,11 @@ public class GuessingController {
     }
   }
 
+  /**
+   * Handles the key pressed event.
+   *
+   * @param event the key event
+   */
   @FXML
   public void onKeyPressed(KeyEvent event) {
     System.out.println("Key " + event.getCode() + " pressed");
@@ -88,6 +103,11 @@ public class GuessingController {
     System.out.println("Key " + event.getCode() + " released");
   }
 
+  /**
+   * Handles the key typed event.
+   *
+   * @param event the key event
+   */
   @FXML
   private void onArcHover(MouseEvent event) {
     // if the mouse hovers over the image, the image will scale up
@@ -100,6 +120,11 @@ public class GuessingController {
     App.changeCursor("HAND");
   }
 
+  /**
+   * Handles the mouse hover event.
+   *
+   * @param event the mouse event
+   */
   @FXML
   private void onJournHover(MouseEvent event) {
     // when the mouse hovers over the image, the image will scale up
@@ -112,6 +137,11 @@ public class GuessingController {
     App.changeCursor("HAND");
   }
 
+  /**
+   * Handles the mouse hover event.
+   *
+   * @param event the mouse event
+   */
   @FXML
   private void onGuideHover(MouseEvent event) {
     // make the image scale up when the mouse hovers over the image
@@ -124,6 +154,11 @@ public class GuessingController {
     App.changeCursor("HAND");
   }
 
+  /**
+   * Handles the mouse exit event.
+   *
+   * @param event the mouse event
+   */
   @FXML
   private void onArcExit(MouseEvent event) {
     // when the mouse exits the image, the image will scale back to normal
@@ -136,6 +171,11 @@ public class GuessingController {
     App.changeCursor("default");
   }
 
+  /**
+   * Handles the mouse exit event.
+   *
+   * @param event the mouse event
+   */
   @FXML
   private void onJournExit(MouseEvent event) {
     // sets the values back to normal when the mouse exits the image
@@ -148,6 +188,11 @@ public class GuessingController {
     App.changeCursor("default");
   }
 
+  /**
+   * Handles the mouse exit event.
+   *
+   * @param event the mouse event
+   */
   @FXML
   private void onGuideExit(MouseEvent event) {
     // when exiting the image, the image will scale back to normal
@@ -160,6 +205,11 @@ public class GuessingController {
     App.changeCursor("default");
   }
 
+  /**
+   * Handles the mouse click event.
+   *
+   * @param event the mouse event
+   */
   @FXML
   private void onClick(MouseEvent event) {
     ImageView hoveredImageView = (ImageView) event.getSource();
@@ -188,11 +238,13 @@ public class GuessingController {
     checkSubmitEnabled();
   }
 
+  /** Handles the text change event. */
   @FXML
   private void changeText() {
     checkSubmitEnabled();
   }
 
+  /** Checks if the submit button should be enabled. */
   @FXML
   private void checkSubmitEnabled() {
     if (suspect != 0 && !textArea.getText().isEmpty()) {
@@ -202,6 +254,12 @@ public class GuessingController {
     }
   }
 
+  /**
+   * Handles the submit button click event.
+   *
+   * @param event the mouse event
+   * @throws IOException if an I/O error occurs
+   */
   @FXML
   private void handleSubmit(MouseEvent event) throws IOException {
     stopTimer();
@@ -226,6 +284,7 @@ public class GuessingController {
     thread.start();
   }
 
+  /** Starts the timer. */
   private void startTimer() {
     timeline =
         new Timeline(
@@ -243,12 +302,19 @@ public class GuessingController {
     timeline.play();
   }
 
+  /**
+   * Formats the time.
+   *
+   * @param seconds the time in seconds
+   * @return the formatted time
+   */
   private String formatTime(int seconds) {
     int minutes = seconds / 60;
     int remainingSeconds = seconds % 60;
     return String.format("%02d:%02d", minutes, remainingSeconds);
   }
 
+  /** Handles when the timer ends. */
   private void handleTimerEnd() {
     stopTimer();
 
@@ -259,6 +325,7 @@ public class GuessingController {
     }
   }
 
+  /** Stops the timer. */
   public void stopTimer() {
     Platform.runLater(
         () -> {
