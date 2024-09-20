@@ -51,6 +51,11 @@ public class ArchaeologistController {
     isFirstTimeInit = true;
   }
 
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
+  }
+
   @FXML private Button btnGuess;
   @FXML private Button arrowButton;
   @FXML private Button btnObjectives;
@@ -205,11 +210,6 @@ public class ArchaeologistController {
     }
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
-  }
-
-  @FXML
-  public static void setFirstMessage() {
-    isFirstMessage = true;
   }
 
   @FXML

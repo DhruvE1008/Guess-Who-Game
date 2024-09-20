@@ -41,6 +41,21 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  * chat with customers and guess their profession.
  */
 public class JournalistController {
+  private static GameStateContext context = new GameStateContext();
+  private static boolean isFirstTimeInit = true;
+  private static boolean isFirstTime = true;
+  private static boolean isFirstMessage = true;
+  private static ChatCompletionRequest chatCompletionRequest;
+
+  public static void setisFirstTime() {
+    isFirstTimeInit = true;
+  }
+
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
+  }
+
   @FXML private Button btnGuess;
   @FXML private Button objectiveClose;
   @FXML private Button btnObjectives;
@@ -58,11 +73,6 @@ public class JournalistController {
   @FXML private VBox suspectMenu;
   @FXML private VBox objectiveMenu;
 
-  private static GameStateContext context = new GameStateContext();
-  private static boolean isFirstTimeInit = true;
-  private static boolean isFirstTime = true;
-  private static boolean isFirstMessage = true;
-  private static ChatCompletionRequest chatCompletionRequest;
   private GameTimer gameTimer;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
@@ -142,10 +152,6 @@ public class JournalistController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
-  public static void setisFirstTime() {
-    isFirstTimeInit = true;
-  }
-
   @FXML
   private void handleToggleMenu() {
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
@@ -205,11 +211,6 @@ public class JournalistController {
     }
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
-  }
-
-  @FXML
-  public static void setFirstMessage() {
-    isFirstMessage = true;
   }
 
   @FXML
