@@ -30,6 +30,14 @@ import nz.ac.auckland.se206.TimerManager;
  * chat with customers and guess their profession.
  */
 public class RoomController {
+  private static int button = 1;
+  private static int current = 1;
+  private static GameStateContext context = new GameStateContext();
+
+  @FXML
+  public static void resetGuessButton() {
+    button = 1;
+  }
 
   @FXML private Button arrowButton;
   @FXML private Button btnGuess;
@@ -59,7 +67,6 @@ public class RoomController {
 
   private boolean clueVisible = false;
   private boolean isFootprintVisible = false;
-  private static GameStateContext context = new GameStateContext();
   private GameTimer gameTimer;
   private Image backImage;
   private Image fifthSlide;
@@ -68,8 +75,6 @@ public class RoomController {
   private Image secondSlide;
   private Image sixthSlide;
   private Image thirdSlide;
-  private static int button = 1;
-  private static int current = 1;
   private ObjectivesManager objectivesManager;
 
   /**
@@ -446,11 +451,6 @@ public class RoomController {
     button = 2;
     btnGuess.setDisable(false);
     System.out.println("hi");
-  }
-
-  @FXML
-  public static void resetGuessButton() {
-    button = 1;
   }
 
   /**

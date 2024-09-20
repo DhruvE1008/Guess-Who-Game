@@ -25,6 +25,7 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class GuessingController {
+  private static ChatCompletionRequest chatCompletionRequest;
   @FXML private Button submit;
   @FXML private Circle arcborder;
   @FXML private Circle journborder;
@@ -32,7 +33,6 @@ public class GuessingController {
   @FXML private Label timerLabel;
   @FXML private TextArea textArea;
 
-  private static ChatCompletionRequest chatCompletionRequest;
   private Timeline timeline;
   private int timeSeconds = 60;
   private int suspect = 0;

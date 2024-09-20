@@ -43,6 +43,21 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  * chat with customers and guess their profession.
  */
 public class TourGuideController {
+  private static GameStateContext context = new GameStateContext();
+  private static boolean isFirstTimeInit = true;
+  private static boolean isFirstTime = true;
+  private static boolean isFirstMessage = true;
+  private static ChatCompletionRequest chatCompletionRequest;
+
+  public static void setisFirstTime() {
+    isFirstTimeInit = true;
+  }
+
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
+  }
+
   @FXML private Button btnGuess;
   @FXML private Button arrowButton;
   @FXML private Button btnObjectives;
@@ -60,11 +75,6 @@ public class TourGuideController {
   @FXML private VBox suspectMenu;
   @FXML private VBox objectiveMenu;
 
-  private static GameStateContext context = new GameStateContext();
-  private static boolean isFirstTimeInit = true;
-  private static boolean isFirstTime = true;
-  private static boolean isFirstMessage = true;
-  private static ChatCompletionRequest chatCompletionRequest;
   private GameTimer gameTimer;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
@@ -251,11 +261,6 @@ public class TourGuideController {
   }
 
   @FXML
-  public static void setFirstMessage() {
-    isFirstMessage = true;
-  }
-
-  @FXML
   private void onSendMessage(ActionEvent event) {
     // if this is the first message, complete the first objective step
     if (isFirstMessage) {
@@ -322,10 +327,6 @@ public class TourGuideController {
       menuTransition.play();
       closeTransition.play();
     }
-  }
-
-  public static void setisFirstTime() {
-    isFirstTimeInit = true;
   }
 
   public void updateObjectiveLabels() {
