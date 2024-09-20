@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -35,6 +34,7 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
+import nz.ac.auckland.se206.SuspectOverlay;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
@@ -184,59 +184,7 @@ public class ArchaeologistController {
 
   @FXML
   private void handleToggleMenu() {
-    boolean isVisible = suspectMenu.isVisible();
-
-    if (!isVisible) {
-      // Close the objectives menu if it's open
-      if (objectiveMenu.isVisible()) {
-        closeObjectivesMenu();
-      }
-
-      // Rotate animation for the arrow button
-      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
-      rotateTransition.setByAngle(180);
-
-      // Move the arrow button left or right
-      TranslateTransition translateTransition =
-          new TranslateTransition(Duration.millis(300), arrowButton);
-      translateTransition.setByX(140);
-
-      // Slide the menu in
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), suspectMenu);
-      suspectMenu.setTranslateX(-suspectMenu.getWidth());
-      suspectMenu.setVisible(true);
-      menuTransition.setFromX(-suspectMenu.getWidth());
-      menuTransition.setToX(0);
-
-      // Play animations
-      rotateTransition.play();
-      translateTransition.play();
-      menuTransition.play();
-    } else {
-      // Slide out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), suspectMenu);
-      menuTransition.setFromX(0);
-      menuTransition.setToX(-suspectMenu.getWidth());
-
-      // Play animation
-      menuTransition.play();
-
-      // Toggle visibility after the animation completes (for sliding out)
-      menuTransition.setOnFinished(event -> suspectMenu.setVisible(false));
-
-      // Rotate and move the arrow button back
-      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
-      rotateTransition.setByAngle(-180);
-
-      TranslateTransition translateTransition =
-          new TranslateTransition(Duration.millis(300), arrowButton);
-      translateTransition.setByX(-140);
-
-      rotateTransition.play();
-      translateTransition.play();
-    }
+    SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
   }
 
   @FXML

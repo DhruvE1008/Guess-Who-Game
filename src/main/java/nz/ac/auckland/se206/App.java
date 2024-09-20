@@ -20,7 +20,6 @@ import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ArchaeologistController;
 import nz.ac.auckland.se206.controllers.GameOverController;
 import nz.ac.auckland.se206.controllers.JournalistController;
-import nz.ac.auckland.se206.controllers.MenuController;
 import nz.ac.auckland.se206.controllers.RoomController;
 import nz.ac.auckland.se206.controllers.TourGuideController;
 import nz.ac.auckland.se206.speech.FreeTextToSpeech;
@@ -253,7 +252,6 @@ public class App extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
     primaryStage = stage;
     Parent root = loader.load();
-    MenuController controller = loader.getController();
 
     scene = new Scene(root);
     stage.setScene(scene);

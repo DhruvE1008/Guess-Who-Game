@@ -22,6 +22,7 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
+import nz.ac.auckland.se206.SuspectOverlay;
 import nz.ac.auckland.se206.TimerManager;
 
 /**
@@ -61,7 +62,6 @@ public class RoomController {
   private static GameStateContext context = new GameStateContext();
   private GameTimer gameTimer;
   private Image backImage;
-  private Image firstSlide;
   private Image fifthSlide;
   private Image frontImage;
   private Image fourthSlide;
@@ -107,7 +107,6 @@ public class RoomController {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
 
-    firstSlide = new Image(getClass().getResourceAsStream("/images/720.png"));
     secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));
     thirdSlide = new Image(getClass().getResourceAsStream("/images/740.png"));
     fourthSlide = new Image(getClass().getResourceAsStream("/images/750.png"));
@@ -298,60 +297,11 @@ public class RoomController {
     if (camSlide.isVisible()) {
       onCloseButton2Pressed();
     }
+
     boolean isVisible = suspectMenu.isVisible();
     onCloseButton2Pressed();
 
-    if (!isVisible) {
-      // Close the objectives menu if it's open
-      if (objectiveMenu.isVisible()) {
-        closeObjectivesMenu();
-      }
-
-      // Rotate animation for the arrow button
-      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
-      rotateTransition.setByAngle(180);
-
-      // Move the arrow button left or right
-      TranslateTransition translateTransition =
-          new TranslateTransition(Duration.millis(300), arrowButton);
-      translateTransition.setByX(140);
-
-      // Slide the menu in
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), suspectMenu);
-      suspectMenu.setTranslateX(-suspectMenu.getWidth());
-      suspectMenu.setVisible(true);
-      menuTransition.setFromX(-suspectMenu.getWidth());
-      menuTransition.setToX(0);
-
-      // Play animations
-      rotateTransition.play();
-      translateTransition.play();
-      menuTransition.play();
-    } else {
-      // Slide out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), suspectMenu);
-      menuTransition.setFromX(0);
-      menuTransition.setToX(-suspectMenu.getWidth());
-
-      // Play animation
-      menuTransition.play();
-
-      // Toggle visibility after the animation completes (for sliding out)
-      menuTransition.setOnFinished(event -> suspectMenu.setVisible(false));
-
-      // Rotate and move the arrow button back
-      RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
-      rotateTransition.setByAngle(-180);
-
-      TranslateTransition translateTransition =
-          new TranslateTransition(Duration.millis(300), arrowButton);
-      translateTransition.setByX(-140);
-
-      rotateTransition.play();
-      translateTransition.play();
-    }
+    SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
   }
 
   private void closeObjectivesMenu() {
