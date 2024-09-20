@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,6 +30,7 @@ import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.SuspectOverlay;
+import nz.ac.auckland.se206.TimerLabelSet;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
@@ -84,25 +84,7 @@ public class ArchaeologistController {
     gameTimer = TimerManager.getGameTimer();
 
     // Bind the timer label to display the time in minutes and seconds
-    timerLabel
-        .textProperty()
-        .bind(
-            Bindings.createStringBinding(
-                () -> {
-                  int totalSeconds = gameTimer.getTimeInSeconds();
-                  int minutes = totalSeconds / 60;
-                  int seconds = totalSeconds % 60;
-                  if (totalSeconds == 0) {
-                    if (!App.getObjectiveCompleted()) {
-                      App.changeGameOver(
-                          0, "ran out of time, you didn't interact with the scenes enough!");
-                    } else {
-                      App.changeGuessing();
-                    }
-                  }
-                  return String.format("%02d:%02d", minutes, seconds);
-                },
-                gameTimer.timeInSecondsProperty()));
+    timerLabel.textProperty().bind(TimerLabelSet.createTimerStringBinding(gameTimer));
     arcbubble.setVisible(false);
     txtaChat.clear();
     txtInput.setOnKeyPressed(

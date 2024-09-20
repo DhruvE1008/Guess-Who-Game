@@ -33,6 +33,7 @@ public class App extends Application {
   private static Scene scene;
   private static RoomController roomController;
   private static boolean isObjectiveCompleted = false;
+  private static boolean keyHandled = false;
 
   /**
    * The main method that launches the JavaFX application.
@@ -113,10 +114,24 @@ public class App extends Application {
                         new EventHandler<KeyEvent>() {
                           @Override
                           public void handle(KeyEvent event) {
-                            if (event.getCode() == KeyCode.F) {
-                              roomController.rotate(); // Rotate the room when 'F' key is pressed
-                            } else if (event.getCode() == KeyCode.S) {
-                              roomController.scanFootprint();
+                            if (!keyHandled) {
+                              if (event.getCode() == KeyCode.F) {
+                                roomController.rotate(); // Rotate the room when 'F' key is pressed
+                                keyHandled = true;
+                              } else if (event.getCode() == KeyCode.S) {
+                                roomController.scanFootprint();
+                                keyHandled = true;
+                              }
+                            }
+                          }
+                        });
+
+                    scene.setOnKeyReleased(
+                        new EventHandler<KeyEvent>() {
+                          @Override
+                          public void handle(KeyEvent event) {
+                            if (event.getCode() == KeyCode.F || event.getCode() == KeyCode.S) {
+                              keyHandled = false;
                             }
                           }
                         });
@@ -139,6 +154,7 @@ public class App extends Application {
   }
 
   public static void changeGuessing() throws IOException {
+    TimerManager.stopTimer();
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
     Parent root = loader.load();
 
