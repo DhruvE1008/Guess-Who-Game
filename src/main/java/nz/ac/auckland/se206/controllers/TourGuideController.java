@@ -43,35 +43,29 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  * chat with customers and guess their profession.
  */
 public class TourGuideController {
-
-  @FXML private Rectangle rectCashier;
-  @FXML private Rectangle rectPerson1;
-  @FXML private Rectangle rectPerson2;
-  @FXML private Rectangle rectPerson3;
-  @FXML private Rectangle rectWaitress;
   @FXML private Button btnGuess;
-  @FXML private Label timerLabel;
+  @FXML private Button arrowButton;
+  @FXML private Button btnObjectives;
+  @FXML private Button objectiveClose;
   @FXML private ImageView crimeScene;
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
-  @FXML private Button arrowButton;
-  @FXML private VBox suspectMenu;
-  @FXML private Button btnObjectives;
-  @FXML private VBox objectiveMenu;
+  @FXML private ImageView guidebubble;
+  @FXML private Label timerLabel;
   @FXML private Text objective1Label;
   @FXML private Text objective2Label;
-  @FXML private Button objectiveClose;
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
-  @FXML private ImageView guidebubble;
+  @FXML private VBox suspectMenu;
+  @FXML private VBox objectiveMenu;
 
   private static GameStateContext context = new GameStateContext();
-  private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
   private static boolean isFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
+  private GameTimer gameTimer;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
 
@@ -148,22 +142,6 @@ public class TourGuideController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
-  public static void setisFirstTime() {
-    isFirstTimeInit = true;
-  }
-
-  public void updateObjectiveLabels() {
-    // Update the first objective label
-    if (objectivesManager.isObjectiveCompleted(0)) {
-      objective1Label.setStyle("-fx-strikethrough: true;");
-    }
-
-    // Update the second objective label
-    if (objectivesManager.isObjectiveCompleted(1)) {
-      objective2Label.setStyle("-fx-strikethrough: true;");
-    }
-  }
-
   /**
    * Handles the key pressed event.
    *
@@ -228,33 +206,6 @@ public class TourGuideController {
 
       rotateTransition.play();
       translateTransition.play();
-    }
-  }
-
-  private void closeObjectivesMenu() {
-    if (objectiveMenu.isVisible()) {
-      // Slide the menu out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(0);
-      menuTransition.setToY(-objectiveMenu.getHeight());
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(0);
-      closeTransition.setToY(-objectiveMenu.getHeight());
-
-      // Disable the close button and hide it once the menu is hidden
-      menuTransition.setOnFinished(
-          event -> {
-            objectiveMenu.setVisible(false);
-            objectiveClose.setVisible(false); // Hide the close button
-            objectiveClose.setDisable(true); // Disable the close button
-          });
-
-      // Play animation
-      menuTransition.play();
-      closeTransition.play();
     }
   }
 
@@ -351,44 +302,6 @@ public class TourGuideController {
     context.handleGuessClick();
   }
 
-  private void getSystemPrompt() {
-    // sets the values for the system prompt
-    Map<String, String> map = new HashMap<>();
-    map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
-    map.put("shoeSize", "7");
-    map.put("reason", "you were alone at your workplace reviewing the tours for the day alone");
-    map.put("kids", "a 9 year old daughter");
-    String message = PromptEngineering.getPrompt("chat.txt", map);
-    // configures the AI for the chat and sends the system prompt
-    try {
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
-          new ChatCompletionRequest(config)
-              .setN(1)
-              .setTemperature(0.2)
-              .setTopP(0.5)
-              .setMaxTokens(100);
-      runGpt(new ChatMessage("system", message));
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    // adds the message to AI history
-    chatCompletionRequest.addMessage(msg);
-    // gets the AI response and returns it
-    try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      return result.getChatMessage();
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
   @FXML
   public static void setFirstMessage() {
     isFirstMessage = true;
@@ -434,5 +347,86 @@ public class TourGuideController {
     Thread thread = new Thread(getResponse);
     thread.setDaemon(true);
     thread.start();
+  }
+
+  private void closeObjectivesMenu() {
+    if (objectiveMenu.isVisible()) {
+      // Slide the menu out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(0);
+      menuTransition.setToY(-objectiveMenu.getHeight());
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(0);
+      closeTransition.setToY(-objectiveMenu.getHeight());
+
+      // Disable the close button and hide it once the menu is hidden
+      menuTransition.setOnFinished(
+          event -> {
+            objectiveMenu.setVisible(false);
+            objectiveClose.setVisible(false); // Hide the close button
+            objectiveClose.setDisable(true); // Disable the close button
+          });
+
+      // Play animation
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  public static void setisFirstTime() {
+    isFirstTimeInit = true;
+  }
+
+  public void updateObjectiveLabels() {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
+    }
+  }
+
+  private void getSystemPrompt() {
+    // sets the values for the system prompt
+    Map<String, String> map = new HashMap<>();
+    map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
+    map.put("shoeSize", "7");
+    map.put("reason", "you were alone at your workplace reviewing the tours for the day alone");
+    map.put("kids", "a 9 year old daughter");
+    String message = PromptEngineering.getPrompt("chat.txt", map);
+    // configures the AI for the chat and sends the system prompt
+    try {
+      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      chatCompletionRequest =
+          new ChatCompletionRequest(config)
+              .setN(1)
+              .setTemperature(0.2)
+              .setTopP(0.5)
+              .setMaxTokens(100);
+      runGpt(new ChatMessage("system", message));
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds the message to AI history
+    chatCompletionRequest.addMessage(msg);
+    // gets the AI response and returns it
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

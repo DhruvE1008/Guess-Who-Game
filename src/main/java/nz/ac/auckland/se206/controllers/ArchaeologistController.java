@@ -44,34 +44,29 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  */
 public class ArchaeologistController {
 
-  @FXML private Rectangle rectCashier;
-  @FXML private Rectangle rectPerson1;
-  @FXML private Rectangle rectPerson2;
-  @FXML private Rectangle rectPerson3;
-  @FXML private Rectangle rectWaitress;
   @FXML private Button btnGuess;
-  @FXML private Text objective1Label;
-  @FXML private Text objective2Label;
+  @FXML private Button arrowButton;
+  @FXML private Button btnObjectives;
+  @FXML private Button objectiveClose;
   @FXML private ImageView crimeScene;
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
-  @FXML private Button arrowButton;
-  @FXML private VBox suspectMenu;
-  @FXML private Button btnObjectives;
-  @FXML private VBox objectiveMenu;
+  @FXML private ImageView arcbubble;
   @FXML private Label timerLabel;
-  @FXML private Button objectiveClose;
+  @FXML private Text objective1Label;
+  @FXML private Text objective2Label;
   @FXML private TextArea txtaChat;
   @FXML private TextField txtInput;
-  @FXML private ImageView arcbubble;
+  @FXML private VBox suspectMenu;
+  @FXML private VBox objectiveMenu;
 
   private static GameStateContext context = new GameStateContext();
-  private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
   private static boolean isFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
+  private GameTimer gameTimer;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
 

@@ -25,17 +25,17 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class GuessingController {
+  @FXML private Button submit;
   @FXML private Circle arcborder;
   @FXML private Circle journborder;
   @FXML private Circle guideborder;
-  @FXML private TextArea textArea;
-  @FXML private Button submit;
   @FXML private Label timerLabel;
+  @FXML private TextArea textArea;
+
+  private static ChatCompletionRequest chatCompletionRequest;
   private Timeline timeline;
   private int timeSeconds = 60;
-
   private int suspect = 0;
-  private static ChatCompletionRequest chatCompletionRequest;
   private boolean isInitialized = false;
 
   @FXML
@@ -74,63 +74,6 @@ public class GuessingController {
     }
 
     isInitialized = true; // Set this to true after initialization is done
-  }
-
-  private void startTimer() {
-    timeline =
-        new Timeline(
-            new KeyFrame(
-                Duration.seconds(1),
-                event -> {
-                  timeSeconds--;
-                  timerLabel.setText(formatTime(timeSeconds));
-                  if (timeSeconds <= 0) {
-                    timeline.stop();
-                    handleTimerEnd(); // Call the method to handle when the timer ends
-                  }
-                }));
-    timeline.setCycleCount(Timeline.INDEFINITE);
-    timeline.play();
-  }
-
-  private String formatTime(int seconds) {
-    int minutes = seconds / 60;
-    int remainingSeconds = seconds % 60;
-    return String.format("%02d:%02d", minutes, remainingSeconds);
-  }
-
-  private void handleTimerEnd() {
-    stopTimer();
-
-    try {
-      App.changeGameOver(0, "ran out of time, you didnt make a guess!!");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void stopTimer() {
-    Platform.runLater(
-        () -> {
-          if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) {
-            timeline.stop(); // Stop the timer
-          }
-        });
-  }
-
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    // adds our message to the AI history
-    chatCompletionRequest.addMessage(msg);
-    // gets our response from the AI model based on our prompt and returns it
-    try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      return result.getChatMessage();
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-      return null;
-    }
   }
 
   @FXML
@@ -284,5 +227,62 @@ public class GuessingController {
         };
     Thread thread = new Thread(getResponse);
     thread.start();
+  }
+
+  private void startTimer() {
+    timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(1),
+                event -> {
+                  timeSeconds--;
+                  timerLabel.setText(formatTime(timeSeconds));
+                  if (timeSeconds <= 0) {
+                    timeline.stop();
+                    handleTimerEnd(); // Call the method to handle when the timer ends
+                  }
+                }));
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  private String formatTime(int seconds) {
+    int minutes = seconds / 60;
+    int remainingSeconds = seconds % 60;
+    return String.format("%02d:%02d", minutes, remainingSeconds);
+  }
+
+  private void handleTimerEnd() {
+    stopTimer();
+
+    try {
+      App.changeGameOver(0, "ran out of time, you didnt make a guess!!");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void stopTimer() {
+    Platform.runLater(
+        () -> {
+          if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) {
+            timeline.stop(); // Stop the timer
+          }
+        });
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds our message to the AI history
+    chatCompletionRequest.addMessage(msg);
+    // gets our response from the AI model based on our prompt and returns it
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

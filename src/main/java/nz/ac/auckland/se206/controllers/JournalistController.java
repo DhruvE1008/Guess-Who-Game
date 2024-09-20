@@ -43,35 +43,29 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  * chat with customers and guess their profession.
  */
 public class JournalistController {
-
-  @FXML private Rectangle rectCashier;
-  @FXML private Rectangle rectPerson1;
-  @FXML private Rectangle rectPerson2;
-  @FXML private Rectangle rectPerson3;
-  @FXML private Rectangle rectWaitress;
   @FXML private Button btnGuess;
-  @FXML private Text objective1Label;
-  @FXML private Text objective2Label;
+  @FXML private Button objectiveClose;
+  @FXML private Button btnObjectives;
+  @FXML private Button arrowButton;
   @FXML private ImageView crimeScene;
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
   @FXML private ImageView guide;
-  @FXML private Button arrowButton;
-  @FXML private VBox suspectMenu;
-  @FXML private Button btnObjectives;
-  @FXML private VBox objectiveMenu;
-  @FXML private Button objectiveClose;
-  @FXML private TextArea txtaChat;
-  @FXML private TextField txtInput;
   @FXML private ImageView journbubble;
   @FXML private Label timerLabel;
+  @FXML private TextArea txtaChat;
+  @FXML private TextField txtInput;
+  @FXML private Text objective1Label;
+  @FXML private Text objective2Label;
+  @FXML private VBox suspectMenu;
+  @FXML private VBox objectiveMenu;
 
   private static GameStateContext context = new GameStateContext();
-  private GameTimer gameTimer;
   private static boolean isFirstTimeInit = true;
   private static boolean isFirstTime = true;
   private static boolean isFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
+  private GameTimer gameTimer;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
 
@@ -154,19 +148,6 @@ public class JournalistController {
     isFirstTimeInit = true;
   }
 
-  // Update the objective labels
-  public void updateObjectiveLabels() {
-    // Update the first objective label
-    if (objectivesManager.isObjectiveCompleted(0)) {
-      objective1Label.setStyle("-fx-strikethrough: true;");
-    }
-
-    // Update the second objective label
-    if (objectivesManager.isObjectiveCompleted(1)) {
-      objective2Label.setStyle("-fx-strikethrough: true;");
-    }
-  }
-
   /**
    * Handles the key pressed event.
    *
@@ -231,33 +212,6 @@ public class JournalistController {
 
       rotateTransition.play();
       translateTransition.play();
-    }
-  }
-
-  private void closeObjectivesMenu() {
-    if (objectiveMenu.isVisible()) {
-      // Slide the menu out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(0);
-      menuTransition.setToY(-objectiveMenu.getHeight());
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(0);
-      closeTransition.setToY(-objectiveMenu.getHeight());
-
-      // Disable the close button and hide it once the menu is hidden
-      menuTransition.setOnFinished(
-          event -> {
-            objectiveMenu.setVisible(false);
-            objectiveClose.setVisible(false); // Hide the close button
-            objectiveClose.setDisable(true); // Disable the close button
-          });
-
-      // Play animation
-      menuTransition.play();
-      closeTransition.play();
     }
   }
 
@@ -354,47 +308,6 @@ public class JournalistController {
     context.handleGuessClick();
   }
 
-  private void getSystemPrompt() {
-    // stores all the values for the prompt
-    Map<String, String> map = new HashMap<>();
-    map.put("profession", "a journalist who desperately needs new stories");
-    map.put("shoeSize", "7");
-    map.put(
-        "reason",
-        "you had a big story to cover the next day, so you were at home all night preparing for"
-            + " it");
-    map.put("kids", "a 9 year old son");
-    String message = PromptEngineering.getPrompt("chat.txt", map);
-    // sets up the AI chat
-    try {
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
-          new ChatCompletionRequest(config)
-              .setN(1)
-              .setTemperature(0.2)
-              .setTopP(0.5)
-              .setMaxTokens(100);
-      runGpt(new ChatMessage("system", message));
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
-    // adds the message to the AI history
-    chatCompletionRequest.addMessage(msg);
-    // gets the response from the AI based on the requirements
-    try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      return result.getChatMessage();
-    } catch (ApiProxyException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
   @FXML
   public static void setFirstMessage() {
     isFirstMessage = true;
@@ -440,5 +353,86 @@ public class JournalistController {
     Thread thread = new Thread(getResponse);
     thread.setDaemon(true);
     thread.start();
+  }
+
+  // Update the objective labels
+  public void updateObjectiveLabels() {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
+    }
+  }
+
+  private void closeObjectivesMenu() {
+    if (objectiveMenu.isVisible()) {
+      // Slide the menu out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(0);
+      menuTransition.setToY(-objectiveMenu.getHeight());
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(0);
+      closeTransition.setToY(-objectiveMenu.getHeight());
+
+      // Disable the close button and hide it once the menu is hidden
+      menuTransition.setOnFinished(
+          event -> {
+            objectiveMenu.setVisible(false);
+            objectiveClose.setVisible(false); // Hide the close button
+            objectiveClose.setDisable(true); // Disable the close button
+          });
+
+      // Play animation
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  private void getSystemPrompt() {
+    // stores all the values for the prompt
+    Map<String, String> map = new HashMap<>();
+    map.put("profession", "a journalist who desperately needs new stories");
+    map.put("shoeSize", "7");
+    map.put(
+        "reason",
+        "you had a big story to cover the next day, so you were at home all night preparing for"
+            + " it");
+    map.put("kids", "a 9 year old son");
+    String message = PromptEngineering.getPrompt("chat.txt", map);
+    // sets up the AI chat
+    try {
+      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      chatCompletionRequest =
+          new ChatCompletionRequest(config)
+              .setN(1)
+              .setTemperature(0.2)
+              .setTopP(0.5)
+              .setMaxTokens(100);
+      runGpt(new ChatMessage("system", message));
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds the message to the AI history
+    chatCompletionRequest.addMessage(msg);
+    // gets the response from the AI based on the requirements
+    try {
+      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      Choice result = chatCompletionResult.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(result.getChatMessage());
+      return result.getChatMessage();
+    } catch (ApiProxyException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
