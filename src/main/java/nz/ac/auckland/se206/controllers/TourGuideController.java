@@ -39,30 +39,39 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  * chat with customers and guess their profession.
  */
 public class TourGuideController {
-  private static GameStateContext context = new GameStateContext();
-  private static boolean isFirstTimeInit = true;
+  private static GameStateContext gameContext = new GameStateContext();
+
+  private static boolean isInit = true;
+
   private static boolean isFirstTime = true;
-  private static boolean isFirstMessage = true;
+
+  private static boolean FirstMessage = true;
+
   private static ChatCompletionRequest chatCompletionRequest;
 
   public static void setisFirstTime() {
-    isFirstTimeInit = true;
+    isInit = true;
   }
 
   @FXML
   public static void setFirstMessage() {
-    isFirstMessage = true;
+    FirstMessage = true;
   }
 
   @FXML private Button btnGuess;
+
   @FXML private Button arrowButton;
   @FXML private Button btnObjectives;
+
   @FXML private Button objectiveClose;
   @FXML private ImageView crimeScene;
+
   @FXML private ImageView archaeologist;
   @FXML private ImageView journalist;
+
   @FXML private ImageView guide;
   @FXML private ImageView guidebubble;
+
   @FXML private Label timerLabel;
   @FXML private Text objective1Label;
   @FXML private Text objective2Label;
@@ -93,7 +102,7 @@ public class TourGuideController {
             onSendMessage(null);
           }
         });
-    if (isFirstTimeInit) {
+    if (isInit) {
       Task<Void> getGreeting =
           new Task<Void>() {
             @Override
@@ -118,10 +127,10 @@ public class TourGuideController {
               return null;
             }
           };
-      Thread thread = new Thread(getGreeting);
-      thread.setDaemon(true);
-      thread.start();
-      isFirstTimeInit = false;
+      Thread greetThread = new Thread(getGreeting);
+      greetThread.setDaemon(true);
+      greetThread.start();
+      isInit = false;
     }
     objectivesManager = ObjectivesManager.getInstance();
     updateObjectiveLabels(); // Initial update
@@ -132,6 +141,7 @@ public class TourGuideController {
 
   @FXML
   private void onToggleMenu() {
+
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
   }
 
@@ -161,7 +171,7 @@ public class TourGuideController {
       player.stop();
     }
     ImageView clickedImageView = (ImageView) event.getSource();
-    context.handleProfileClick(event, clickedImageView.getId());
+    gameContext.handleProfileClick(event, clickedImageView.getId());
   }
 
   /**
@@ -172,15 +182,15 @@ public class TourGuideController {
    */
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
-    context.handleGuessClick();
+    gameContext.handleGuessClick();
   }
 
   @FXML
   private void onSendMessage(ActionEvent event) {
     // if this is the first message, complete the first objective step
-    if (isFirstMessage) {
+    if (FirstMessage) {
       objectivesManager.completeObjectiveStep(0);
-      isFirstMessage = false;
+      FirstMessage = false;
     }
     // if this is the first time talking to the suspect, you should clear the chat
     if (isFirstTime) {
@@ -203,7 +213,8 @@ public class TourGuideController {
               ChatMessage msg = new ChatMessage("user", message);
               ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
               // add the user message and AI response to the chat area
-              context.handleSendChatClick(txtaChat, message, "Tour Guide", response.getContent());
+              gameContext.handleSendChatClick(
+                  txtaChat, message, "Tour Guide", response.getContent());
               Platform.runLater(() -> guidebubble.setVisible(false));
             } catch (IOException | ApiProxyException e) {
               // TODO Auto-generated catch block
@@ -225,20 +236,24 @@ public class TourGuideController {
     // sets the values for the system prompt
     Map<String, String> map = new HashMap<>();
     map.put("profession", "a tour guide who believes that the idol belongs to his ancestors");
+
     map.put("shoeSize", "7");
+
     map.put("reason", "you were alone at your workplace reviewing the tours for the day alone");
+
     map.put("kids", "a 9 year old daughter");
-    String message = PromptEngineering.getPrompt("chat.txt", map);
+    String promptMessage = PromptEngineering.getPrompt("chat.txt", map);
     // configures the AI for the chat and sends the system prompt
     try {
-      ApiProxyConfig config = ApiProxyConfig.readConfig();
+      ApiProxyConfig configuration = ApiProxyConfig.readConfig();
+
       chatCompletionRequest =
-          new ChatCompletionRequest(config)
+          new ChatCompletionRequest(configuration)
               .setN(1)
               .setTemperature(0.2)
               .setTopP(0.5)
               .setMaxTokens(100);
-      runGpt(new ChatMessage("system", message));
+      runGpt(new ChatMessage("system", promptMessage));
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
@@ -249,8 +264,10 @@ public class TourGuideController {
     chatCompletionRequest.addMessage(msg);
     // gets the AI response and returns it
     try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
+      ChatCompletionResult completionRequest = chatCompletionRequest.execute();
+
+      Choice result = completionRequest.getChoices().iterator().next();
+
       chatCompletionRequest.addMessage(result.getChatMessage());
       return result.getChatMessage();
     } catch (ApiProxyException e) {

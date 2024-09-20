@@ -55,12 +55,14 @@ public class GuessingController {
     startTimer(); // Start the timer only if not already initialized
 
     try {
+      // loads the template for the chat
       String txt =
           PromptEngineering.loadTemplate(
               PromptEngineering.class
                   .getClassLoader()
                   .getResource("prompts/guessChat.txt")
                   .toURI());
+      // reads the config file
       ApiProxyConfig config = ApiProxyConfig.readConfig();
       chatCompletionRequest =
           new ChatCompletionRequest(config)
@@ -68,6 +70,7 @@ public class GuessingController {
               .setTemperature(0.2)
               .setTopP(0.5)
               .setMaxTokens(100);
+      // sets up the chat
       Task<Void> setup =
           new Task<Void>() {
             @Override
@@ -76,6 +79,7 @@ public class GuessingController {
               return null;
             }
           };
+      // starts the thread
       Thread thread = new Thread(setup);
       thread.start();
     } catch (ApiProxyException e) {
