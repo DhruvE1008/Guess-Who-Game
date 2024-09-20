@@ -14,15 +14,17 @@ import javafx.util.Duration;
  * suspect overlay is a menu that displays information about the suspects in the game.
  */
 public class SuspectOverlay {
-
+  // This method rotates the arrow button by the specified angle and translates it by the specified
+  // amount.
   public static void rotateButton(Button arrowButton, int angle, double xTranslation) {
     RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
     rotateTransition.setByAngle(angle);
 
+    // Translate the button by the specified amount
     TranslateTransition translateTransition =
         new TranslateTransition(Duration.millis(300), arrowButton);
     translateTransition.setByX(xTranslation);
-
+    // Play animations
     rotateTransition.play();
     translateTransition.play();
   }
@@ -34,7 +36,9 @@ public class SuspectOverlay {
    * @param arrowButton The button that toggles the menu
    */
   public static void toggleMenu(VBox menu, Button arrowButton) {
+    // Check if the menu is visible
     boolean isVisible = menu.isVisible();
+    // If the menu is not visible, slide it in
     if (!isVisible) {
       menu.setVisible(true);
       TranslateTransition menuTransition = new TranslateTransition(Duration.millis(300), menu);
@@ -42,6 +46,7 @@ public class SuspectOverlay {
       menuTransition.setToX(0);
       menuTransition.play();
       rotateButton(arrowButton, 180, 140);
+      // If the menu is visible, slide it out
     } else {
       TranslateTransition menuTransition = new TranslateTransition(Duration.millis(300), menu);
       menuTransition.setFromX(0);
@@ -62,7 +67,7 @@ public class SuspectOverlay {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1.2);
     hoveredImageView.setScaleY(1.2);
-    App.changeCursor("hover");
+    App.changeCursor("HAND");
   }
 
   /**
