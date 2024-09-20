@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class SuspectOverlay {
@@ -114,6 +115,19 @@ public class SuspectOverlay {
       // Play animation
       menuTransition.play();
       closeTransition.play();
+    }
+  }
+
+  public static void updateObjectiveLabels(
+      ObjectivesManager objectivesManager, Text objective1Label, Text objective2Label) {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
     }
   }
 }

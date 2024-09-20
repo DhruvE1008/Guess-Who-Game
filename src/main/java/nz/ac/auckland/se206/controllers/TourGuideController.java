@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
@@ -21,7 +20,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -238,43 +236,8 @@ public class TourGuideController {
     thread.start();
   }
 
-  private void closeObjectivesMenu() {
-    if (objectiveMenu.isVisible()) {
-      // Slide the menu out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(0);
-      menuTransition.setToY(-objectiveMenu.getHeight());
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(0);
-      closeTransition.setToY(-objectiveMenu.getHeight());
-
-      // Disable the close button and hide it once the menu is hidden
-      menuTransition.setOnFinished(
-          event -> {
-            objectiveMenu.setVisible(false);
-            objectiveClose.setVisible(false); // Hide the close button
-            objectiveClose.setDisable(true); // Disable the close button
-          });
-
-      // Play animation
-      menuTransition.play();
-      closeTransition.play();
-    }
-  }
-
   public void updateObjectiveLabels() {
-    // Update the first objective label
-    if (objectivesManager.isObjectiveCompleted(0)) {
-      objective1Label.setStyle("-fx-strikethrough: true;");
-    }
-
-    // Update the second objective label
-    if (objectivesManager.isObjectiveCompleted(1)) {
-      objective2Label.setStyle("-fx-strikethrough: true;");
-    }
+    SuspectOverlay.updateObjectiveLabels(objectivesManager, objective1Label, objective2Label);
   }
 
   private void getSystemPrompt() {
