@@ -40,18 +40,18 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  */
 public class JournalistController {
   private static GameStateContext context = new GameStateContext();
-  private static boolean isFirstTimeInit = true;
-  private static boolean isFirstTime = true;
-  private static boolean isFirstMessage = true;
+  private static boolean firstInitialization = true;
+  private static boolean firstInteraction = true;
+  private static boolean journFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
 
   public static void setisFirstTime() {
-    isFirstTimeInit = true;
+    firstInitialization = true;
   }
 
   @FXML
   public static void setFirstMessage() {
-    isFirstMessage = true;
+    journFirstMessage = true;
   }
 
   @FXML private Button btnGuess;
@@ -72,7 +72,7 @@ public class JournalistController {
   @FXML private VBox objectiveMenu;
 
   private GameTimer gameTimer;
-  private MediaPlayer player;
+  private MediaPlayer journmedia;
   private ObjectivesManager objectivesManager;
 
   /**
@@ -93,7 +93,7 @@ public class JournalistController {
             onSendMessage(null);
           }
         });
-    if (isFirstTimeInit) {
+    if (firstInitialization) {
       Task<Void> getGreeting =
           new Task<Void>() {
             @Override
@@ -113,17 +113,17 @@ public class JournalistController {
                       // TODO Auto-generated catch block
                       e.printStackTrace();
                     }
-                    player = new MediaPlayer(sound);
-                    player.play();
+                    journmedia = new MediaPlayer(sound);
+                    journmedia.play();
                   });
               getSystemPrompt();
               return null;
             }
           };
-      Thread thread = new Thread(getGreeting);
-      thread.setDaemon(true);
-      thread.start();
-      isFirstTimeInit = false;
+      Thread journThread = new Thread(getGreeting);
+      journThread.setDaemon(true);
+      journThread.start();
+      firstInitialization = false;
     }
     objectivesManager = ObjectivesManager.getInstance();
     updateObjectiveLabels(); // Initial update
@@ -159,28 +159,28 @@ public class JournalistController {
 
   @FXML
   private void onProfileClicking(MouseEvent event) throws IOException {
-    if (player != null) {
-      player.stop();
+    if (journmedia != null) {
+      journmedia.stop();
     }
-    ImageView clickedImageView = (ImageView) event.getSource();
-    context.handleProfileClick(event, clickedImageView.getId());
+    ImageView suspectClicked = (ImageView) event.getSource();
+    context.handleProfileClick(event, suspectClicked.getId());
   }
 
   @FXML
   private void onSendMessage(ActionEvent event) {
     // Complete the first objective step if it's the first message
-    if (isFirstMessage) {
+    if (journFirstMessage) {
       objectivesManager.completeObjectiveStep(0);
-      isFirstMessage = false;
+      journFirstMessage = false;
     }
     // if its the first time talking to the journalist clear the chat
-    if (isFirstTime) {
+    if (firstInteraction) {
       txtaChat.clear();
-      isFirstTime = false;
+      firstInteraction = false;
     }
-    String message = txtInput.getText().trim();
+    String userMessage = txtInput.getText().trim();
     // if the message is empty do nothing
-    if (message.isEmpty()) {
+    if (userMessage.isEmpty()) {
       return;
     }
     txtInput.clear();
@@ -191,10 +191,11 @@ public class JournalistController {
             // set the talking bubble to visible
             Platform.runLater(() -> journbubble.setVisible(true));
             try {
-              ChatMessage msg = new ChatMessage("user", message);
-              ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
+              ChatMessage message = new ChatMessage("user", userMessage);
+              ChatMessage journResponse = runGpt(new ChatMessage("system", message.getContent()));
               // add the user message and the AI response to the chat
-              context.handleSendChatClick(txtaChat, message, "Journalist", response.getContent());
+              context.handleSendChatClick(
+                  txtaChat, userMessage, "Journalist", journResponse.getContent());
               Platform.runLater(() -> journbubble.setVisible(false));
             } catch (IOException | ApiProxyException e) {
               // TODO Auto-generated catch block
@@ -239,15 +240,15 @@ public class JournalistController {
     }
   }
 
-  private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+  private ChatMessage runGpt(ChatMessage usermsg) throws ApiProxyException {
     // adds the message to the AI history
-    chatCompletionRequest.addMessage(msg);
+    chatCompletionRequest.addMessage(usermsg);
     // gets the response from the AI based on the requirements
     try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
-      Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
-      return result.getChatMessage();
+      ChatCompletionResult chatResultCompletion = chatCompletionRequest.execute();
+      Choice resultChatCompletionResult = chatResultCompletion.getChoices().iterator().next();
+      chatCompletionRequest.addMessage(resultChatCompletionResult.getChatMessage());
+      return resultChatCompletionResult.getChatMessage();
     } catch (ApiProxyException e) {
       e.printStackTrace();
       return null;
