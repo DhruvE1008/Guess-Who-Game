@@ -159,7 +159,7 @@ public class JournalistController {
   }
 
   @FXML
-  private void toggleMenu() {
+  private void handleToggleMenu() {
     boolean isVisible = suspectMenu.isVisible();
 
     if (!isVisible) {
@@ -220,7 +220,7 @@ public class JournalistController {
     if (!objectiveMenu.isVisible()) {
       // Close the suspect menu if it's open
       if (suspectMenu.isVisible()) {
-        toggleMenu(); // This will close the suspectMenu
+        handleToggleMenu(); // This will close the suspectMenu
       }
 
       // Ensure the menu is off-screen before showing it
@@ -314,7 +314,7 @@ public class JournalistController {
   }
 
   @FXML
-  public void onSendMessage(ActionEvent event) {
+  private void onSendMessage(ActionEvent event) {
     // Complete the first objective step if it's the first message
     if (isFirstMessage) {
       objectivesManager.completeObjectiveStep(0);

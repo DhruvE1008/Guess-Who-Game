@@ -153,7 +153,7 @@ public class TourGuideController {
   }
 
   @FXML
-  private void toggleMenu() {
+  private void handleToggleMenu() {
     boolean isVisible = suspectMenu.isVisible();
 
     if (!isVisible) {
@@ -214,7 +214,7 @@ public class TourGuideController {
     if (!objectiveMenu.isVisible()) {
       // Close the suspect menu if it's open
       if (suspectMenu.isVisible()) {
-        toggleMenu(); // This will close the suspectMenu
+        handleToggleMenu(); // This will close the suspectMenu
       }
 
       // Ensure the menu is off-screen before showing it
@@ -308,7 +308,7 @@ public class TourGuideController {
   }
 
   @FXML
-  public void onSendMessage(ActionEvent event) {
+  private void onSendMessage(ActionEvent event) {
     // if this is the first message, complete the first objective step
     if (isFirstMessage) {
       objectivesManager.completeObjectiveStep(0);

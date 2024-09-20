@@ -183,7 +183,7 @@ public class RoomController {
   private void onCamClicked() {
     // if the suspect menu is visible then it will be closed
     if (suspectMenu.isVisible()) {
-      toggleMenu();
+      handleToggleMenu();
     }
     // closes all the other clues
     handleCloseClick(null);
@@ -294,7 +294,7 @@ public class RoomController {
   }
 
   @FXML
-  private void toggleMenu() {
+  private void handleToggleMenu() {
     if (camSlide.isVisible()) {
       onCloseButton2Pressed();
     }
@@ -386,7 +386,7 @@ public class RoomController {
     if (!objectiveMenu.isVisible()) {
       // Close the suspect menu if it's open
       if (suspectMenu.isVisible()) {
-        toggleMenu(); // This will close the suspectMenu
+        handleToggleMenu(); // This will close the suspectMenu
       }
 
       // Ensure the menu is off-screen before showing it
