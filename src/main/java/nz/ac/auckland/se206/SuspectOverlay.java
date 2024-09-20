@@ -9,6 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+/**
+ * This class contains methods that are used to animate the suspect overlay and objectives menu. The
+ * suspect overlay is a menu that displays information about the suspects in the game.
+ */
 public class SuspectOverlay {
 
   public static void rotateButton(Button arrowButton, int angle, double xTranslation) {
@@ -23,6 +27,12 @@ public class SuspectOverlay {
     translateTransition.play();
   }
 
+  /**
+   * This method toggles the suspect menu by sliding it in and out of view.
+   *
+   * @param menu The suspect menu to toggle
+   * @param arrowButton The button that toggles the menu
+   */
   public static void toggleMenu(VBox menu, Button arrowButton) {
     boolean isVisible = menu.isVisible();
     if (!isVisible) {
@@ -42,6 +52,12 @@ public class SuspectOverlay {
     }
   }
 
+  /**
+   * This method is called when the user hovers over an image view. It scales the image view to 1.2x
+   * its original size and changes the cursor to a hand.
+   *
+   * @param event The mouse event that triggered this method
+   */
   public static void onHover(MouseEvent event) {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1.2);
@@ -49,6 +65,12 @@ public class SuspectOverlay {
     App.changeCursor("hover");
   }
 
+  /**
+   * This method is called when the user exits an image view. It scales the image view back to its
+   * original size and changes the cursor to the default cursor.
+   *
+   * @param event The mouse event that triggered this method
+   */
   public static void onExit(MouseEvent event) {
     ImageView hoveredImageView = (ImageView) event.getSource();
     hoveredImageView.setScaleX(1);
@@ -56,6 +78,14 @@ public class SuspectOverlay {
     App.changeCursor("default");
   }
 
+  /**
+   * This method toggles the objectives menu by sliding it in and out of view.
+   *
+   * @param objectiveMenu The objectives menu to toggle
+   * @param objectiveClose The button that closes the objectives menu
+   * @param suspectMenu The suspect menu that should be closed when the objectives menu is opened
+   * @param closeSuspectMenuAction The action to run when the suspect menu is closed
+   */
   public static void toggleObjectives(
       VBox objectiveMenu,
       Button objectiveClose,
@@ -91,6 +121,12 @@ public class SuspectOverlay {
     }
   }
 
+  /**
+   * This method closes the objectives menu by sliding it out of view.
+   *
+   * @param objectiveMenu The objectives menu to close
+   * @param objectiveClose The button that closes the objectives menu
+   */
   public static void closeObjectivesMenu(VBox objectiveMenu, Button objectiveClose) {
     if (objectiveMenu.isVisible()) {
       // Slide the menu out
@@ -118,6 +154,13 @@ public class SuspectOverlay {
     }
   }
 
+  /**
+   * This method updates the objective labels based on the objectives manager.
+   *
+   * @param objectivesManager The objectives manager to get the objectives from
+   * @param objective1Label The label for the first objective
+   * @param objective2Label The label for the second objective
+   */
   public static void updateObjectiveLabels(
       ObjectivesManager objectivesManager, Text objective1Label, Text objective2Label) {
     // Update the first objective label
