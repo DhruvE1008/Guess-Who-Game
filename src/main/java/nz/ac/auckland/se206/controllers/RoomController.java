@@ -107,7 +107,7 @@ public class RoomController {
                 },
                 gameTimer.timeInSecondsProperty()));
 
-    frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
+    frontImage = new Image(getClass().getResourceAsStream("/images/kid.jpg"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
 
     secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));

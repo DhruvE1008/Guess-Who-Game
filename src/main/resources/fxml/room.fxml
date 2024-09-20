@@ -15,15 +15,15 @@
    <children>
       <ImageView fitHeight="696.0" fitWidth="728.0" layoutX="1.0" layoutY="1.0" preserveRatio="true">
          <image>
-            <Image url="@../images/background%20with%20cluesv5.png" />
+            <Image url="@../images/background_with_cluesv6.png" />
          </image>
       </ImageView>
          
   
       <ImageView fx:id="camSlide" fitHeight="411.0" fitWidth="505.0" layoutX="97.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="pictureBackground" fitHeight="44.0" fitWidth="66.0" layoutX="201.0" layoutY="505.0" onMouseClicked="#handlePhotoClueClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pictureBackground" fitHeight="50.0" fitWidth="70.0" layoutX="197.0" layoutY="500.0" onMouseClicked="#handlePhotoClueClick" onMouseEntered="#onHover" onMouseExited="#onExit" opacity="0.79" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/picturecluehover.png" />
+            <Image url="@../images/kidhover.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="329.0" layoutY="607.0" onMouseClicked="#handleFootClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
