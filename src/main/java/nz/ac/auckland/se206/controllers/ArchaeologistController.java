@@ -168,39 +168,13 @@ public class ArchaeologistController {
 
   @FXML
   private void toggleObjectives() {
-    if (!objectiveMenu.isVisible()) {
-      // Close the suspect menu if it's open
-      if (suspectMenu.isVisible()) {
-        handleToggleMenu(); // This will close the suspectMenu
-      }
-
-      // Ensure the menu is off-screen before showing it
-      objectiveMenu.setTranslateY(-objectiveMenu.getHeight());
-      objectiveClose.setTranslateY(-objectiveMenu.getHeight());
-      objectiveMenu.setVisible(true);
-      objectiveClose.setVisible(true); // Show the close button
-      objectiveClose.setDisable(false); // Enable the close button
-
-      // Slide the menu in
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(-objectiveMenu.getHeight());
-      menuTransition.setToY(0);
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(-objectiveMenu.getHeight());
-      closeTransition.setToY(0);
-
-      // Play animations
-      menuTransition.play();
-      closeTransition.play();
-    }
+    SuspectOverlay.toggleObjectives(
+        objectiveMenu, objectiveClose, suspectMenu, this::handleToggleMenu);
   }
 
   @FXML
   private void closeObjectives() {
-    closeObjectivesMenu();
+    SuspectOverlay.closeObjectivesMenu(objectiveMenu, objectiveClose);
   }
 
   @FXML
