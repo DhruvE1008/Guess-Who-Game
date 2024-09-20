@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -256,40 +255,14 @@ public class RoomController {
     closeButtonImage1.setVisible(false);
   }
 
-  /**
-   * Handles the key pressed event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyPressed(KeyEvent event) {
-    System.out.println("Key " + event.getCode() + " pressed");
-  }
-
-  /**
-   * Handles the key released event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyReleased(KeyEvent event) {
-    System.out.println("Key " + event.getCode() + " released");
-  }
-
   @FXML
   private void onHover(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1.2);
-    hoveredImageView.setScaleY(1.2);
-    App.changeCursor("hover");
+    SuspectOverlay.onHover(event);
   }
 
   @FXML
   private void onExit(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1);
-    hoveredImageView.setScaleY(1);
-    App.changeCursor("default");
+    SuspectOverlay.onExit(event);
   }
 
   @FXML

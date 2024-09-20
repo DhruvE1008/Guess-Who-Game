@@ -16,12 +16,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
@@ -142,16 +140,6 @@ public class TourGuideController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
-  /**
-   * Handles the key pressed event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyPressed(KeyEvent event) {
-    System.out.println("Key " + event.getCode() + " pressed");
-  }
-
   @FXML
   private void handleToggleMenu() {
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
@@ -194,28 +182,14 @@ public class TourGuideController {
     closeObjectivesMenu();
   }
 
-  /**
-   * Handles the key released event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyReleased(KeyEvent event) {
-    System.out.println("Key " + event.getCode() + " released");
-  }
-
   @FXML
   private void onHover(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1.2);
-    hoveredImageView.setScaleY(1.2);
+    SuspectOverlay.onHover(event);
   }
 
   @FXML
   private void onExit(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1);
-    hoveredImageView.setScaleY(1);
+    SuspectOverlay.onExit(event);
   }
 
   @FXML
@@ -225,18 +199,6 @@ public class TourGuideController {
     }
     ImageView clickedImageView = (ImageView) event.getSource();
     context.handleProfileClick(event, clickedImageView.getId());
-  }
-
-  /**
-   * Handles mouse clicks on rectangles representing people in the room.
-   *
-   * @param event the mouse event triggered by clicking a rectangle
-   * @throws IOException if there is an I/O error
-   */
-  @FXML
-  private void handleRectangleClick(MouseEvent event) throws IOException {
-    Rectangle clickedRectangle = (Rectangle) event.getSource();
-    context.handleRectangleClick(event, clickedRectangle.getId());
   }
 
   /**
