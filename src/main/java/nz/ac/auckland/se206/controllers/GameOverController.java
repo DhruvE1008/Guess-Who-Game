@@ -16,15 +16,6 @@ public class GameOverController {
 
   private int suspect;
 
-  public void setSuspect(int suspect) {
-    this.suspect = suspect;
-    if (suspect == 2) {
-      correctLabel.setVisible(true);
-    } else {
-      incorrectLabel.setVisible(true);
-    }
-  }
-
   @FXML
   public void setFeedback(String feedback) {
     if (suspect == 2 || suspect == 0) {
@@ -43,5 +34,14 @@ public class GameOverController {
   private void handleExit(MouseEvent event) {
 
     App.exitGame();
+  }
+
+  public void setSuspect(int suspect) {
+    this.suspect = suspect;
+    if (suspect == 2) {
+      correctLabel.setVisible(true);
+    } else {
+      incorrectLabel.setVisible(true);
+    }
   }
 }

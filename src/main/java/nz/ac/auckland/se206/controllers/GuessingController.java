@@ -25,17 +25,17 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 public class GuessingController {
+  @FXML private Button submit;
   @FXML private Circle arcborder;
   @FXML private Circle journborder;
   @FXML private Circle guideborder;
-  @FXML private TextArea textArea;
-  @FXML private Button submit;
   @FXML private Label timerLabel;
+  @FXML private TextArea textArea;
+
+  private static ChatCompletionRequest chatCompletionRequest;
   private Timeline timeline;
   private int timeSeconds = 60;
-
   private int suspect = 0;
-  private static ChatCompletionRequest chatCompletionRequest;
   private boolean isInitialized = false;
 
   @FXML
@@ -74,6 +74,159 @@ public class GuessingController {
     }
 
     isInitialized = true; // Set this to true after initialization is done
+  }
+
+  @FXML
+  public void onKeyPressed(KeyEvent event) {
+    System.out.println("Key " + event.getCode() + " pressed");
+  }
+
+  /**
+   * Handles the key released event.
+   *
+   * @param event the key event
+   */
+  @FXML
+  public void onKeyReleased(KeyEvent event) {
+    System.out.println("Key " + event.getCode() + " released");
+  }
+
+  @FXML
+  private void onArcHover(MouseEvent event) {
+    // if the mouse hovers over the image, the image will scale up
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1.2);
+    hoveredImageView.setScaleY(1.2);
+    arcborder.setScaleX(1.2);
+    arcborder.setScaleY(1.2);
+    // the cursor will change to a hand when the mouse hovers over the image
+    App.changeCursor("HAND");
+  }
+
+  @FXML
+  private void onJournHover(MouseEvent event) {
+    // when the mouse hovers over the image, the image will scale up
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1.2);
+    hoveredImageView.setScaleY(1.2);
+    journborder.setScaleX(1.2);
+    journborder.setScaleY(1.2);
+    // the cursor also changes to a hand when hovered over the image
+    App.changeCursor("HAND");
+  }
+
+  @FXML
+  private void onGuideHover(MouseEvent event) {
+    // make the image scale up when the mouse hovers over the image
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1.2);
+    hoveredImageView.setScaleY(1.2);
+    guideborder.setScaleX(1.2);
+    guideborder.setScaleY(1.2);
+    // change the cursor to a hand when the mouse hovers over the image
+    App.changeCursor("HAND");
+  }
+
+  @FXML
+  private void onArcExit(MouseEvent event) {
+    // when the mouse exits the image, the image will scale back to normal
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1);
+    hoveredImageView.setScaleY(1);
+    arcborder.setScaleX(1);
+    arcborder.setScaleY(1);
+    // when the mouse exits the image, the cursor will go back to default
+    App.changeCursor("default");
+  }
+
+  @FXML
+  private void onJournExit(MouseEvent event) {
+    // sets the values back to normal when the mouse exits the image
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1);
+    hoveredImageView.setScaleY(1);
+    journborder.setScaleX(1);
+    journborder.setScaleY(1);
+    // sets the cursor back to default when the mouse exits the image
+    App.changeCursor("default");
+  }
+
+  @FXML
+  private void onGuideExit(MouseEvent event) {
+    // when exiting the image, the image will scale back to normal
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    hoveredImageView.setScaleX(1);
+    hoveredImageView.setScaleY(1);
+    guideborder.setScaleX(1);
+    guideborder.setScaleY(1);
+    // the cursor will be set to the default cursor when the mouse exits the image
+    App.changeCursor("default");
+  }
+
+  @FXML
+  private void onClick(MouseEvent event) {
+    ImageView hoveredImageView = (ImageView) event.getSource();
+    // basically allows the user to select a suspect
+    // the suspect clicked will be highlighted
+    // we allow for suspects to be changed
+    if (hoveredImageView.getId().equals("arc")) {
+      journborder.setVisible(false);
+      guideborder.setVisible(false);
+      arcborder.setVisible(true);
+      suspect = 1;
+    }
+    if (hoveredImageView.getId().equals("journ")) {
+      arcborder.setVisible(false);
+      guideborder.setVisible(false);
+      journborder.setVisible(true);
+      suspect = 2;
+    }
+    if (hoveredImageView.getId().equals("guide")) {
+      arcborder.setVisible(false);
+      journborder.setVisible(false);
+      guideborder.setVisible(true);
+      suspect = 3;
+    }
+    // check if the submit button should be enabled
+    checkSubmitEnabled();
+  }
+
+  @FXML
+  private void changeText() {
+    checkSubmitEnabled();
+  }
+
+  @FXML
+  private void checkSubmitEnabled() {
+    if (suspect != 0 && !textArea.getText().isEmpty()) {
+      submit.setDisable(false);
+    } else {
+      submit.setDisable(true);
+    }
+  }
+
+  @FXML
+  private void handleSubmit(MouseEvent event) throws IOException {
+    stopTimer();
+    Task<Void> getResponse =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            ChatMessage feedback = runGpt(new ChatMessage("system", textArea.getText()));
+            Platform.runLater(
+                () -> {
+                  try {
+                    App.changeGameOver(suspect, feedback.getContent());
+                  } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+                });
+            return null;
+          }
+        };
+    Thread thread = new Thread(getResponse);
+    thread.start();
   }
 
   private void startTimer() {
@@ -119,7 +272,9 @@ public class GuessingController {
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
+    // adds our message to the AI history
     chatCompletionRequest.addMessage(msg);
+    // gets our response from the AI model based on our prompt and returns it
     try {
       ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
@@ -129,143 +284,5 @@ public class GuessingController {
       e.printStackTrace();
       return null;
     }
-  }
-
-  @FXML
-  public void onKeyPressed(KeyEvent event) {
-    System.out.println("Key " + event.getCode() + " pressed");
-  }
-
-  /**
-   * Handles the key released event.
-   *
-   * @param event the key event
-   */
-  @FXML
-  public void onKeyReleased(KeyEvent event) {
-    System.out.println("Key " + event.getCode() + " released");
-  }
-
-  @FXML
-  private void onArcHover(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1.2);
-    hoveredImageView.setScaleY(1.2);
-    arcborder.setScaleX(1.2);
-    arcborder.setScaleY(1.2);
-    App.changeCursor("HAND");
-  }
-
-  @FXML
-  private void onJournHover(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1.2);
-    hoveredImageView.setScaleY(1.2);
-    journborder.setScaleX(1.2);
-    journborder.setScaleY(1.2);
-    App.changeCursor("HAND");
-  }
-
-  @FXML
-  private void onGuideHover(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1.2);
-    hoveredImageView.setScaleY(1.2);
-    guideborder.setScaleX(1.2);
-    guideborder.setScaleY(1.2);
-    App.changeCursor("HAND");
-  }
-
-  @FXML
-  private void onArcExit(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1);
-    hoveredImageView.setScaleY(1);
-    arcborder.setScaleX(1);
-    arcborder.setScaleY(1);
-
-    App.changeCursor("default");
-  }
-
-  @FXML
-  private void onJournExit(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1);
-    hoveredImageView.setScaleY(1);
-    journborder.setScaleX(1);
-    journborder.setScaleY(1);
-    App.changeCursor("default");
-  }
-
-  @FXML
-  private void onGuideExit(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    hoveredImageView.setScaleX(1);
-    hoveredImageView.setScaleY(1);
-    guideborder.setScaleX(1);
-    guideborder.setScaleY(1);
-    App.changeCursor("default");
-  }
-
-  @FXML
-  private void onClick(MouseEvent event) {
-    ImageView hoveredImageView = (ImageView) event.getSource();
-    if (hoveredImageView.getId().equals("arc")) {
-      journborder.setVisible(false);
-      guideborder.setVisible(false);
-      arcborder.setVisible(true);
-      suspect = 1;
-    }
-    if (hoveredImageView.getId().equals("journ")) {
-      arcborder.setVisible(false);
-      guideborder.setVisible(false);
-      journborder.setVisible(true);
-      suspect = 2;
-    }
-    if (hoveredImageView.getId().equals("guide")) {
-      arcborder.setVisible(false);
-      journborder.setVisible(false);
-      guideborder.setVisible(true);
-      suspect = 3;
-    }
-    checkSubmitEnabled();
-  }
-
-  @FXML
-  private void changeText() {
-    checkSubmitEnabled();
-  }
-
-  @FXML
-  private void checkSubmitEnabled() {
-    if (suspect != 0 && !textArea.getText().isEmpty()) {
-      submit.setDisable(false);
-    } else {
-      submit.setDisable(true);
-    }
-  }
-
-  @FXML
-  private void handleSubmit(MouseEvent event) throws IOException {
-    stopTimer();
-    Task<Void> getResponse =
-        new Task<Void>() {
-          @Override
-          protected Void call() throws Exception {
-            ChatMessage feedback = runGpt(new ChatMessage("system", textArea.getText()));
-            Platform.runLater(
-                () -> {
-                  try {
-                    App.changeGameOver(suspect, feedback.getContent());
-                  } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                  }
-                });
-            return null;
-          }
-        };
-    Thread thread = new Thread(getResponse);
-    thread.start();
   }
 }

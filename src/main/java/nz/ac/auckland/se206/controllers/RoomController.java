@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -31,57 +30,47 @@ import nz.ac.auckland.se206.TimerManager;
  */
 public class RoomController {
 
-  @FXML private Rectangle rectCashier;
-  @FXML private Rectangle rectPerson1;
-  @FXML private Rectangle rectPerson2;
-  @FXML private Rectangle rectPerson3;
-  @FXML private Rectangle rectWaitress;
+  @FXML private Button arrowButton;
   @FXML private Button btnGuess;
-  @FXML private ImageView crimeScene;
+  @FXML private Button btnObjectives;
+  @FXML private Button objectiveClose;
   @FXML private ImageView archaeologist;
-  @FXML private ImageView journalist;
-  @FXML private ImageView guide;
+  @FXML private ImageView camSlide;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
   @FXML private ImageView closeButtonImage2;
-  @FXML private Button arrowButton;
-  @FXML private VBox suspectMenu;
-  @FXML private Button btnObjectives;
-  @FXML private VBox objectiveMenu;
-  @FXML private Button objectiveClose;
-  @FXML private Pane phonePopup;
+  @FXML private ImageView crimeScene;
+  @FXML private ImageView cross;
+  @FXML private ImageView guide;
+  @FXML private ImageView journalist;
+  @FXML private ImageView photoClue;
+  @FXML private ImageView pictureBackground;
+  @FXML private ImageView scanComplete;
+  @FXML private ImageView scanningFootprint;
+  @FXML private ImageView startScan;
+  @FXML private Label flipLabel;
+  @FXML private Label scanLabel;
+  @FXML private Label timerLabel;
   @FXML private Text objective1Label;
   @FXML private Text objective2Label;
-  @FXML private Label label1, label2, label3, label4, incorrectPin;
-  @FXML private Rectangle box1, box2, box3, box4;
-  @FXML private Label timerLabel;
-  @FXML private ImageView photoClue;
-  @FXML private ImageView camSlide;
-  @FXML private ImageView cross;
-  @FXML private ImageView unlockedPhone;
-  @FXML private Label flipLabel;
-  @FXML private ImageView pictureBackground;
-  @FXML private ImageView scanningFootprint;
-  @FXML private ImageView scanComplete;
-  @FXML private ImageView startScan;
-  @FXML private Label scanLabel;
+  @FXML private VBox objectiveMenu;
+  @FXML private VBox suspectMenu;
 
-  private GameTimer gameTimer;
+  private boolean clueVisible = false;
+  private boolean isFootprintVisible = false;
   private static GameStateContext context = new GameStateContext();
-  private Image frontImage;
+  private GameTimer gameTimer;
   private Image backImage;
   private Image firstSlide;
-  private Image secondSlide;
-  private Image thirdSlide;
-  private Image fourthSlide;
   private Image fifthSlide;
+  private Image frontImage;
+  private Image fourthSlide;
+  private Image secondSlide;
   private Image sixthSlide;
-
+  private Image thirdSlide;
   private static int button = 1;
   private static int current = 1;
-  private boolean clueVisible = false;
   private ObjectivesManager objectivesManager;
-  private boolean isFootprintVisible = false;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -141,12 +130,15 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
+    // makes all the other clues invisible
     handleCloseClick(null);
     onCloseButton2Pressed();
+    // makes the footprint visible and gets it ready for the scan
     startScan.setVisible(true);
     scanLabel.setVisible(true);
     isFootprintVisible = true;
     closeButtonImage1.setVisible(true);
+    // since a clue has been interacted with it updates the objectives
     objectivesManager.completeObjectiveStep(1);
   }
 
@@ -189,20 +181,22 @@ public class RoomController {
 
   @FXML
   private void onCamClicked() {
+    // if the suspect menu is visible then it will be closed
     if (suspectMenu.isVisible()) {
       toggleMenu();
     }
+    // closes all the other clues
     handleCloseClick(null);
     onCloseButton1Pressed();
     closeButtonImage1.setVisible(false);
+    // updates the objectives since a clue has been clicked
     objectivesManager.completeObjectiveStep(1);
     pictureBackground.setVisible(false);
+    // sets the current slide to the first slide
     camSlide.setVisible(true);
     closeButtonImage2.setVisible(true);
     current = 1;
     camSlide.setImage(secondSlide);
-
-    System.out.println("hi");
   }
 
   @FXML
@@ -214,6 +208,8 @@ public class RoomController {
 
   @FXML
   public void nxtImg() {
+    // basically a switch statement to change the image
+    // to the right based on what slide it is currently on
     System.out.println(current);
     current = current + 1;
     if (current == 2) {
@@ -232,6 +228,8 @@ public class RoomController {
 
   @FXML
   public void prevImg() {
+    // basically a switch statement to change the image
+    // to the left based on what slide it is currently on
     System.out.println(current);
     current = current - 1;
     if (current == 2) {
@@ -250,6 +248,7 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
+    // closes all the clues and labels associated with the clues
     isFootprintVisible = false;
     scanLabel.setVisible(false);
     startScan.setVisible(false);
@@ -421,17 +420,21 @@ public class RoomController {
 
   @FXML
   public void rotate() {
+    // if the photo clue is not visible then it will not rotate
     if (!clueVisible) {
       return;
     }
+    // the transition for the visible photo clue to rotate
     RotateTransition rotateOut = new RotateTransition(Duration.millis(250), photoClue);
     rotateOut.setByAngle(90);
     rotateOut.setAxis(Rotate.X_AXIS);
 
+    // the transition for the invisible photo clue to rotate
     RotateTransition rotateIn = new RotateTransition(Duration.millis(250), photoClue);
     rotateIn.setByAngle(90);
     rotateIn.setAxis(Rotate.X_AXIS);
 
+    // once the photo clue is rotated out it will be replaced with the other image
     rotateOut.setOnFinished(
         event -> {
           if (photoClue.getImage().equals(frontImage)) {
@@ -474,10 +477,13 @@ public class RoomController {
 
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
+    // if the photo clue is clicked it will update the objectives
     objectivesManager.completeObjectiveStep(1);
+    // closes the other clues
     onCloseButton1Pressed();
     onCloseButton2Pressed();
     if (!clueVisible) {
+      // if the user is still looking at the clue then it will be rotated
       clueVisible = true;
       flipLabel.setVisible(true);
       photoClue.setVisible(true);

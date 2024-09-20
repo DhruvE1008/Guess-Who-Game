@@ -43,7 +43,6 @@ public class GameStarted implements GameState {
         TextToSpeech.speak("Hi, let me know when you are ready to order!");
         return;
     }
-    App.openChat(event, context.getProfession(rectangleId));
   }
 
   public void handleSendChatClick(
@@ -54,6 +53,8 @@ public class GameStarted implements GameState {
   }
 
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {
+    // switches scenes based on the profile clicked
+    // uses the App class to switch scenes
     switch (profile) {
       case "archaeologist":
         App.changeArchaeologist(event);

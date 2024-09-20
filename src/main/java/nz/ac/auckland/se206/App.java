@@ -18,7 +18,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ArchaeologistController;
-import nz.ac.auckland.se206.controllers.ChatController;
 import nz.ac.auckland.se206.controllers.GameOverController;
 import nz.ac.auckland.se206.controllers.JournalistController;
 import nz.ac.auckland.se206.controllers.MenuController;
@@ -60,30 +59,36 @@ public class App extends Application {
   }
 
   public static void changeArchaeologist(MouseEvent event) throws IOException {
+    // switches the scene to the archaeologist scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/archaeologist.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    // sets the cursor to the default cursor
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
 
   public static void changeJournalist(MouseEvent event) throws IOException {
+    // switches scene to the journalist scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/journalist.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    // sets the cursor to the default cursor
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
 
   public static void changeGuide(MouseEvent event) throws IOException {
+    // switches the scene to the tour guide scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/tourGuide.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    // sets the cursor to the default cursor
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
@@ -148,21 +153,25 @@ public class App extends Application {
   }
 
   public static void changeBackStory(MouseEvent event) throws IOException {
+    // switches the scene to the backstory scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/backStory.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    // sets the cursor to default
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
   }
 
   public static void changeGameOver(int suspect, String feedback) throws IOException {
+    // switches the scene over to the game over scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
     Parent root = loader.load();
     Stage stage = (Stage) App.getPrimaryStage().getScene().getWindow();
     scene = new Scene(root);
     GameOverController controller = loader.getController();
+    // sets the suspect and feedback in the game over controller
     controller.setSuspect(suspect);
     controller.setFeedback(feedback);
     scene.setCursor(Cursor.DEFAULT);
@@ -171,12 +180,15 @@ public class App extends Application {
   }
 
   public static void changeCursor(String cursor) {
+    // if the cursor is set to hover, set the cursor to the custom cursor
     if (cursor.equals("hover")) {
       scene.setCursor(
           new ImageCursor(new Image(App.class.getResourceAsStream("/images/cursor.png"))));
     } else if (cursor.equals("HAND")) {
+      // could set the cursor to the hand cursor
       scene.setCursor(Cursor.HAND);
     } else {
+      // otherwise it sets the cursor to the default cursor
       scene.setCursor(Cursor.DEFAULT);
     }
   }
@@ -193,35 +205,19 @@ public class App extends Application {
     return new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml")).load();
   }
 
-  /**
-   * Opens the chat view and sets the profession in the chat controller.
-   *
-   * @param event the mouse event that triggered the method
-   * @param profession the profession to set in the chat controller
-   * @throws IOException if the FXML file is not found
-   */
-  public static void openChat(MouseEvent event, String profession) throws IOException {
-    FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/chat.fxml"));
-    Parent root = loader.load();
-
-    ChatController chatController = loader.getController();
-    chatController.setProfession(profession);
-
-    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    scene = new Scene(root);
-    stage.setScene(scene);
-    stage.show();
-  }
-
   public static void restartGame() {
+    // sets all the first messages so that tts and text are set to the first message
     JournalistController.setFirstMessage();
     ArchaeologistController.setFirstMessage();
     TourGuideController.setFirstMessage();
 
+    // sets the first time booleans to true
     ArchaeologistController.setisFirstTime();
     TourGuideController.setisFirstTime();
     JournalistController.setisFirstTime();
     RoomController.resetGuessButton();
+
+    // creates a new instance of the app class and restarts the game
     try {
       exitGame();
       App app = new App();

@@ -22,16 +22,16 @@ import nz.ac.auckland.se206.TimerManager;
 
 public class BackStoryController {
 
-  @FXML private Label backstoryLabel;
-  private GameTimer gameTimer;
-  @FXML private ImageView tombImage;
   @FXML private Button skipButton;
   @FXML private Button continueButton;
+  @FXML private ImageView tombImage;
   @FXML private ImageView image;
+  @FXML private Label backstoryLabel;
   @FXML private Label subTitles;
   @FXML private Label timerLabel;
 
   private MediaPlayer mediaPlayer;
+  private GameTimer gameTimer;
 
   // This method initializes the backstory content
   @FXML
@@ -74,6 +74,42 @@ public class BackStoryController {
     }
 
     playTwoSounds(); // Play the sounds and manage the subtitles
+  }
+
+  // Handle the "continue" button click to proceed to the next scene
+  @FXML
+  private void handleContinue(MouseEvent event) throws IOException {
+    App.changeCrimeScene(event); // Navigate to the crime scene or game scene
+  }
+
+  @FXML
+  private void handleSkip(MouseEvent event) throws IOException {
+    mediaPlayer.stop(); // Stop the audio
+    App.changeCrimeScene(event); // Navigate back to the main menu
+  }
+
+  // Method to change the image in the ImageView
+  @FXML
+  private void changeImage(String imagePath) {
+    FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), image);
+    fadeOut.setFromValue(1.0); // Start fully visible
+    fadeOut.setToValue(0.0); // Fade out to invisible
+
+    // When fade out finishes, change the image and fade back in
+    fadeOut.setOnFinished(
+        event -> {
+          // Load the new image
+          Image newImage = new Image(imagePath);
+          image.setImage(newImage);
+
+          // Create a FadeTransition for fading in
+          FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), image);
+          fadeIn.setFromValue(0.0); // Start invisible
+          fadeIn.setToValue(1.0); // Fade in to fully visible
+          fadeIn.play(); // Play fade in
+        });
+
+    fadeOut.play(); // Start the fade-out transition
   }
 
   // Method to play two sounds with subtitles
@@ -128,41 +164,5 @@ public class BackStoryController {
       timeline.getKeyFrames().add(keyFrame);
     }
     timeline.play(); // Play the typing animation
-  }
-
-  // Handle the "continue" button click to proceed to the next scene
-  @FXML
-  private void handleContinue(MouseEvent event) throws IOException {
-    App.changeCrimeScene(event); // Navigate to the crime scene or game scene
-  }
-
-  @FXML
-  private void handleSkip(MouseEvent event) throws IOException {
-    mediaPlayer.stop(); // Stop the audio
-    App.changeCrimeScene(event); // Navigate back to the main menu
-  }
-
-  // Method to change the image in the ImageView
-  @FXML
-  private void changeImage(String imagePath) {
-    FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), image);
-    fadeOut.setFromValue(1.0); // Start fully visible
-    fadeOut.setToValue(0.0); // Fade out to invisible
-
-    // When fade out finishes, change the image and fade back in
-    fadeOut.setOnFinished(
-        event -> {
-          // Load the new image
-          Image newImage = new Image(imagePath);
-          image.setImage(newImage);
-
-          // Create a FadeTransition for fading in
-          FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), image);
-          fadeIn.setFromValue(0.0); // Start invisible
-          fadeIn.setToValue(1.0); // Fade in to fully visible
-          fadeIn.play(); // Play fade in
-        });
-
-    fadeOut.play(); // Start the fade-out transition
   }
 }
