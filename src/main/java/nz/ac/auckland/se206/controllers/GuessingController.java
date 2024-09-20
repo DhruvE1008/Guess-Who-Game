@@ -9,6 +9,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -36,6 +37,7 @@ public class GuessingController {
   @FXML private Circle guideborder;
   @FXML private Label timerLabel;
   @FXML private TextArea textArea;
+  @FXML private ProgressIndicator progressIndicator;
 
   private Timeline timeline;
   private int timeSeconds = 60;
@@ -49,6 +51,7 @@ public class GuessingController {
    */
   @FXML
   private void initialize() throws IOException, URISyntaxException {
+    progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
     arcborder.setVisible(false);
     journborder.setVisible(false);
     guideborder.setVisible(false);
@@ -271,6 +274,7 @@ public class GuessingController {
         new Task<Void>() {
           @Override
           protected Void call() throws Exception {
+            Platform.runLater(() -> progressIndicator.setVisible(true));
             ChatMessage feedback = runGpt(new ChatMessage("system", textArea.getText()));
             Platform.runLater(
                 () -> {

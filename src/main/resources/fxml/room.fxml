@@ -121,7 +121,7 @@
          </image>
       </ImageView>
       
-      <Label fx:id="flipLabel" layoutX="265.0" layoutY="432.0" text="Press F to Flip" textFill="#8ee807" visible="false">
+      <Label fx:id="flipLabel" layoutX="265.0" layoutY="432.0" text="Tap F to Flip" textFill="#8ee807" visible="false">
          <font>
             <Font size="21.0" />
          </font>
