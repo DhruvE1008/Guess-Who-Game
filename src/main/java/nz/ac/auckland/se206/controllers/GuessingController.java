@@ -36,7 +36,6 @@ public class GuessingController {
   private Timeline timeline;
   private int timeSeconds = 60;
   private int suspect = 0;
-  private boolean isInitialized = false;
 
   @FXML
   private void initialize() throws IOException, URISyntaxException {
@@ -72,8 +71,6 @@ public class GuessingController {
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
-
-    isInitialized = true; // Set this to true after initialization is done
   }
 
   @FXML

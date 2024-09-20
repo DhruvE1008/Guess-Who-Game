@@ -61,7 +61,6 @@ public class RoomController {
   private static GameStateContext context = new GameStateContext();
   private GameTimer gameTimer;
   private Image backImage;
-  private Image firstSlide;
   private Image fifthSlide;
   private Image frontImage;
   private Image fourthSlide;
@@ -107,7 +106,6 @@ public class RoomController {
     frontImage = new Image(getClass().getResourceAsStream("/images/photoClue.png"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
 
-    firstSlide = new Image(getClass().getResourceAsStream("/images/720.png"));
     secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));
     thirdSlide = new Image(getClass().getResourceAsStream("/images/740.png"));
     fourthSlide = new Image(getClass().getResourceAsStream("/images/750.png"));
