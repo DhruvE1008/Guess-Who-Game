@@ -6,6 +6,14 @@ import java.util.List;
 public class ObjectivesManager {
 
   private static ObjectivesManager instance;
+
+  public static ObjectivesManager getInstance() {
+    if (instance == null) {
+      instance = new ObjectivesManager();
+    }
+    return instance;
+  }
+
   private boolean[] objectivesCompleted;
   private int[] objectivesProgress; // Track progress for each objective
   private int[]
@@ -15,13 +23,6 @@ public class ObjectivesManager {
   private ObjectivesManager() {
     initializeObjectives(
         2, new int[] {3, 1}); // For example, 3 steps for objective 0, 1 step for objective 1
-  }
-
-  public static ObjectivesManager getInstance() {
-    if (instance == null) {
-      instance = new ObjectivesManager();
-    }
-    return instance;
   }
 
   public void initializeObjectives(int numObjectives, int[] stepsRequired) {
