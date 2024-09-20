@@ -4,6 +4,13 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 
 public class TimerLabelSet {
+
+  /**
+   * This method creates a string binding that displays the time in minutes and seconds.
+   *
+   * @param gameTimer The game timer to bind the label to
+   * @return The string binding that displays the time in minutes and seconds
+   */
   public static StringBinding createTimerStringBinding(GameTimer gameTimer) {
     return Bindings.createStringBinding(
         () -> {
