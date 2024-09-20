@@ -53,6 +53,11 @@ public class ArchaeologistController {
     isFirstTimeInit = true;
   }
 
+  @FXML
+  public static void setFirstMessage() {
+    isFirstMessage = true;
+  }
+
   @FXML private Button btnGuess;
   @FXML private Button arrowButton;
   @FXML private Button btnObjectives;
@@ -254,11 +259,6 @@ public class ArchaeologistController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     context.handleGuessClick();
-  }
-
-  @FXML
-  public static void setFirstMessage() {
-    isFirstMessage = true;
   }
 
   @FXML
