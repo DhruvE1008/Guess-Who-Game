@@ -138,27 +138,27 @@ public class JournalistController {
   }
 
   @FXML
-  private void toggleObjectives() {
+  private void togglingObjectives() {
     SuspectOverlay.toggleObjectives(objectiveMenu, objectiveClose, suspectMenu, this::onToggleMenu);
   }
 
   @FXML
-  private void closeObjectives() {
+  private void closingObjectives() {
     SuspectOverlay.closeObjectivesMenu(objectiveMenu, objectiveClose);
   }
 
   @FXML
-  private void onHover(MouseEvent event) {
+  private void onHovering(MouseEvent event) {
     SuspectOverlay.onHover(event);
   }
 
   @FXML
-  private void onExit(MouseEvent event) {
+  private void onExiting(MouseEvent event) {
     SuspectOverlay.onExit(event);
   }
 
   @FXML
-  private void onProfileClick(MouseEvent event) throws IOException {
+  private void onProfileClicking(MouseEvent event) throws IOException {
     if (player != null) {
       player.stop();
     }

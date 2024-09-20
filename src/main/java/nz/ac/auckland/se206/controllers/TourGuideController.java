@@ -136,27 +136,27 @@ public class TourGuideController {
   }
 
   @FXML
-  private void toggleObjectives() {
+  private void toggleObjectivesGuide() {
     SuspectOverlay.toggleObjectives(objectiveMenu, objectiveClose, suspectMenu, this::onToggleMenu);
   }
 
   @FXML
-  private void closeObjectives() {
+  private void closeObjectivesGuide() {
     SuspectOverlay.closeObjectivesMenu(objectiveMenu, objectiveClose);
   }
 
   @FXML
-  private void onHover(MouseEvent event) {
+  private void onHoverGuide(MouseEvent event) {
     SuspectOverlay.onHover(event);
   }
 
   @FXML
-  private void onExit(MouseEvent event) {
+  private void onExitGuide(MouseEvent event) {
     SuspectOverlay.onExit(event);
   }
 
   @FXML
-  private void onProfileClick(MouseEvent event) throws IOException {
+  private void onProfileClickGuide(MouseEvent event) throws IOException {
     if (player != null) {
       player.stop();
     }
