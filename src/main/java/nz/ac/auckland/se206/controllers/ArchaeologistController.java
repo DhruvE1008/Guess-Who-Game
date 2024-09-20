@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionResult;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
@@ -33,6 +30,7 @@ import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.SuspectOverlay;
+import nz.ac.auckland.se206.TimerLabelSet;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
@@ -86,25 +84,7 @@ public class ArchaeologistController {
     gameTimer = TimerManager.getGameTimer();
 
     // Bind the timer label to display the time in minutes and seconds
-    timerLabel
-        .textProperty()
-        .bind(
-            Bindings.createStringBinding(
-                () -> {
-                  int totalSeconds = gameTimer.getTimeInSeconds();
-                  int minutes = totalSeconds / 60;
-                  int seconds = totalSeconds % 60;
-                  if (totalSeconds == 0) {
-                    if (!App.getObjectiveCompleted()) {
-                      App.changeGameOver(
-                          0, "ran out of time, you didn't interact with the scenes enough!");
-                    } else {
-                      App.changeGuessing();
-                    }
-                  }
-                  return String.format("%02d:%02d", minutes, seconds);
-                },
-                gameTimer.timeInSecondsProperty()));
+    timerLabel.textProperty().bind(TimerLabelSet.createTimerStringBinding(gameTimer));
     arcbubble.setVisible(false);
     txtaChat.clear();
     txtInput.setOnKeyPressed(
@@ -168,39 +148,13 @@ public class ArchaeologistController {
 
   @FXML
   private void toggleObjectives() {
-    if (!objectiveMenu.isVisible()) {
-      // Close the suspect menu if it's open
-      if (suspectMenu.isVisible()) {
-        handleToggleMenu(); // This will close the suspectMenu
-      }
-
-      // Ensure the menu is off-screen before showing it
-      objectiveMenu.setTranslateY(-objectiveMenu.getHeight());
-      objectiveClose.setTranslateY(-objectiveMenu.getHeight());
-      objectiveMenu.setVisible(true);
-      objectiveClose.setVisible(true); // Show the close button
-      objectiveClose.setDisable(false); // Enable the close button
-
-      // Slide the menu in
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(-objectiveMenu.getHeight());
-      menuTransition.setToY(0);
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(-objectiveMenu.getHeight());
-      closeTransition.setToY(0);
-
-      // Play animations
-      menuTransition.play();
-      closeTransition.play();
-    }
+    SuspectOverlay.toggleObjectives(
+        objectiveMenu, objectiveClose, suspectMenu, this::handleToggleMenu);
   }
 
   @FXML
   private void closeObjectives() {
-    closeObjectivesMenu();
+    SuspectOverlay.closeObjectivesMenu(objectiveMenu, objectiveClose);
   }
 
   @FXML
@@ -278,44 +232,9 @@ public class ArchaeologistController {
     }
   }
 
-  private void closeObjectivesMenu() {
-    if (objectiveMenu.isVisible()) {
-      // Slide the menu out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(0);
-      menuTransition.setToY(-objectiveMenu.getHeight());
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(0);
-      closeTransition.setToY(-objectiveMenu.getHeight());
-
-      // Disable the close button and hide it once the menu is hidden
-      menuTransition.setOnFinished(
-          event -> {
-            objectiveMenu.setVisible(false);
-            objectiveClose.setVisible(false); // Hide the close button
-            objectiveClose.setDisable(true); // Disable the close button
-          });
-
-      // Play animation
-      menuTransition.play();
-      closeTransition.play();
-    }
-  }
-
   // Update the objective labels
   public void updateObjectiveLabels() {
-    // Update the first objective label
-    if (objectivesManager.isObjectiveCompleted(0)) {
-      objective1Label.setStyle("-fx-strikethrough: true;");
-    }
-
-    // Update the second objective label
-    if (objectivesManager.isObjectiveCompleted(1)) {
-      objective2Label.setStyle("-fx-strikethrough: true;");
-    }
+    SuspectOverlay.updateObjectiveLabels(objectivesManager, objective1Label, objective2Label);
   }
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {

@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class SuspectOverlay {
@@ -53,5 +54,80 @@ public class SuspectOverlay {
     hoveredImageView.setScaleX(1);
     hoveredImageView.setScaleY(1);
     App.changeCursor("default");
+  }
+
+  public static void toggleObjectives(
+      VBox objectiveMenu,
+      Button objectiveClose,
+      VBox suspectMenu,
+      Runnable closeSuspectMenuAction) {
+    if (!objectiveMenu.isVisible()) {
+      // Close the suspect menu if it's open
+      if (suspectMenu.isVisible()) {
+        closeSuspectMenuAction.run(); // Close the suspect menu
+      }
+
+      // Ensure the menu is off-screen before showing it
+      objectiveMenu.setTranslateY(-objectiveMenu.getHeight());
+      objectiveClose.setTranslateY(-objectiveMenu.getHeight());
+      objectiveMenu.setVisible(true);
+      objectiveClose.setVisible(true); // Show the close button
+      objectiveClose.setDisable(false); // Enable the close button
+
+      // Slide the menu in
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(-objectiveMenu.getHeight());
+      menuTransition.setToY(0);
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(-objectiveMenu.getHeight());
+      closeTransition.setToY(0);
+
+      // Play animations
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  public static void closeObjectivesMenu(VBox objectiveMenu, Button objectiveClose) {
+    if (objectiveMenu.isVisible()) {
+      // Slide the menu out
+      TranslateTransition menuTransition =
+          new TranslateTransition(Duration.millis(300), objectiveMenu);
+      menuTransition.setFromY(0);
+      menuTransition.setToY(-objectiveMenu.getHeight());
+
+      TranslateTransition closeTransition =
+          new TranslateTransition(Duration.millis(300), objectiveClose);
+      closeTransition.setFromY(0);
+      closeTransition.setToY(-objectiveMenu.getHeight());
+
+      // Disable the close button and hide it once the menu is hidden
+      menuTransition.setOnFinished(
+          event -> {
+            objectiveMenu.setVisible(false);
+            objectiveClose.setVisible(false); // Hide the close button
+            objectiveClose.setDisable(true); // Disable the close button
+          });
+
+      // Play animation
+      menuTransition.play();
+      closeTransition.play();
+    }
+  }
+
+  public static void updateObjectiveLabels(
+      ObjectivesManager objectivesManager, Text objective1Label, Text objective2Label) {
+    // Update the first objective label
+    if (objectivesManager.isObjectiveCompleted(0)) {
+      objective1Label.setStyle("-fx-strikethrough: true;");
+    }
+
+    // Update the second objective label
+    if (objectivesManager.isObjectiveCompleted(1)) {
+      objective2Label.setStyle("-fx-strikethrough: true;");
+    }
   }
 }

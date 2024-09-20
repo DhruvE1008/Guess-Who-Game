@@ -232,8 +232,8 @@ public class GuessingController {
             new KeyFrame(
                 Duration.seconds(1),
                 event -> {
-                  timeSeconds--;
                   timerLabel.setText(formatTime(timeSeconds));
+                  timeSeconds--;
                   if (timeSeconds <= 0) {
                     timeline.stop();
                     handleTimerEnd(); // Call the method to handle when the timer ends
