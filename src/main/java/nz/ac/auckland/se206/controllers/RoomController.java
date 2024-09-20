@@ -3,7 +3,6 @@ package nz.ac.auckland.se206.controllers;
 import java.io.IOException;
 import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -276,37 +275,9 @@ public class RoomController {
       onCloseButton2Pressed();
     }
 
-    boolean isVisible = suspectMenu.isVisible();
     onCloseButton2Pressed();
 
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
-  }
-
-  private void closeObjectivesMenu() {
-    if (objectiveMenu.isVisible()) {
-      // Slide the menu out
-      TranslateTransition menuTransition =
-          new TranslateTransition(Duration.millis(300), objectiveMenu);
-      menuTransition.setFromY(0);
-      menuTransition.setToY(-objectiveMenu.getHeight());
-
-      TranslateTransition closeTransition =
-          new TranslateTransition(Duration.millis(300), objectiveClose);
-      closeTransition.setFromY(0);
-      closeTransition.setToY(-objectiveMenu.getHeight());
-
-      // Disable the close button and hide it once the menu is hidden
-      menuTransition.setOnFinished(
-          event -> {
-            objectiveMenu.setVisible(false);
-            objectiveClose.setVisible(false); // Hide the close button
-            objectiveClose.setDisable(true); // Disable the close button
-          });
-
-      // Play animation
-      menuTransition.play();
-      closeTransition.play();
-    }
   }
 
   @FXML
