@@ -39,22 +39,21 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
  * chat with customers and guess their profession.
  */
 public class ArchaeologistController {
-  private static GameStateContext context = new GameStateContext();
-  private static boolean isFirstTimeInit = true;
+  private static GameStateContext archContext = new GameStateContext();
+  private static boolean isFirstTimeArchInit = true;
   private static boolean isFirstTime = true;
-  private static boolean isFirstMessage = true;
-  private static ChatCompletionRequest chatCompletionRequest;
+  private static boolean isFirstArchMessage = true;
+  private static ChatCompletionRequest archChatCompletionRequest;
 
   public static void setisFirstTime() {
-    isFirstTimeInit = true;
+    isFirstTimeArchInit = true;
   }
 
   @FXML
   public static void setFirstMessage() {
-    isFirstMessage = true;
+    isFirstArchMessage = true;
   }
 
-  @FXML private Button btnGuess;
   @FXML private Button arrowButton;
   @FXML private Button btnObjectives;
   @FXML private Button objectiveClose;
@@ -66,13 +65,13 @@ public class ArchaeologistController {
   @FXML private Label timerLabel;
   @FXML private Text objective1Label;
   @FXML private Text objective2Label;
-  @FXML private TextArea txtaChat;
-  @FXML private TextField txtInput;
+  @FXML private TextArea archTxtChat;
+  @FXML private TextField archTxtInput;
   @FXML private VBox suspectMenu;
   @FXML private VBox objectiveMenu;
 
   private GameTimer gameTimer;
-  private MediaPlayer player;
+  private MediaPlayer archPlayer;
   private ObjectivesManager objectivesManager;
 
   /**
@@ -86,21 +85,21 @@ public class ArchaeologistController {
     // Bind the timer label to display the time in minutes and seconds
     timerLabel.textProperty().bind(TimerLabelSet.createTimerStringBinding(gameTimer));
     arcbubble.setVisible(false);
-    txtaChat.clear();
-    txtInput.setOnKeyPressed(
+    archTxtChat.clear();
+    archTxtInput.setOnKeyPressed(
         event -> {
           if (event.getCode() == KeyCode.ENTER) {
             onSendMessage(null);
           }
         });
-    if (isFirstTimeInit) {
+    if (isFirstTimeArchInit) {
       Task<Void> getGreeting =
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
               Platform.runLater(
                   () -> {
-                    txtaChat.setText(
+                    archTxtChat.setText(
                         "Archaeologist: It's terrible that my last excavation ended like this. I"
                             + " can't afford to go on another one because I was recently denied"
                             + " funding.");
@@ -112,8 +111,8 @@ public class ArchaeologistController {
                       // TODO Auto-generated catch block
                       e.printStackTrace();
                     }
-                    player = new MediaPlayer(sound);
-                    player.play();
+                    archPlayer = new MediaPlayer(sound);
+                    archPlayer.play();
                   });
               getSystemPrompt();
               return null;
@@ -122,7 +121,7 @@ public class ArchaeologistController {
       Thread thread = new Thread(getGreeting);
       thread.setDaemon(true);
       thread.start();
-      isFirstTimeInit = false;
+      isFirstTimeArchInit = false;
     }
     objectivesManager = ObjectivesManager.getInstance();
     updateObjectiveLabels(); // Initial update
@@ -158,31 +157,31 @@ public class ArchaeologistController {
 
   @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
-    if (player != null) {
-      player.stop();
+    if (archPlayer != null) {
+      archPlayer.stop();
     }
     ImageView clickedImageView = (ImageView) event.getSource();
-    context.handleProfileClick(event, clickedImageView.getId());
+    archContext.handleProfileClick(event, clickedImageView.getId());
   }
 
   @FXML
   private void onSendMessage(ActionEvent event) {
     // if it's the first message, complete the first objective step for the archaeologist
-    if (isFirstMessage) {
+    if (isFirstArchMessage) {
       objectivesManager.completeObjectiveStep(0);
-      isFirstMessage = false;
+      isFirstArchMessage = false;
     }
     // if it's the first time, clear the chat area before sending the first message
     if (isFirstTime) {
-      txtaChat.clear();
+      archTxtChat.clear();
       isFirstTime = false;
     }
-    String message = txtInput.getText().trim();
+    String message = archTxtInput.getText().trim();
     // if the message is empty, do nothing
     if (message.isEmpty()) {
       return;
     }
-    txtInput.clear();
+    archTxtInput.clear();
     Task<Void> getResponse =
         new Task<Void>() {
           @Override
@@ -193,8 +192,8 @@ public class ArchaeologistController {
               ChatMessage msg = new ChatMessage("user", message);
               ChatMessage response = runGpt(new ChatMessage("system", msg.getContent()));
               // update the chat area with the user's message and the system's response
-              context.handleSendChatClick(
-                  txtaChat, message, "Archaeologist", response.getContent());
+              archContext.handleSendChatClick(
+                  archTxtChat, message, "Archaeologist", response.getContent());
               Platform.runLater(() -> arcbubble.setVisible(false));
             } catch (IOException | ApiProxyException e) {
               // TODO Auto-generated catch block
@@ -219,7 +218,7 @@ public class ArchaeologistController {
     // sets up the chat with the system prompt
     try {
       ApiProxyConfig config = ApiProxyConfig.readConfig();
-      chatCompletionRequest =
+      archChatCompletionRequest =
           new ChatCompletionRequest(config)
               .setN(1)
               .setTemperature(0.2)
@@ -238,12 +237,12 @@ public class ArchaeologistController {
 
   private ChatMessage runGpt(ChatMessage msg) throws ApiProxyException {
     // adds the message to the AI history
-    chatCompletionRequest.addMessage(msg);
+    archChatCompletionRequest.addMessage(msg);
     // runs the AI model and gets the response from our prompt
     try {
-      ChatCompletionResult chatCompletionResult = chatCompletionRequest.execute();
+      ChatCompletionResult chatCompletionResult = archChatCompletionRequest.execute();
       Choice result = chatCompletionResult.getChoices().iterator().next();
-      chatCompletionRequest.addMessage(result.getChatMessage());
+      archChatCompletionRequest.addMessage(result.getChatMessage());
       return result.getChatMessage();
     } catch (ApiProxyException e) {
       e.printStackTrace();
