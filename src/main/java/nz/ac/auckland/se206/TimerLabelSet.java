@@ -19,15 +19,6 @@ public class TimerLabelSet {
           int minutes = totalSeconds / 60;
           int seconds = totalSeconds % 60;
 
-          // if the timer reaches 0, check if the objective is completed
-          if (totalSeconds == 0) {
-            if (!App.getObjectiveCompleted()) {
-              App.changeGameOver(0, "ran out of time, you didn't interact with the scenes enough!");
-            } else {
-              App.changeGuessing();
-            }
-          }
-
           // format the time to display in minutes and seconds
           return String.format("%02d:%02d", minutes, seconds);
         },

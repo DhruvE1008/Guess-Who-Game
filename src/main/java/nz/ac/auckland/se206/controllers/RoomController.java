@@ -30,11 +30,12 @@ import nz.ac.auckland.se206.TimerManager;
 public class RoomController {
   private static int button = 1;
   private static int current = 1;
-  private static GameStateContext context = new GameStateContext();
+  private static GameStateContext context = BackStoryController.getContext();
 
   @FXML
   public static void resetGuessButton() {
     button = 1;
+    context = BackStoryController.getContext();
   }
 
   @FXML private Button arrowButton;
@@ -95,11 +96,13 @@ public class RoomController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
-                  if (totalSeconds == 0) {
+                  if (totalSeconds == 0 && context.getState() == context.getGameStartedState()) {
                     if (!App.getObjectiveCompleted()) {
                       App.changeGameOver(
                           0, "ran out of time, you didn't interact with the scenes enough!");
                     } else {
+                      System.out.println("test");
+                      context.setState(context.getGuessingState());
                       App.changeGuessing();
                     }
                   }
@@ -379,6 +382,7 @@ public class RoomController {
   @FXML
   private void handleGuessClick(ActionEvent event) throws IOException {
     // if (objectivesManager.isObjectiveCompleted(0) && objectivesManager.isObjectiveCompleted(1)) {
+    context.setState(context.getGuessingState());
     App.changeGuessing();
     // }
   }

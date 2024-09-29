@@ -17,10 +17,21 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.TimerManager;
 
 public class BackStoryController {
+
+  private static GameStateContext context = new GameStateContext();
+
+  public static void resetContext() {
+    context = new GameStateContext();
+  }
+
+  public static GameStateContext getContext() {
+    return context;
+  }
 
   @FXML private Button skipButton;
   @FXML private Button continueButton;
@@ -31,7 +42,6 @@ public class BackStoryController {
   @FXML private Label timerLabel;
 
   private MediaPlayer mediaPlayer;
-
   private GameTimer gameTimer;
 
   // This method initializes the backstory content
@@ -58,7 +68,9 @@ public class BackStoryController {
                   int totalSeconds = gameTimer.getTimeInSeconds();
                   int minutes = totalSeconds / 60;
                   int seconds = totalSeconds % 60;
-                  if (totalSeconds == 0) {
+                  if (totalSeconds == 0
+                      && !App.getObjectiveCompleted()
+                      && context.getState() == context.getGameStartedState()) {
                     App.changeGameOver(
                         0, "ran out of time, you didn't interact with the scenes enough!");
                   }

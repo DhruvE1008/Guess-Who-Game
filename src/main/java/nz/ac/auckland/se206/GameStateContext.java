@@ -89,6 +89,10 @@ public class GameStateContext {
     return gameStartedState;
   }
 
+  public GameState getState() {
+    return gameState;
+  }
+
   /**
    * Gets the guessing state.
    *
