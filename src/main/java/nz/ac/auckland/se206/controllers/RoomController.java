@@ -277,7 +277,7 @@ public class RoomController {
 
     onCloseButton2Pressed();
 
-    SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
+    SuspectOverlay.toggleMenu(suspectMenu, arrowButton, objectiveMenu, objectiveClose);
   }
 
   @FXML

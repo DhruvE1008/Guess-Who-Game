@@ -43,7 +43,7 @@
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="31.0" layoutX="108.0" layoutY="347.0" onMouseClicked="#prevImg" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="33.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="31.0" layoutX="465.0" layoutY="347.0" onMouseClicked="#nxtImg" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="33.0" />
-      <Button fx:id="btnGuess" disable="true" layoutX="597.0" layoutY="61.0" mnemonicParsing="false" onAction="#handleGuessClick" text="Make a Guess" />
+      <Button fx:id="btnGuess" disable="true" layoutX="597.0" layoutY="61.0" mnemonicParsing="false" styleClass="backStoryButton" onAction="#handleGuessClick" text="Make a Guess" />
       <VBox fx:id="suspectMenu" layoutX="4.0" layoutY="92.0" prefHeight="400.0" prefWidth="143.0" styleClass="vbox" visible="false">
          <children>
             <ImageView fx:id="crimeScene" fitHeight="98.0" fitWidth="118.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="35.0">

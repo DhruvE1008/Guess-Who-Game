@@ -81,6 +81,8 @@
 
 }
 
+
+
 .backStoryButton {
 
   -fx-background-image: url("../images/menu.png");
@@ -90,4 +92,8 @@
   -fx-background-repeat: no-repeat;
   /* Ensures the image does not repeat */
   -fx-cursor: hand;
+
+  -fx-border-color: transparent;
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
 }

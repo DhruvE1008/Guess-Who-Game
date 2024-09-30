@@ -35,9 +35,15 @@ public class SuspectOverlay {
    * @param menu The suspect menu to toggle
    * @param arrowButton The button that toggles the menu
    */
-  public static void toggleMenu(VBox menu, Button arrowButton) {
+  public static void toggleMenu(
+      VBox menu, Button arrowButton, VBox objectiveMenu, Button objectiveClose) {
     // Check if the menu is visible
     boolean isVisible = menu.isVisible();
+    if (objectiveMenu.isVisible()) {
+      // Close the objectives menu if it's open
+      closeObjectivesMenu(objectiveMenu, objectiveClose);
+    }
+
     // If the menu is not visible, slide it in
     if (!isVisible) {
       menu.setVisible(true);

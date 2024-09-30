@@ -142,7 +142,7 @@ public class TourGuideController {
   @FXML
   private void onToggleMenu() {
 
-    SuspectOverlay.toggleMenu(suspectMenu, arrowButton);
+    SuspectOverlay.toggleMenu(suspectMenu, arrowButton, objectiveMenu, objectiveClose);
   }
 
   @FXML
