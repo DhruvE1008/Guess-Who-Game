@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ArchaeologistController;
+import nz.ac.auckland.se206.controllers.BackStoryController;
 import nz.ac.auckland.se206.controllers.GameOverController;
 import nz.ac.auckland.se206.controllers.JournalistController;
 import nz.ac.auckland.se206.controllers.RoomController;
@@ -154,7 +155,7 @@ public class App extends Application {
   }
 
   public static void changeGuessing() throws IOException {
-    TimerManager.stopTimer();
+    TimerManager.resetTimerToOneMinute();
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
     Parent root = loader.load();
 
@@ -231,6 +232,8 @@ public class App extends Application {
     TourGuideController.setisFirstTime();
     JournalistController.setisFirstTime();
     RoomController.resetGuessButton();
+    BackStoryController.resetContext();
+    isObjectiveCompleted = false;
 
     // creates a new instance of the app class and restarts the game
     try {
