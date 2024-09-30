@@ -15,7 +15,7 @@
          </image>
       </ImageView>
       <Label fx:id="backstoryLabel" layoutX="117.0" layoutY="83.0" prefHeight="479.0" prefWidth="469.0" styleClass="backStoryLabel" />
-      <Button fx:id="skipButton" layoutX="34.0" layoutY="623.0" mnemonicParsing="false" onMouseClicked="#handleSkip" prefHeight="49.0" prefWidth="108.0" styleClass="button" text="Skip" />
+      <Button fx:id="skipButton" layoutX="34.0" layoutY="623.0" mnemonicParsing="false" onMouseClicked="#handleSkip" prefHeight="49.0" prefWidth="108.0" styleClass="button" text="Skip"  />
       <Button fx:id="continueButton" layoutX="551.0" layoutY="623.0" mnemonicParsing="false" onMouseClicked="#handleContinue" prefHeight="49.0" prefWidth="108.0" styleClass="button" text="Continue" />
       <Label layoutX="210.0" layoutY="83.0" prefHeight="125.0" prefWidth="313.0" styleClass="label" text="Backstory" translateX="30.0">
          <font>
