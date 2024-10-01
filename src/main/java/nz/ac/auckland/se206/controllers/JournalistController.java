@@ -240,9 +240,12 @@ public class JournalistController {
     map.put("shoeSize", "7");
     map.put(
         "reason",
-        "you had a big story to cover the next day, so you were at home all night preparing for"
-            + " it");
+        "you lost your phone during an Amazon case a few days ago and you have been too busy to get"
+            + " a new one");
     map.put("kids", "a 9 year old son");
+    map.put(
+        "interview",
+        "you were going to interview the archaeologist about his latest find at the labs");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     // sets up the AI chat
     try {
