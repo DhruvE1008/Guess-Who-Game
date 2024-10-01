@@ -67,6 +67,11 @@ public class RoomController {
   @FXML private VBox suspectMenu;
   @FXML private Pane phonePopup;
   @FXML private ImageView phoneDisplay;
+  @FXML private Rectangle leftarrow;
+  @FXML private Rectangle rightarrow;
+  @FXML private Rectangle unlockphone;
+  @FXML private Rectangle gallery;
+  @FXML private Rectangle calendar;
 
   private boolean clueVisible = false;
   private boolean isFootprintVisible = false;
@@ -130,26 +135,46 @@ public class RoomController {
   private void onPhoneClick() {
     phonePopup.setVisible(true);
     closeButtonImage3.setVisible(true);
+    leftarrow.setDisable(true);
+    rightarrow.setDisable(true);
+    unlockphone.setDisable(false);
+    gallery.setDisable(true);
+    calendar.setDisable(true);
   }
 
   @FXML
   private void onPhotoClicked() {
-    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img1.png")));
+    leftarrow.setDisable(false);
+    rightarrow.setDisable(false);
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+    current = 1;
+    phoneDisplay.setImage(
+        new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
   }
 
   @FXML
   private void onBackPressed() {
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    gallery.setDisable(false);
+    calendar.setDisable(false);
+    leftarrow.setDisable(true);
+    rightarrow.setDisable(true);
   }
 
   @FXML
   private void onUnlockPhone() {
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    unlockphone.setDisable(true);
+    gallery.setDisable(false);
+    calendar.setDisable(false);
   }
 
   @FXML
   private void onCalendarClicked() {
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/calendar.png")));
+    gallery.setDisable(true);
+    calendar.setDisable(true);
   }
 
   @FXML
@@ -224,13 +249,16 @@ public class RoomController {
 
     current = current + 1;
     System.out.println(current);
-    if (current == 2) {
-      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img2.png")));
-    } else if (current == 3) {
-      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img3.png")));
+    if (current == 1) {
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+    } else if (current == 2) {
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
     } else {
       current = 3;
-      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img3.png")));
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     }
   }
 
@@ -241,12 +269,15 @@ public class RoomController {
     System.out.println(current);
     current = current - 1;
     if (current == 2) {
-      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img2.png")));
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
     } else if (current == 3) {
-      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img3.png")));
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     } else {
       current = 1;
-      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/img1.png")));
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
     }
   }
 
