@@ -44,8 +44,6 @@ public class TourGuideController {
 
   private static boolean isInit = true;
 
-  private static boolean isFirstTime = true;
-
   private static boolean FirstMessage = true;
 
   private static ChatCompletionRequest chatCompletionRequest;
@@ -216,11 +214,6 @@ public class TourGuideController {
       objectivesManager.completeObjectiveStep(0);
       FirstMessage = false;
       readyMessageLabel.setVisible(false);
-    }
-    // if this is the first time talking to the suspect, you should clear the chat
-    if (isFirstTime) {
-      txtaChat.clear();
-      isFirstTime = false;
     }
     String message = txtInput.getText().trim();
     // if the message is empty, do nothing

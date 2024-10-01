@@ -42,7 +42,6 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 public class JournalistController {
   private static GameStateContext context = new GameStateContext();
   private static boolean firstInitialization = true;
-  private static boolean firstInteraction = true;
   private static boolean journFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
 
@@ -196,11 +195,6 @@ public class JournalistController {
     if (journFirstMessage) {
       objectivesManager.completeObjectiveStep(0);
       journFirstMessage = false;
-    }
-    // if its the first time talking to the journalist clear the chat
-    if (firstInteraction) {
-      txtaChat.clear();
-      firstInteraction = false;
       readyMessageLabel.setVisible(false);
     }
     String userMessage = txtInput.getText().trim();

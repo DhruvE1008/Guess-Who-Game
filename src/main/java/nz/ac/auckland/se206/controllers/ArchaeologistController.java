@@ -42,7 +42,6 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 public class ArchaeologistController {
   private static GameStateContext archContext = new GameStateContext();
   private static boolean isFirstTimeArchInit = true;
-  private static boolean isFirstTime = true;
   private static boolean isFirstArchMessage = true;
   private static ChatCompletionRequest archChatCompletionRequest;
 
@@ -193,11 +192,6 @@ public class ArchaeologistController {
     if (isFirstArchMessage) {
       objectivesManager.completeObjectiveStep(0);
       isFirstArchMessage = false;
-    }
-    // if it's the first time, clear the chat area before sending the first message
-    if (isFirstTime) {
-      archTxtChat.clear();
-      isFirstTime = false;
       readyMessageLabel.setVisible(false);
     }
     String message = archTxtInput.getText().trim();
