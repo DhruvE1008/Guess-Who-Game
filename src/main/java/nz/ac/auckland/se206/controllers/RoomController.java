@@ -1,8 +1,10 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,6 +65,9 @@ public class RoomController {
   @FXML private Text objective2Label;
   @FXML private VBox objectiveMenu;
   @FXML private VBox suspectMenu;
+  @FXML private ImageView envelopeFront;
+  @FXML private ImageView envelopeBack;
+  @FXML private ImageView imageClue;
 
   private boolean clueVisible = false;
   private boolean isFootprintVisible = false;
@@ -75,6 +80,8 @@ public class RoomController {
   private Image sixthSlide;
   private Image thirdSlide;
   private ObjectivesManager objectivesManager;
+  private double xValue;
+  private double yValue;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -366,10 +373,44 @@ public class RoomController {
   }
 
   @FXML
+  private void handleMousePressed(MouseEvent event) {
+    xValue = event.getSceneX();
+    yValue = event.getSceneY();
+  }
+
+  @FXML
+  private void handleDrag(MouseEvent event) {
+    double newY = event.getSceneY() - yValue;
+    if ((newY + imageClue.getFitHeight())
+        <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {
+      imageClue.setY(newY);
+    }
+  }
+
+  @FXML
+  private void handleDragFinish(MouseEvent event) {
+    if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
+      TranslateTransition envelopeTransition = new TranslateTransition();
+      envelopeTransition.setNode(envelopeFront);
+      envelopeTransition.setDuration(Duration.seconds(1));
+      envelopeTransition.setToY(693.0);
+      TranslateTransition photoTransition = new TranslateTransition();
+      photoTransition.setNode(envelopeBack);
+      photoTransition.setDuration(Duration.seconds(1));
+      photoTransition.setToY(693.0);
+      ParallelTransition parallelTransition =
+          new ParallelTransition(envelopeTransition, photoTransition);
+      parallelTransition.play();
+      imageClue.setVisible(false);
+      handlePhotoClueClick(event);
+      return;
+    }
+  }
+
+  @FXML
   public void setGuessButton() {
     button = 2;
     btnGuess.setDisable(false);
-    System.out.println("hi");
   }
 
   /**
