@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -47,6 +48,7 @@ public class RoomController {
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
   @FXML private ImageView closeButtonImage2;
+  @FXML private ImageView closeButtonImage3;
   @FXML private ImageView crimeScene;
   @FXML private ImageView cross;
   @FXML private ImageView guide;
@@ -63,17 +65,19 @@ public class RoomController {
   @FXML private Text objective2Label;
   @FXML private VBox objectiveMenu;
   @FXML private VBox suspectMenu;
+  @FXML private Pane phonePopup;
+  @FXML private ImageView phoneDisplay;
+  @FXML private Rectangle leftarrow;
+  @FXML private Rectangle rightarrow;
+  @FXML private Rectangle unlockphone;
+  @FXML private Rectangle gallery;
+  @FXML private Rectangle calendar;
 
   private boolean clueVisible = false;
   private boolean isFootprintVisible = false;
   private GameTimer gameTimer;
   private Image backImage;
-  private Image fifthSlide;
   private Image frontImage;
-  private Image fourthSlide;
-  private Image secondSlide;
-  private Image sixthSlide;
-  private Image thirdSlide;
   private ObjectivesManager objectivesManager;
 
   /**
@@ -111,12 +115,6 @@ public class RoomController {
 
     frontImage = new Image(getClass().getResourceAsStream("/images/kid.jpg"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
-
-    secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));
-    thirdSlide = new Image(getClass().getResourceAsStream("/images/740.png"));
-    fourthSlide = new Image(getClass().getResourceAsStream("/images/750.png"));
-    fifthSlide = new Image(getClass().getResourceAsStream("/images/static.png"));
-    sixthSlide = new Image(getClass().getResourceAsStream("/images/stolen.png"));
     photoClue.setImage(frontImage);
 
     objectivesManager = ObjectivesManager.getInstance();
@@ -130,6 +128,59 @@ public class RoomController {
     } else {
       btnGuess.setDisable(false);
     }
+  }
+
+  @FXML
+  private void onPhoneClick() {
+    phonePopup.setVisible(true);
+    closeButtonImage3.setVisible(true);
+    leftarrow.setDisable(true);
+    rightarrow.setDisable(true);
+    unlockphone.setDisable(false);
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+  }
+
+  @FXML
+  private void onPhotoClicked() {
+    leftarrow.setDisable(false);
+    rightarrow.setDisable(false);
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+    current = 1;
+    phoneDisplay.setImage(
+        new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+  }
+
+  @FXML
+  private void onBackPressed() {
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    gallery.setDisable(false);
+    calendar.setDisable(false);
+    leftarrow.setDisable(true);
+    rightarrow.setDisable(true);
+  }
+
+  @FXML
+  private void onUnlockPhone() {
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    unlockphone.setDisable(true);
+    gallery.setDisable(false);
+    calendar.setDisable(false);
+  }
+
+  @FXML
+  private void onCalendarClicked() {
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/calendar.png")));
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+  }
+
+  @FXML
+  private void onCloseButtonPressed() {
+    phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phone.png")));
+    closeButtonImage3.setVisible(false);
   }
 
   @FXML
@@ -184,26 +235,6 @@ public class RoomController {
   }
 
   @FXML
-  private void onCamClicked() {
-    // if the suspect menu is visible then it will be closed
-    if (suspectMenu.isVisible()) {
-      onToggleMenu();
-    }
-    // closes all the other clues
-    handleCloseClick(null);
-    onCloseButton1Pressed();
-    closeButtonImage1.setVisible(false);
-    // updates the objectives since a clue has been clicked
-    objectivesManager.completeObjectiveStep(1);
-    pictureBackground.setVisible(false);
-    // sets the current slide to the first slide
-    camSlide.setVisible(true);
-    closeButtonImage2.setVisible(true);
-    current = 1;
-    camSlide.setImage(secondSlide);
-  }
-
-  @FXML
   private void onCloseButton2Pressed() {
     pictureBackground.setVisible(true);
     camSlide.setVisible(false);
@@ -214,19 +245,19 @@ public class RoomController {
   public void nxtImg() {
     // basically a switch statement to change the image
     // to the right based on what slide it is currently on
-    System.out.println(current);
+
     current = current + 1;
-    if (current == 2) {
-      camSlide.setImage(thirdSlide);
-    } else if (current == 3) {
-      camSlide.setImage(fourthSlide);
-    } else if (current == 4) {
-      camSlide.setImage(fifthSlide);
-    } else if (current == 5) {
-      camSlide.setImage(sixthSlide);
+    System.out.println(current);
+    if (current == 1) {
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+    } else if (current == 2) {
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
     } else {
-      current = 5;
-      camSlide.setImage(sixthSlide);
+      current = 3;
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     }
   }
 
@@ -237,16 +268,15 @@ public class RoomController {
     System.out.println(current);
     current = current - 1;
     if (current == 2) {
-      camSlide.setImage(thirdSlide);
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
     } else if (current == 3) {
-      camSlide.setImage(fourthSlide);
-    } else if (current == 4) {
-      camSlide.setImage(fifthSlide);
-    } else if (current == 5) {
-      camSlide.setImage(sixthSlide);
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     } else {
       current = 1;
-      camSlide.setImage(secondSlide);
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
     }
   }
 
