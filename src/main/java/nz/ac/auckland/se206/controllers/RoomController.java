@@ -44,7 +44,6 @@ public class RoomController {
   @FXML private Button btnObjectives;
   @FXML private Button objectiveClose;
   @FXML private ImageView archaeologist;
-  @FXML private ImageView camSlide;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
   @FXML private ImageView closeButtonImage2;
@@ -237,7 +236,6 @@ public class RoomController {
   @FXML
   private void onCloseButton2Pressed() {
     pictureBackground.setVisible(true);
-    camSlide.setVisible(false);
     closeButtonImage2.setVisible(false);
   }
 
@@ -303,9 +301,6 @@ public class RoomController {
 
   @FXML
   private void onToggleMenu() {
-    if (camSlide.isVisible()) {
-      onCloseButton2Pressed();
-    }
 
     onCloseButton2Pressed();
 
