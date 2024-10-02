@@ -100,13 +100,13 @@
             <Font size="56.0" />
          </font>
       </Label>
-      <Label fx:id="setupLabel" layoutX="219.0" layoutY="583.0" prefHeight="66.0" prefWidth="231.0" text="Initializing Chat" textFill="#ff0f0f">
+      <Label fx:id="setupLabel" layoutX="210.0" layoutY="504.0" prefHeight="66.0" prefWidth="231.0" text="Initializing Chat" textFill="#ff0f0f">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="415.0" layoutY="590.0" />
-      <Label fx:id="readyMessageLabel" layoutX="224.0" layoutY="594.0" prefHeight="45.0" prefWidth="304.0" text="Enter a Message Above" textFill="#f70b0b" visible="false">
+      <ProgressIndicator fx:id="progressIndicator" layoutX="405.0" layoutY="504.0" />
+      <Label fx:id="readyMessageLabel" layoutX="210.0" layoutY="515.0" prefHeight="45.0" prefWidth="304.0" text="Enter a Message Below" textFill="#f70b0b" visible="false">
          <font>
             <Font size="30.0" />
          </font>
