@@ -21,7 +21,7 @@
          
   
       <ImageView fx:id="camSlide" fitHeight="411.0" fitWidth="505.0" layoutX="97.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="pictureBackground" fitHeight="50.0" fitWidth="70.0" layoutX="197.0" layoutY="500.0" onMouseClicked="#handlePhotoClueClick" onMouseEntered="#onHover" onMouseExited="#onExit" opacity="0.79" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pictureBackground" fitHeight="50.0" fitWidth="70.0" layoutX="197.0" layoutY="500.0" onMouseClicked="#handleEnvelopeClick" onMouseEntered="#onHover" onMouseExited="#onExit" opacity="0.79" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/kidhover.png" />
          </image>
@@ -161,20 +161,30 @@
             <Image url="@../images/footprintblack.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="envelopeBack" fitHeight="125.0" fitWidth="223.0" layoutX="237.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="envelopeBack" fitHeight="125.0" fitWidth="223.0" layoutX="237.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/envelopeback.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="imageClue" fitHeight="150.0" fitWidth="200.0" layoutX="279.0" layoutY="272.0" onMouseDragged="#handleDrag" onMousePressed="#handleMousePressed" onMouseReleased="#handleDragFinish" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imageClue" fitHeight="150.0" fitWidth="200.0" layoutX="279.0" layoutY="272.0" onMouseDragged="#handleDrag" onMousePressed="#handleMousePressed" onMouseReleased="#handleDragFinish" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/kid.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="envelopeFront" fitHeight="156.0" fitWidth="216.0" layoutX="242.0" layoutY="273.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="envelopeFront" fitHeight="156.0" fitWidth="216.0" layoutX="242.0" layoutY="273.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/envelopefront.png" />
          </image>
       </ImageView>
+      <Label fx:id="envelopeLabel1" layoutX="276.0" layoutY="425.0" text="Pull the photo up" textFill="#8ee807" visible="false">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <Label fx:id="envelopeLabel2" layoutX="267.0" layoutY="447.0" text="out of the envelope" textFill="#8ee807" visible="false">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
