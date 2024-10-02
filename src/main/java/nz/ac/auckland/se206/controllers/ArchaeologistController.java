@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -41,7 +42,6 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 public class ArchaeologistController {
   private static GameStateContext archContext = new GameStateContext();
   private static boolean isFirstTimeArchInit = true;
-  private static boolean isFirstTime = true;
   private static boolean isFirstArchMessage = true;
   private static ChatCompletionRequest archChatCompletionRequest;
 
@@ -69,6 +69,10 @@ public class ArchaeologistController {
   @FXML private TextField archTxtInput;
   @FXML private VBox suspectMenu;
   @FXML private VBox objectiveMenu;
+  @FXML private Button btnSend;
+  @FXML private Label setupLabel;
+  @FXML private ProgressIndicator progressIndicator;
+  @FXML private Label readyMessageLabel;
 
   private GameTimer gameTimer;
   private MediaPlayer archPlayer;
@@ -97,6 +101,25 @@ public class ArchaeologistController {
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+              Task<Void> systemPromptThread =
+                  new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                      getSystemPrompt();
+                      Platform.runLater(
+                          () -> {
+                            archTxtInput.setDisable(false);
+                            btnSend.setDisable(false);
+                            setupLabel.setVisible(false);
+                            progressIndicator.setVisible(false);
+                            readyMessageLabel.setVisible(true);
+                          });
+                      return null;
+                    }
+                  };
+              Thread systemThread = new Thread(systemPromptThread);
+              systemThread.setDaemon(true);
+              systemThread.start();
               Platform.runLater(
                   () -> {
                     archTxtChat.setText(
@@ -114,7 +137,6 @@ public class ArchaeologistController {
                     archPlayer = new MediaPlayer(sound);
                     archPlayer.play();
                   });
-              getSystemPrompt();
               return null;
             }
           };
@@ -170,11 +192,7 @@ public class ArchaeologistController {
     if (isFirstArchMessage) {
       objectivesManager.completeObjectiveStep(0);
       isFirstArchMessage = false;
-    }
-    // if it's the first time, clear the chat area before sending the first message
-    if (isFirstTime) {
-      archTxtChat.clear();
-      isFirstTime = false;
+      readyMessageLabel.setVisible(false);
     }
     String message = archTxtInput.getText().trim();
     // if the message is empty, do nothing
@@ -212,8 +230,13 @@ public class ArchaeologistController {
     Map<String, String> map = new HashMap<>();
     map.put("profession", "an archaeologist who was recently denied funding");
     map.put("shoeSize", "8");
-    map.put("reason", "you were at here at the lab alone analysing some artefacts");
+    map.put(
+        "reason",
+        "your phone broke last week and you couldn’t get a replacement due to denied funding");
     map.put("kids", "a 9 year old son");
+    map.put(
+        "interview",
+        "you were getting interviewed by the journalist about your latest find at the studio");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     // sets up the chat with the system prompt
     try {

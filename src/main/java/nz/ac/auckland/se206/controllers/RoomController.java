@@ -101,7 +101,6 @@ public class RoomController {
                       App.changeGameOver(
                           0, "ran out of time, you didn't interact with the scenes enough!");
                     } else {
-                      System.out.println("test");
                       context.setState(context.getGuessingState());
                       App.changeGuessing();
                     }

@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -42,8 +43,6 @@ public class TourGuideController {
   private static GameStateContext gameContext = new GameStateContext();
 
   private static boolean isInit = true;
-
-  private static boolean isFirstTime = true;
 
   private static boolean FirstMessage = true;
 
@@ -79,6 +78,10 @@ public class TourGuideController {
   @FXML private TextField txtInput;
   @FXML private VBox suspectMenu;
   @FXML private VBox objectiveMenu;
+  @FXML private Button btnSend;
+  @FXML private Label setupLabel;
+  @FXML private ProgressIndicator progressIndicator;
+  @FXML private Label readyMessageLabel;
 
   private GameTimer gameTimer;
   private MediaPlayer player;
@@ -107,6 +110,25 @@ public class TourGuideController {
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+              Task<Void> systemPromptThread =
+                  new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                      getSystemPrompt();
+                      Platform.runLater(
+                          () -> {
+                            txtInput.setDisable(false);
+                            btnSend.setDisable(false);
+                            setupLabel.setVisible(false);
+                            progressIndicator.setVisible(false);
+                            readyMessageLabel.setVisible(true);
+                          });
+                      return null;
+                    }
+                  };
+              Thread systemThread = new Thread(systemPromptThread);
+              systemThread.setDaemon(true);
+              systemThread.start();
               Platform.runLater(
                   () -> {
                     txtaChat.setText(
@@ -191,11 +213,7 @@ public class TourGuideController {
     if (FirstMessage) {
       objectivesManager.completeObjectiveStep(0);
       FirstMessage = false;
-    }
-    // if this is the first time talking to the suspect, you should clear the chat
-    if (isFirstTime) {
-      txtaChat.clear();
-      isFirstTime = false;
+      readyMessageLabel.setVisible(false);
     }
     String message = txtInput.getText().trim();
     // if the message is empty, do nothing
@@ -239,9 +257,10 @@ public class TourGuideController {
 
     map.put("shoeSize", "7");
 
-    map.put("reason", "you were alone at your workplace reviewing the tours for the day alone");
+    map.put("reason", "you can’t afford a smartphone and you have a brick phone");
 
     map.put("kids", "a 9 year old daughter");
+    map.put("interview", "you were going to a job interview at the museum");
     String promptMessage = PromptEngineering.getPrompt("chat.txt", map);
     // configures the AI for the chat and sends the system prompt
     try {

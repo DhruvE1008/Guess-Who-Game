@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -41,7 +42,6 @@ import nz.ac.auckland.se206.prompts.PromptEngineering;
 public class JournalistController {
   private static GameStateContext context = new GameStateContext();
   private static boolean firstInitialization = true;
-  private static boolean firstInteraction = true;
   private static boolean journFirstMessage = true;
   private static ChatCompletionRequest chatCompletionRequest;
 
@@ -70,6 +70,10 @@ public class JournalistController {
   @FXML private Text objective2Label;
   @FXML private VBox suspectMenu;
   @FXML private VBox objectiveMenu;
+  @FXML private Button btnSend;
+  @FXML private Label setupLabel;
+  @FXML private ProgressIndicator progressIndicator;
+  @FXML private Label readyMessageLabel;
 
   private GameTimer gameTimer;
   private MediaPlayer journmedia;
@@ -98,6 +102,25 @@ public class JournalistController {
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+              Task<Void> systemPromptThread =
+                  new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                      getSystemPrompt();
+                      Platform.runLater(
+                          () -> {
+                            txtInput.setDisable(false);
+                            btnSend.setDisable(false);
+                            setupLabel.setVisible(false);
+                            progressIndicator.setVisible(false);
+                            readyMessageLabel.setVisible(true);
+                          });
+                      return null;
+                    }
+                  };
+              Thread systemThread = new Thread(systemPromptThread);
+              systemThread.setDaemon(true);
+              systemThread.start();
               Platform.runLater(
                   () -> {
                     txtaChat.setText(
@@ -172,11 +195,7 @@ public class JournalistController {
     if (journFirstMessage) {
       objectivesManager.completeObjectiveStep(0);
       journFirstMessage = false;
-    }
-    // if its the first time talking to the journalist clear the chat
-    if (firstInteraction) {
-      txtaChat.clear();
-      firstInteraction = false;
+      readyMessageLabel.setVisible(false);
     }
     String userMessage = txtInput.getText().trim();
     // if the message is empty do nothing
@@ -221,9 +240,12 @@ public class JournalistController {
     map.put("shoeSize", "7");
     map.put(
         "reason",
-        "you had a big story to cover the next day, so you were at home all night preparing for"
-            + " it");
+        "you lost your phone during an Amazon case a few days ago and you have been too busy to get"
+            + " a new one");
     map.put("kids", "a 9 year old son");
+    map.put(
+        "interview",
+        "you were going to interview the archaeologist about his latest find at the studio");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     // sets up the AI chat
     try {
