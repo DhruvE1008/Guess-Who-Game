@@ -409,6 +409,13 @@ public class RoomController {
         <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {
       imageClue.setY(newY);
     }
+    if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
+      envelopeLabel2.setVisible(false);
+      envelopeLabel1.setText("Let go of the photo");
+    } else {
+      envelopeLabel2.setVisible(true);
+      envelopeLabel1.setText("Pull the photo up");
+    }
   }
 
   @FXML

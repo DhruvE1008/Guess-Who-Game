@@ -102,13 +102,17 @@ public class JournalistController {
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+              // has the journalist introduce themselves and sets up the chat with the
+              // AI system
               Task<Void> systemPromptThread =
                   new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+                      // sends the first message to initiate the chat to the AI
                       getSystemPrompt();
                       Platform.runLater(
                           () -> {
+                            // sets up the chat
                             txtInput.setDisable(false);
                             btnSend.setDisable(false);
                             setupLabel.setVisible(false);
@@ -121,6 +125,7 @@ public class JournalistController {
               Thread systemThread = new Thread(systemPromptThread);
               systemThread.setDaemon(true);
               systemThread.start();
+              // sets the initial message text
               Platform.runLater(
                   () -> {
                     txtaChat.setText(
@@ -128,6 +133,7 @@ public class JournalistController {
                             + " lack of interesting stories these days. If you find the idol it"
                             + " will be a good story for me");
                     Media sound = null;
+                    // plays the greeting sound for the journalist
                     try {
                       sound =
                           new Media(
