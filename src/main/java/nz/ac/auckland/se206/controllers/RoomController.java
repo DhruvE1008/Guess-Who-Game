@@ -1,8 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,8 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
@@ -28,6 +31,7 @@ import nz.ac.auckland.se206.TimerManager;
  * chat with customers and guess their profession.
  */
 public class RoomController {
+  private TranslateTransition scanTransition;
   private static int button = 1;
   private static int current = 1;
   private static GameStateContext context = BackStoryController.getContext();
@@ -63,6 +67,8 @@ public class RoomController {
   @FXML private Text objective2Label;
   @FXML private VBox objectiveMenu;
   @FXML private VBox suspectMenu;
+  @FXML private Line scanLine;
+  @FXML private ImageView footprint;
 
   private boolean clueVisible = false;
   private boolean isFootprintVisible = false;
@@ -82,7 +88,6 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
-
     closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
@@ -132,42 +137,54 @@ public class RoomController {
     }
   }
 
-  @FXML
-  private void handleFootClick() {
-    // makes all the other clues invisible
-    handleCloseClick(null);
-    onCloseButton2Pressed();
-    // makes the footprint visible and gets it ready for the scan
-    startScan.setVisible(true);
-    scanLabel.setVisible(true);
-    isFootprintVisible = true;
-    closeButtonImage1.setVisible(true);
-    // since a clue has been interacted with it updates the objectives
-    objectivesManager.completeObjectiveStep(1);
+  private void setupScanLineMovement() {
+    // Create the translate transition for the scanLine on the Y-axis
+    scanTransition = new TranslateTransition(Duration.millis(2000), scanLine);
+    scanTransition.setByY(200); // Move 200 units up and down along the Y-axis
+    scanTransition.setCycleCount(2); // Only one full cycle
+    scanTransition.setAutoReverse(true); // Automatically reverse direction after reaching the end
+
+    // Add a listener to detect when the transition completes
+    scanTransition.setOnFinished(
+        event -> {
+          completeScan(); // Call method to handle post-scan logic
+        });
+
+    // Add a listener to the parent node or scene to ensure the key events are captured
+    scanLabel.getScene().setOnKeyPressed(this::handleKeyPressed);
+    scanLabel.getScene().setOnKeyReleased(this::handleKeyReleased);
   }
 
-  @FXML
-  public void scanFootprint() {
-    if (!isFootprintVisible) {
-      return;
+  private void completeScan() {
+    stopScanLineMovement(); // Stop the scan line movement
+
+    footprint.setImage(
+        new Image(
+            getClass()
+                .getResourceAsStream("/images/scancomplete.jpg"))); // Change the footprint image
+    scanLabel.setVisible(false); // Hide the scan label
+    scanLine.setVisible(false); // Hide the scan line
+  }
+
+  private void handleKeyPressed(KeyEvent event) {
+    if (event.getCode() == KeyCode.S) {
+      scanLabel.setText("Scanning...");
+      startScanLineMovement(); // Start scan when 'S' is pressed
     }
-    System.out.println("Scanning footprint...");
-    startScan.setVisible(false);
-    scanComplete.setVisible(false);
-    scanningFootprint.setVisible(true);
-    scanLabel.setVisible(false);
-    PauseTransition pause = new PauseTransition(Duration.seconds(4));
-    pause.setOnFinished(
-        event -> {
-          // Make phonePopup invisible and unlockedPhone visible after 4 seconds
-          if (scanningFootprint.isVisible()) {
-            scanningFootprint.setVisible(false);
-            scanComplete.setVisible(true);
-            scanLabel.setVisible(true);
-          }
-          System.out.println("Scan complete");
-        });
-    pause.play();
+  }
+
+  private void handleKeyReleased(KeyEvent event) {
+    if (event.getCode() == KeyCode.S) {
+      // Do nothing on key release in this case
+    }
+  }
+
+  private void startScanLineMovement() {
+    scanTransition.play(); // Start the scan line movement
+  }
+
+  private void stopScanLineMovement() {
+    scanTransition.stop(); // Stop the scan line movement
   }
 
   // Update the objective labels
@@ -252,12 +269,11 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
-    // closes all the clues and labels associated with the clues
-    isFootprintVisible = false;
+    System.out.println("hi");
+    footprint.setImage(new Image(getClass().getResourceAsStream("/images/startScan.png")));
+    footprint.setVisible(false);
     scanLabel.setVisible(false);
-    startScan.setVisible(false);
-    scanningFootprint.setVisible(false);
-    scanComplete.setVisible(false);
+    scanLine.setVisible(false);
     closeButtonImage1.setVisible(false);
   }
 
@@ -329,6 +345,15 @@ public class RoomController {
       photoClue.setVisible(false);
       cross.setVisible(false);
     }
+  }
+
+  @FXML
+  private void handleFootClick() {
+    setupScanLineMovement();
+    footprint.setVisible(true);
+    scanLabel.setVisible(true);
+    scanLine.setVisible(true);
+    closeButtonImage1.setVisible(true);
   }
 
   @FXML
