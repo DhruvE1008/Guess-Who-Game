@@ -144,6 +144,8 @@ public class RoomController {
 
   @FXML
   private void onPhoneClick() {
+    // open the phone and update the objectives
+    objectivesManager.completeObjectiveStep(1);
     phonePopup.setVisible(true);
     closeButtonImage3.setVisible(true);
     leftarrow.setDisable(true);
@@ -154,18 +156,23 @@ public class RoomController {
   }
 
   @FXML
+  // open the gallery
   private void onPhotoClicked() {
+    // enable the arrow buttons and disable the gallery and calendar buttons
     leftarrow.setDisable(false);
     rightarrow.setDisable(false);
     gallery.setDisable(true);
     calendar.setDisable(true);
+    // current tracks what image is currently being displayed
     current = 1;
+    // make the initial image the kid image
     phoneDisplay.setImage(
         new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
   }
 
   @FXML
   private void onBackPressed() {
+    // go back to the home screen
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
     gallery.setDisable(false);
     calendar.setDisable(false);
@@ -175,6 +182,7 @@ public class RoomController {
 
   @FXML
   private void onUnlockPhone() {
+    // unlock the phone and go to the home screen
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
     unlockphone.setDisable(true);
     gallery.setDisable(false);
@@ -183,6 +191,7 @@ public class RoomController {
 
   @FXML
   private void onCalendarClicked() {
+    // open the calendar
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/calendar.png")));
     gallery.setDisable(true);
     calendar.setDisable(true);
