@@ -269,6 +269,8 @@ public class GuessingController {
   /** Checks if the submit button should be enabled. */
   @FXML
   private boolean checkSubmitEnabled() {
+    // if the suspect has been selected and the text area is not empty, the submit button will be
+    // enabled
     if (suspect != 0 && !textArea.getText().isEmpty()) {
       submit.setDisable(false);
       return true;
@@ -312,14 +314,17 @@ public class GuessingController {
   /** Handles when the timer ends. */
   private void handleTimerEnd() {
     TimerManager.stopTimer();
+    // when the timer has been stopped, the users progress will be checked.
     if (!checkSubmitEnabled()) {
       try {
+        // if the user hasn't made a guess, the game will end
         App.changeGameOver(0, "ran out of time, you didnt make a guess!!");
       } catch (IOException e) {
         e.printStackTrace();
       }
     } else {
       try {
+        // otherwise the user's guess will be submitted even after running out of time
         handleSubmit(null);
       } catch (IOException e) {
         e.printStackTrace();

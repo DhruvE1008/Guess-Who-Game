@@ -1,8 +1,10 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +34,7 @@ public class RoomController {
   private static int button = 1;
   private static int current = 1;
   private static GameStateContext context = BackStoryController.getContext();
+  private static boolean isFirstInit = true;
 
   @FXML
   public static void resetGuessButton() {
@@ -64,6 +67,11 @@ public class RoomController {
   @FXML private Text objective2Label;
   @FXML private VBox objectiveMenu;
   @FXML private VBox suspectMenu;
+  @FXML private ImageView envelopeFront;
+  @FXML private ImageView envelopeBack;
+  @FXML private ImageView imageClue;
+  @FXML private Label envelopeLabel1;
+  @FXML private Label envelopeLabel2;
   @FXML private Pane phonePopup;
   @FXML private ImageView phoneDisplay;
   @FXML private Rectangle leftarrow;
@@ -78,6 +86,8 @@ public class RoomController {
   private Image backImage;
   private Image frontImage;
   private ObjectivesManager objectivesManager;
+  private double yValue;
+  private double initialImageClueY;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -85,7 +95,10 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
-
+    if (isFirstInit) {
+      isFirstInit = false;
+      initialImageClueY = imageClue.getY();
+    }
     closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
@@ -348,12 +361,15 @@ public class RoomController {
 
   @FXML
   private void handleCloseClick(MouseEvent event) {
-    if (clueVisible) {
-      clueVisible = false;
-      flipLabel.setVisible(false);
-      photoClue.setVisible(false);
-      cross.setVisible(false);
-    }
+    clueVisible = false;
+    flipLabel.setVisible(false);
+    photoClue.setVisible(false);
+    cross.setVisible(false);
+    imageClue.setVisible(false);
+    envelopeLabel1.setVisible(false);
+    envelopeLabel2.setVisible(false);
+    envelopeFront.setVisible(false);
+    envelopeBack.setVisible(false);
   }
 
   @FXML
@@ -391,10 +407,76 @@ public class RoomController {
   }
 
   @FXML
+  private void handleEnvelopeClick(MouseEvent event) {
+    handleCloseClick(event);
+    // if the envelope is clicked it will update the objectives
+    objectivesManager.completeObjectiveStep(1);
+    // closes the other clues
+    onCloseButton1Pressed();
+    onCloseButton2Pressed();
+    imageClue.setVisible(true);
+    envelopeLabel1.setVisible(true);
+    envelopeLabel2.setVisible(true);
+    envelopeFront.setVisible(true);
+    envelopeBack.setVisible(true);
+    cross.setVisible(true);
+  }
+
+  @FXML
+  private void handleMousePressed(MouseEvent event) {
+    yValue = event.getSceneY();
+  }
+
+  @FXML
+  private void handleDrag(MouseEvent event) {
+    double newY = event.getSceneY() - yValue;
+    if ((newY + imageClue.getFitHeight())
+        <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {
+      imageClue.setY(newY);
+    }
+    if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
+      envelopeLabel2.setVisible(false);
+      envelopeLabel1.setText("Let go of the photo");
+    } else {
+      envelopeLabel2.setVisible(true);
+      envelopeLabel1.setText("Pull the photo up");
+    }
+  }
+
+  @FXML
+  private void handleDragFinish(MouseEvent event) {
+    if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
+      imageClue.setY(initialImageClueY);
+      TranslateTransition envelopeTransition = new TranslateTransition();
+      envelopeTransition.setNode(envelopeFront);
+      envelopeTransition.setDuration(Duration.seconds(1));
+      envelopeTransition.setToY(500.0);
+      TranslateTransition photoTransition = new TranslateTransition();
+      photoTransition.setNode(envelopeBack);
+      photoTransition.setDuration(Duration.seconds(1));
+      photoTransition.setToY(500.0);
+      ParallelTransition parallelTransition =
+          new ParallelTransition(envelopeTransition, photoTransition);
+      parallelTransition.setOnFinished(
+          e -> {
+            envelopeBack.setVisible(false);
+            envelopeFront.setVisible(false);
+            envelopeBack.setTranslateY(0);
+            envelopeFront.setTranslateY(0);
+          });
+      parallelTransition.play();
+      imageClue.setVisible(false);
+      envelopeLabel1.setVisible(false);
+      envelopeLabel2.setVisible(false);
+      handlePhotoClueClick(event);
+      return;
+    }
+  }
+
+  @FXML
   public void setGuessButton() {
     button = 2;
     btnGuess.setDisable(false);
-    System.out.println("hi");
   }
 
   /**

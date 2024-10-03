@@ -101,13 +101,16 @@ public class ArchaeologistController {
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+              // sets up the chat with the AI by sending an initial message
               Task<Void> systemPromptThread =
                   new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+                      // sends initial set up message
                       getSystemPrompt();
                       Platform.runLater(
                           () -> {
+                            // sets up the chat so that the user can type a message
                             archTxtInput.setDisable(false);
                             btnSend.setDisable(false);
                             setupLabel.setVisible(false);
@@ -120,6 +123,7 @@ public class ArchaeologistController {
               Thread systemThread = new Thread(systemPromptThread);
               systemThread.setDaemon(true);
               systemThread.start();
+              // sets the text up for the archaeologist
               Platform.runLater(
                   () -> {
                     archTxtChat.setText(
@@ -127,6 +131,7 @@ public class ArchaeologistController {
                             + " can't afford to go on another one because I was recently denied"
                             + " funding.");
                     Media sound = null;
+                    // plays the archaeologist's intro sound
                     try {
                       sound =
                           new Media(App.class.getResource("/sounds/arch.mp3").toURI().toString());
