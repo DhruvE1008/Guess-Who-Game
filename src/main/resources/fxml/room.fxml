@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="696.0" fitWidth="728.0" layoutX="1.0" layoutY="1.0" preserveRatio="true">
          <image>
-            <Image url="@../images/crime_scene.jpg" />
+            <Image url="@../images/backgroundwithenvelope.png" />
          </image>
       </ImageView>
 
@@ -36,9 +36,9 @@
      
    </children>
 </Pane>
-      <ImageView fx:id="pictureBackground" fitHeight="50.0" fitWidth="70.0" layoutX="197.0" layoutY="500.0" onMouseClicked="#handleEnvelopeClick" onMouseEntered="#onHover" onMouseExited="#onExit" opacity="0.79" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pictureBackground" fitHeight="31.0" fitWidth="37.0" layoutX="216.0" layoutY="507.0" onMouseClicked="#handleEnvelopeClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/kidhover.png" />
+            <Image url="@../images/envelopecluev2.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="329.0" layoutY="607.0" onMouseClicked="#handleFootClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true">
@@ -111,12 +111,12 @@
 
      
          
-      <ImageView fx:id="photoClue" fitHeight="208.0" fitWidth="229.0" layoutX="230.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="photoClue" fitHeight="208.0" fitWidth="204.0" layoutX="230.0" layoutY="224.0" pickOnBounds="true" visible="false">
          <image>
-            <Image url="@../images/photoClue.png" />
+            <Image url="@../images/pin.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cross" fitHeight="56.0" fitWidth="52.0" layoutX="437.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="cross" fitHeight="56.0" fitWidth="52.0" layoutX="437.0" layoutY="222.0" pickOnBounds="true" visible="false">
          <image>
             <Image url="@../images/cross.png" />
          </image>
