@@ -111,12 +111,12 @@
 
      
          
-      <ImageView fx:id="photoClue" fitHeight="208.0" fitWidth="229.0" layoutX="230.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="photoClue" fitHeight="208.0" fitWidth="204.0" layoutX="230.0" layoutY="224.0" pickOnBounds="true" visible="false">
          <image>
-            <Image url="@../images/photoClue.png" />
+            <Image url="@../images/pin.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cross" fitHeight="56.0" fitWidth="52.0" layoutX="437.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="cross" fitHeight="56.0" fitWidth="52.0" layoutX="437.0" layoutY="222.0" pickOnBounds="true" visible="false">
          <image>
             <Image url="@../images/cross.png" />
          </image>

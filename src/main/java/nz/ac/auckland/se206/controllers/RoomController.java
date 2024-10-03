@@ -361,6 +361,7 @@ public class RoomController {
 
   @FXML
   private void handleCloseClick(MouseEvent event) {
+    // closes all the images related to the photo clue and labels associated with them
     clueVisible = false;
     flipLabel.setVisible(false);
     photoClue.setVisible(false);
@@ -429,11 +430,15 @@ public class RoomController {
 
   @FXML
   private void handleDrag(MouseEvent event) {
+    // gets the position that the user is dragging the photo from
     double newY = event.getSceneY() - yValue;
+    // stops the user from dragging the photo under the envelope
     if ((newY + imageClue.getFitHeight())
         <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {
       imageClue.setY(newY);
     }
+    // changes the label based on the position of the photo whether it is
+    // above or in the envelope
     if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
       envelopeLabel2.setVisible(false);
       envelopeLabel1.setText("Let go of the photo");
@@ -445,8 +450,11 @@ public class RoomController {
 
   @FXML
   private void handleDragFinish(MouseEvent event) {
+    // if the photo is dragged above the envelope then a transition occurs
     if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
       imageClue.setY(initialImageClueY);
+      // transition occurs in parallel for both parts of the envelope
+      // the whole envelope moves down in 1 second
       TranslateTransition envelopeTransition = new TranslateTransition();
       envelopeTransition.setNode(envelopeFront);
       envelopeTransition.setDuration(Duration.seconds(1));
@@ -459,6 +467,7 @@ public class RoomController {
           new ParallelTransition(envelopeTransition, photoTransition);
       parallelTransition.setOnFinished(
           e -> {
+            // once the transition is finished the envelope and photo are hidden
             envelopeBack.setVisible(false);
             envelopeFront.setVisible(false);
             envelopeBack.setTranslateY(0);
