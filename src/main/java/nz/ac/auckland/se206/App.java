@@ -120,7 +120,7 @@ public class App extends Application {
                                 roomController.rotate(); // Rotate the room when 'F' key is pressed
                                 keyHandled = true;
                               } else if (event.getCode() == KeyCode.S) {
-                                roomController.scanFootprint();
+
                                 keyHandled = true;
                               }
                             }
