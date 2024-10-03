@@ -1,6 +1,8 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -13,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -35,6 +38,7 @@ public class RoomController {
   private static int button = 1;
   private static int current = 1;
   private static GameStateContext context = BackStoryController.getContext();
+  private static boolean isFirstInit = true;
 
   @FXML
   public static void resetGuessButton() {
@@ -47,10 +51,10 @@ public class RoomController {
   @FXML private Button btnObjectives;
   @FXML private Button objectiveClose;
   @FXML private ImageView archaeologist;
-  @FXML private ImageView camSlide;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
   @FXML private ImageView closeButtonImage2;
+  @FXML private ImageView closeButtonImage3;
   @FXML private ImageView crimeScene;
   @FXML private ImageView cross;
   @FXML private ImageView guide;
@@ -69,17 +73,26 @@ public class RoomController {
   @FXML private VBox suspectMenu;
   @FXML private Line scanLine;
   @FXML private ImageView footprint;
+  @FXML private ImageView envelopeFront;
+  @FXML private ImageView envelopeBack;
+  @FXML private ImageView imageClue;
+  @FXML private Label envelopeLabel1;
+  @FXML private Label envelopeLabel2;
+  @FXML private Pane phonePopup;
+  @FXML private ImageView phoneDisplay;
+  @FXML private Rectangle leftarrow;
+  @FXML private Rectangle rightarrow;
+  @FXML private Rectangle unlockphone;
+  @FXML private Rectangle gallery;
+  @FXML private Rectangle calendar;
 
   private boolean clueVisible = false;
   private GameTimer gameTimer;
   private Image backImage;
-  private Image fifthSlide;
   private Image frontImage;
-  private Image fourthSlide;
-  private Image secondSlide;
-  private Image sixthSlide;
-  private Image thirdSlide;
   private ObjectivesManager objectivesManager;
+  private double yValue;
+  private double initialImageClueY;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -87,6 +100,12 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
+
+    if (isFirstInit) {
+      isFirstInit = false;
+      initialImageClueY = imageClue.getY();
+    }
+    
     closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
@@ -115,12 +134,6 @@ public class RoomController {
 
     frontImage = new Image(getClass().getResourceAsStream("/images/kid.jpg"));
     backImage = new Image(getClass().getResourceAsStream("/images/pin.png"));
-
-    secondSlide = new Image(getClass().getResourceAsStream("/images/730.png"));
-    thirdSlide = new Image(getClass().getResourceAsStream("/images/740.png"));
-    fourthSlide = new Image(getClass().getResourceAsStream("/images/750.png"));
-    fifthSlide = new Image(getClass().getResourceAsStream("/images/static.png"));
-    sixthSlide = new Image(getClass().getResourceAsStream("/images/stolen.png"));
     photoClue.setImage(frontImage);
 
     objectivesManager = ObjectivesManager.getInstance();
@@ -142,7 +155,7 @@ public class RoomController {
     scanTransition.setByY(200); // Move 200 units up and down along the Y-axis
     scanTransition.setCycleCount(2); // Only one full cycle
     scanTransition.setAutoReverse(true); // Automatically reverse direction after reaching the end
-
+  
     // Add a listener to detect when the transition completes
     scanTransition.setOnFinished(
         event -> {
@@ -153,6 +166,61 @@ public class RoomController {
     scanLabel.getScene().setOnKeyPressed(this::handleKeyPressed);
     scanLabel.getScene().setOnKeyReleased(this::handleKeyReleased);
   }
+
+  @FXML
+  private void onPhoneClick() {
+    phonePopup.setVisible(true);
+    closeButtonImage3.setVisible(true);
+    leftarrow.setDisable(true);
+    rightarrow.setDisable(true);
+    unlockphone.setDisable(false);
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+  }
+
+  @FXML
+  private void onPhotoClicked() {
+    leftarrow.setDisable(false);
+    rightarrow.setDisable(false);
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+    current = 1;
+    phoneDisplay.setImage(
+        new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+  }
+
+  @FXML
+  private void onBackPressed() {
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    gallery.setDisable(false);
+    calendar.setDisable(false);
+    leftarrow.setDisable(true);
+    rightarrow.setDisable(true);
+  }
+
+  @FXML
+  private void onUnlockPhone() {
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    unlockphone.setDisable(true);
+    gallery.setDisable(false);
+    calendar.setDisable(false);
+  }
+
+  @FXML
+  private void onCalendarClicked() {
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/calendar.png")));
+    gallery.setDisable(true);
+    calendar.setDisable(true);
+  }
+
+  @FXML
+  private void onCloseButtonPressed() {
+    phonePopup.setVisible(false); // Hide the phone popup when the close button is clicked
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phone.png")));
+    closeButtonImage3.setVisible(false);
+  }
+
+
 
   private void completeScan() {
     stopScanLineMovement(); // Stop the scan line movement
@@ -200,29 +268,8 @@ public class RoomController {
   }
 
   @FXML
-  private void onCamClicked() {
-    // if the suspect menu is visible then it will be closed
-    if (suspectMenu.isVisible()) {
-      onToggleMenu();
-    }
-    // closes all the other clues
-    handleCloseClick(null);
-    onCloseButton1Pressed();
-    closeButtonImage1.setVisible(false);
-    // updates the objectives since a clue has been clicked
-    objectivesManager.completeObjectiveStep(1);
-    pictureBackground.setVisible(false);
-    // sets the current slide to the first slide
-    camSlide.setVisible(true);
-    closeButtonImage2.setVisible(true);
-    current = 1;
-    camSlide.setImage(secondSlide);
-  }
-
-  @FXML
   private void onCloseButton2Pressed() {
     pictureBackground.setVisible(true);
-    camSlide.setVisible(false);
     closeButtonImage2.setVisible(false);
   }
 
@@ -230,19 +277,19 @@ public class RoomController {
   public void nxtImg() {
     // basically a switch statement to change the image
     // to the right based on what slide it is currently on
-    System.out.println(current);
+
     current = current + 1;
-    if (current == 2) {
-      camSlide.setImage(thirdSlide);
-    } else if (current == 3) {
-      camSlide.setImage(fourthSlide);
-    } else if (current == 4) {
-      camSlide.setImage(fifthSlide);
-    } else if (current == 5) {
-      camSlide.setImage(sixthSlide);
+    System.out.println(current);
+    if (current == 1) {
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+    } else if (current == 2) {
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
     } else {
-      current = 5;
-      camSlide.setImage(sixthSlide);
+      current = 3;
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     }
   }
 
@@ -253,16 +300,15 @@ public class RoomController {
     System.out.println(current);
     current = current - 1;
     if (current == 2) {
-      camSlide.setImage(thirdSlide);
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
     } else if (current == 3) {
-      camSlide.setImage(fourthSlide);
-    } else if (current == 4) {
-      camSlide.setImage(fifthSlide);
-    } else if (current == 5) {
-      camSlide.setImage(sixthSlide);
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     } else {
       current = 1;
-      camSlide.setImage(secondSlide);
+      phoneDisplay.setImage(
+          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
     }
   }
 
@@ -290,9 +336,6 @@ public class RoomController {
 
   @FXML
   private void onToggleMenu() {
-    if (camSlide.isVisible()) {
-      onCloseButton2Pressed();
-    }
 
     onCloseButton2Pressed();
 
@@ -340,12 +383,15 @@ public class RoomController {
 
   @FXML
   private void handleCloseClick(MouseEvent event) {
-    if (clueVisible) {
-      clueVisible = false;
-      flipLabel.setVisible(false);
-      photoClue.setVisible(false);
-      cross.setVisible(false);
-    }
+    clueVisible = false;
+    flipLabel.setVisible(false);
+    photoClue.setVisible(false);
+    cross.setVisible(false);
+    imageClue.setVisible(false);
+    envelopeLabel1.setVisible(false);
+    envelopeLabel2.setVisible(false);
+    envelopeFront.setVisible(false);
+    envelopeBack.setVisible(false);
   }
 
   @FXML
@@ -392,10 +438,76 @@ public class RoomController {
   }
 
   @FXML
+  private void handleEnvelopeClick(MouseEvent event) {
+    handleCloseClick(event);
+    // if the envelope is clicked it will update the objectives
+    objectivesManager.completeObjectiveStep(1);
+    // closes the other clues
+    onCloseButton1Pressed();
+    onCloseButton2Pressed();
+    imageClue.setVisible(true);
+    envelopeLabel1.setVisible(true);
+    envelopeLabel2.setVisible(true);
+    envelopeFront.setVisible(true);
+    envelopeBack.setVisible(true);
+    cross.setVisible(true);
+  }
+
+  @FXML
+  private void handleMousePressed(MouseEvent event) {
+    yValue = event.getSceneY();
+  }
+
+  @FXML
+  private void handleDrag(MouseEvent event) {
+    double newY = event.getSceneY() - yValue;
+    if ((newY + imageClue.getFitHeight())
+        <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {
+      imageClue.setY(newY);
+    }
+    if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
+      envelopeLabel2.setVisible(false);
+      envelopeLabel1.setText("Let go of the photo");
+    } else {
+      envelopeLabel2.setVisible(true);
+      envelopeLabel1.setText("Pull the photo up");
+    }
+  }
+
+  @FXML
+  private void handleDragFinish(MouseEvent event) {
+    if ((imageClue.getY() + imageClue.getFitHeight()) < envelopeFront.getY()) {
+      imageClue.setY(initialImageClueY);
+      TranslateTransition envelopeTransition = new TranslateTransition();
+      envelopeTransition.setNode(envelopeFront);
+      envelopeTransition.setDuration(Duration.seconds(1));
+      envelopeTransition.setToY(500.0);
+      TranslateTransition photoTransition = new TranslateTransition();
+      photoTransition.setNode(envelopeBack);
+      photoTransition.setDuration(Duration.seconds(1));
+      photoTransition.setToY(500.0);
+      ParallelTransition parallelTransition =
+          new ParallelTransition(envelopeTransition, photoTransition);
+      parallelTransition.setOnFinished(
+          e -> {
+            envelopeBack.setVisible(false);
+            envelopeFront.setVisible(false);
+            envelopeBack.setTranslateY(0);
+            envelopeFront.setTranslateY(0);
+          });
+      parallelTransition.play();
+      imageClue.setVisible(false);
+      envelopeLabel1.setVisible(false);
+      envelopeLabel2.setVisible(false);
+      handlePhotoClueClick(event);
+      return;
+    }
+  }
+
+  @FXML
   public void setGuessButton() {
     button = 2;
     btnGuess.setDisable(false);
-    System.out.println("hi");
   }
 
   /**

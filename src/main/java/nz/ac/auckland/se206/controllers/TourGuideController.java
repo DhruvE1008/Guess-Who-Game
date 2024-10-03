@@ -110,13 +110,17 @@ public class TourGuideController {
           new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+              // runs two threads to get the system prompt and the greeting
+              // these threads are nested so that they both occur in parallel
               Task<Void> systemPromptThread =
                   new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
+                      // sends the AI the system prompt
                       getSystemPrompt();
                       Platform.runLater(
                           () -> {
+                            // sets the chat up to be ready for messages
                             txtInput.setDisable(false);
                             btnSend.setDisable(false);
                             setupLabel.setVisible(false);
@@ -129,12 +133,14 @@ public class TourGuideController {
               Thread systemThread = new Thread(systemPromptThread);
               systemThread.setDaemon(true);
               systemThread.start();
+              // sets the greeting message
               Platform.runLater(
                   () -> {
                     txtaChat.setText(
                         "Tour Guide: I hope you find the idol because it has a special place in my"
                             + " heart as I believe that it belongs to my ancestors");
                     Media sound = null;
+                    // plays the greeting sound
                     try {
                       sound =
                           new Media(App.class.getResource("/sounds/guide.mp3").toURI().toString());
