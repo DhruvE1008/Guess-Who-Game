@@ -71,7 +71,6 @@ public class RoomController {
   @FXML private ImageView footprint;
 
   private boolean clueVisible = false;
-  private boolean isFootprintVisible = false;
   private GameTimer gameTimer;
   private Image backImage;
   private Image fifthSlide;
@@ -269,10 +268,12 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
-    System.out.println("hi");
+    stopScanLineMovement();
+    scanLine.setTranslateY(0);
     footprint.setImage(new Image(getClass().getResourceAsStream("/images/startScan.png")));
     footprint.setVisible(false);
     scanLabel.setVisible(false);
+    scanLabel.setText("Press 'S' to scan");
     scanLine.setVisible(false);
     closeButtonImage1.setVisible(false);
   }
