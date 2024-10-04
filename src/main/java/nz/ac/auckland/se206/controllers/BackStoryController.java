@@ -33,6 +33,9 @@ public class BackStoryController {
     return context;
   }
 
+  private MediaPlayer firstMediaPlayer;
+  private MediaPlayer secondMediaPlayer;
+
   @FXML private Button skipButton;
   @FXML private Button continueButton;
   @FXML private ImageView tombImage;
@@ -126,25 +129,40 @@ public class BackStoryController {
   }
 
   // Method to play two sounds with subtitles
+  // Method to play two sounds with subtitles
   private void playTwoSounds() {
-    // First sound file
+    // Load the first sound file
     Media firstSound = new Media(getClass().getResource("/sounds/backstory1.mp3").toExternalForm());
-    mediaPlayer = new MediaPlayer(firstSound);
+    firstMediaPlayer = new MediaPlayer(firstSound);
 
-    // Play first sound, and set the subtitles to type in while the audio plays
-    mediaPlayer.play();
-    showSubtitlesForFirstAudio();
+    // Play the first sound and set the subtitles to type while the audio plays
+    firstMediaPlayer.play();
+    showSubtitlesForFirstAudio(); // Start the first subtitle typing
 
-    // Set onEndOfMedia to handle playing the second sound
-    mediaPlayer.setOnEndOfMedia(
+    // When the first audio ends, change the image and play the second sound
+    firstMediaPlayer.setOnEndOfMedia(
         () -> {
-          changeImage("/images/suspects.png");
+          changeImage("/images/suspects.png"); // Change the image after first audio ends
           image.setX(70);
+
+          // Load the second sound file
           Media secondSound =
               new Media(getClass().getResource("/sounds/backstory2.mp3").toExternalForm());
-          MediaPlayer secondMediaPlayer = new MediaPlayer(secondSound);
-          secondMediaPlayer.play();
-          showSubtitlesForSecondAudio(); // Display subtitles for the second audio
+          secondMediaPlayer = new MediaPlayer(secondSound);
+
+          // Set up the second media player to play after the first finishes
+          secondMediaPlayer.setOnReady(
+              () -> {
+                secondMediaPlayer.play(); // Play the second audio once it's ready
+                showSubtitlesForSecondAudio(); // Display subtitles for the second audio
+              });
+
+          // Enable the continue button after the second audio finishes
+          secondMediaPlayer.setOnEndOfMedia(
+              () -> {
+                continueButton.setDisable(false);
+                skipButton.setDisable(true); // Disable skip after both audios
+              });
         });
   }
 

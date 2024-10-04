@@ -31,7 +31,6 @@ public class App extends Application {
   private static Scene scene;
   private static RoomController roomController;
   private static boolean isObjectiveCompleted = false;
-  private static boolean keyHandled = false;
 
   /**
    * The main method that launches the JavaFX application.
