@@ -106,6 +106,10 @@ public class TourGuideController {
           }
         });
     if (isInit) {
+      txtInput.setDisable(true);
+      progressIndicator.setVisible(true);
+      setupLabel.setVisible(true);
+      arrowButton.setDisable(true);
       Task<Void> getGreeting =
           new Task<Void>() {
             @Override
@@ -126,6 +130,7 @@ public class TourGuideController {
                             setupLabel.setVisible(false);
                             progressIndicator.setVisible(false);
                             readyMessageLabel.setVisible(true);
+                            arrowButton.setDisable(false);
                           });
                       return null;
                     }
