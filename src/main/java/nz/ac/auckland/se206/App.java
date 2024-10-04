@@ -4,7 +4,6 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
@@ -12,8 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -111,31 +108,6 @@ public class App extends Application {
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     // Create a new scene and set up the key event handler
                     scene = new Scene(root);
-                    scene.setOnKeyPressed(
-                        new EventHandler<KeyEvent>() {
-                          @Override
-                          public void handle(KeyEvent event) {
-                            if (!keyHandled) {
-                              if (event.getCode() == KeyCode.F) {
-                                roomController.rotate(); // Rotate the room when 'F' key is pressed
-                                keyHandled = true;
-                              } else if (event.getCode() == KeyCode.S) {
-
-                                keyHandled = true;
-                              }
-                            }
-                          }
-                        });
-
-                    scene.setOnKeyReleased(
-                        new EventHandler<KeyEvent>() {
-                          @Override
-                          public void handle(KeyEvent event) {
-                            if (event.getCode() == KeyCode.F || event.getCode() == KeyCode.S) {
-                              keyHandled = false;
-                            }
-                          }
-                        });
 
                     // Set the new scene on the stage
                     stage.setScene(scene);

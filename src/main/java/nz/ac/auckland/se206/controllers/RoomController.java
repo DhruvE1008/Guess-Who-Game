@@ -2,12 +2,13 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import javafx.animation.ParallelTransition;
-import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -87,6 +88,7 @@ public class RoomController {
   @FXML private Rectangle calendar;
 
   private boolean clueVisible = false;
+  private boolean isFKeyPressed = false;
   private GameTimer gameTimer;
   private Image backImage;
   private Image frontImage;
@@ -105,7 +107,7 @@ public class RoomController {
       isFirstInit = false;
       initialImageClueY = imageClue.getY();
     }
-    
+
     closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
@@ -155,7 +157,7 @@ public class RoomController {
     scanTransition.setByY(200); // Move 200 units up and down along the Y-axis
     scanTransition.setCycleCount(2); // Only one full cycle
     scanTransition.setAutoReverse(true); // Automatically reverse direction after reaching the end
-  
+
     // Add a listener to detect when the transition completes
     scanTransition.setOnFinished(
         event -> {
@@ -229,8 +231,6 @@ public class RoomController {
     closeButtonImage3.setVisible(false);
   }
 
-
-
   private void completeScan() {
     stopScanLineMovement(); // Stop the scan line movement
 
@@ -246,6 +246,8 @@ public class RoomController {
     if (event.getCode() == KeyCode.S) {
       scanLabel.setText("Scanning...");
       startScanLineMovement(); // Start scan when 'S' is pressed
+    } else if (event.getCode() == KeyCode.F) {
+      rotate();
     }
   }
 
@@ -260,7 +262,9 @@ public class RoomController {
   }
 
   private void stopScanLineMovement() {
-    scanTransition.stop(); // Stop the scan line movement
+    if (scanTransition != null) {
+      scanTransition.stop(); // Stop the scan line movement
+    }
   }
 
   // Update the objective labels
@@ -407,6 +411,7 @@ public class RoomController {
   @FXML
   private void handleFootClick() {
     setupScanLineMovement();
+    objectivesManager.completeObjectiveStep(1);
     footprint.setVisible(true);
     scanLabel.setVisible(true);
     scanLine.setVisible(true);
@@ -433,17 +438,46 @@ public class RoomController {
 
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
-    // if the photo clue is clicked it will update the objectives
+    // If the photo clue is clicked, update the objectives
     objectivesManager.completeObjectiveStep(1);
-    // closes the other clues
+
+    // Close any other clues that are open
     onCloseButton1Pressed();
     onCloseButton2Pressed();
+
     if (!clueVisible) {
-      // if the user is still looking at the clue then it will be rotated
+      // Set the clue as visible and display related UI elements
       clueVisible = true;
       flipLabel.setVisible(true);
       photoClue.setVisible(true);
       cross.setVisible(true);
+
+      // Set up the key event handler for the photo clue
+      Scene scene = photoClue.getScene(); // Get the scene from the photo clue
+      scene.setOnKeyPressed(
+          (EventHandler<? super KeyEvent>)
+              new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                  // Rotate only when 'F' is tapped (not held)
+                  if (event.getCode() == KeyCode.F && !isFKeyPressed) {
+                    rotate(); // Rotate the photo clue
+                    isFKeyPressed = true; // Set the flag to prevent multiple triggers
+                  }
+                }
+              });
+
+      // Also handle KeyReleased event to reset the flag
+      scene.setOnKeyReleased(
+          (EventHandler<? super KeyEvent>)
+              new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                  if (event.getCode() == KeyCode.F) {
+                    isFKeyPressed = false; // Reset the flag when the key is released
+                  }
+                }
+              });
     }
   }
 
