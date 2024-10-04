@@ -100,8 +100,20 @@ public class BackStoryController {
 
   @FXML
   private void handleSkip(MouseEvent event) throws IOException {
-    mediaPlayer.stop(); // Stop the audio
-    App.changeCrimeScene(event); // Navigate back to the main menu
+    // Stop the first media player if it's playing
+    if (firstMediaPlayer != null) {
+      firstMediaPlayer.stop(); // Stop the audio
+      firstMediaPlayer.dispose(); // Release resources
+    }
+
+    // Stop the second media player if it's already started
+    if (secondMediaPlayer != null) {
+      secondMediaPlayer.stop(); // Stop the second audio if it has started
+      secondMediaPlayer.dispose(); // Release resources
+    }
+
+    // Now change the scene after stopping the media players
+    App.changeCrimeScene(event); // Navigate to the crime scene
   }
 
   // Method to change the image in the ImageView
