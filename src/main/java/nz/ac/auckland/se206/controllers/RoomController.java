@@ -54,7 +54,6 @@ public class RoomController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
-  @FXML private ImageView closeButtonImage2;
   @FXML private ImageView closeButtonImage3;
   @FXML private ImageView crimeScene;
   @FXML private ImageView cross;
@@ -107,8 +106,6 @@ public class RoomController {
       isFirstInit = false;
       initialImageClueY = imageClue.getY();
     }
-
-    closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
 
@@ -171,6 +168,9 @@ public class RoomController {
 
   @FXML
   private void onPhoneClick() {
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
+    handleCloseClick(null);
     // open the phone and update the objectives
     objectivesManager.completeObjectiveStep(1);
     phonePopup.setVisible(true);
@@ -281,12 +281,6 @@ public class RoomController {
   }
 
   @FXML
-  private void onCloseButton2Pressed() {
-    pictureBackground.setVisible(true);
-    closeButtonImage2.setVisible(false);
-  }
-
-  @FXML
   public void nxtImg() {
     // basically a switch statement to change the image
     // to the right based on what slide it is currently on
@@ -349,9 +343,6 @@ public class RoomController {
 
   @FXML
   private void onToggleMenu() {
-
-    onCloseButton2Pressed();
-
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton, objectiveMenu, objectiveClose);
   }
 
@@ -410,6 +401,9 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
+    handleCloseClick(null);
     setupScanLineMovement();
     objectivesManager.completeObjectiveStep(1);
     footprint.setVisible(true);
@@ -443,7 +437,6 @@ public class RoomController {
 
     // Close any other clues that are open
     onCloseButton1Pressed();
-    onCloseButton2Pressed();
 
     if (!clueVisible) {
       // Set the clue as visible and display related UI elements
@@ -483,12 +476,12 @@ public class RoomController {
 
   @FXML
   private void handleEnvelopeClick(MouseEvent event) {
+    onCloseButtonPressed();
     handleCloseClick(event);
     // if the envelope is clicked it will update the objectives
     objectivesManager.completeObjectiveStep(1);
     // closes the other clues
     onCloseButton1Pressed();
-    onCloseButton2Pressed();
     imageClue.setVisible(true);
     envelopeLabel1.setVisible(true);
     envelopeLabel2.setVisible(true);
