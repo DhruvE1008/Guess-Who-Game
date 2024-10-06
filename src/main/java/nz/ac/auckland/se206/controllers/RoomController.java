@@ -92,7 +92,7 @@ public class RoomController {
   private Image backImage;
   private Image frontImage;
   private ObjectivesManager objectivesManager;
-  private double yValue;
+  private double vertValue;
   private double initialImageClueY;
 
   /**
@@ -321,6 +321,7 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
+    // closes the photo clue
     stopScanLineMovement();
     scanLine.setTranslateY(0);
     footprint.setImage(new Image(getClass().getResourceAsStream("/images/startScan.png")));
@@ -401,6 +402,8 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
+    // if the footprint is clicked it will close the other clues
+    // set the footprint to visible and update objectives
     onCloseButtonPressed();
     onCloseButton1Pressed();
     handleCloseClick(null);
@@ -492,13 +495,13 @@ public class RoomController {
 
   @FXML
   private void handleMousePressed(MouseEvent event) {
-    yValue = event.getSceneY();
+    vertValue = event.getSceneY();
   }
 
   @FXML
   private void handleDrag(MouseEvent event) {
     // gets the position that the user is dragging the photo from
-    double newY = event.getSceneY() - yValue;
+    double newY = event.getSceneY() - vertValue;
     // stops the user from dragging the photo under the envelope
     if ((newY + imageClue.getFitHeight())
         <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {

@@ -134,9 +134,9 @@ public class JournalistController {
               Platform.runLater(
                   () -> {
                     txtaChat.setText(
-                        "Journalist: I was a really good journalist back in the day but there is a"
-                            + " lack of interesting stories these days. If you find the idol it"
-                            + " will be a good story for me");
+                        "Journalist: I have been busy recently looking for a big case. I am"
+                            + " desperate as I will lose my job if I don't report a good story by"
+                            + " the end of this week");
                     Media sound = null;
                     // plays the greeting sound for the journalist
                     try {
@@ -150,7 +150,6 @@ public class JournalistController {
                     journmedia = new MediaPlayer(sound);
                     journmedia.play();
                   });
-              getSystemPrompt();
               return null;
             }
           };
