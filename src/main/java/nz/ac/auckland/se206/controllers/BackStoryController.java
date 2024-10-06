@@ -10,6 +10,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,7 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.TimerManager;
+import nz.ac.auckland.se206.VolumeManager;
 
 public class BackStoryController {
 
@@ -40,6 +42,7 @@ public class BackStoryController {
   @FXML private Label backstoryLabel;
   @FXML private Label subTitles;
   @FXML private Label timerLabel;
+  @FXML private Slider volumeSlider;
 
   private MediaPlayer mediaPlayer;
   private GameTimer gameTimer;
@@ -47,6 +50,9 @@ public class BackStoryController {
   // This method initializes the backstory content
   @FXML
   private void initialize() {
+    volumeSlider.setMin(0);
+    volumeSlider.setMax(100);
+
     continueButton.setDisable(true); // Disable the continue button initially
     Task<Void> timerTask =
         new Task<Void>() {
@@ -85,6 +91,7 @@ public class BackStoryController {
     } else {
       System.out.println("Image not found!");
     }
+    volumeSlider.valueProperty().bindBidirectional(VolumeManager.getInstance().volumeProperty());
 
     playTwoSounds(); // Play the sounds and manage the subtitles
   }
@@ -131,6 +138,9 @@ public class BackStoryController {
     Media firstSound = new Media(getClass().getResource("/sounds/backstory1.mp3").toExternalForm());
     mediaPlayer = new MediaPlayer(firstSound);
 
+    // Set initial volume and apply listener for first media player
+    VolumeManager.setVolumeAndListener(mediaPlayer);
+
     // Play first sound, and set the subtitles to type in while the audio plays
     mediaPlayer.play();
     showSubtitlesForFirstAudio();
@@ -143,6 +153,10 @@ public class BackStoryController {
           Media secondSound =
               new Media(getClass().getResource("/sounds/backstory2.mp3").toExternalForm());
           MediaPlayer secondMediaPlayer = new MediaPlayer(secondSound);
+
+          // Set initial volume and apply listener for the second media player
+          VolumeManager.setVolumeAndListener(secondMediaPlayer);
+
           secondMediaPlayer.play();
           showSubtitlesForSecondAudio(); // Display subtitles for the second audio
         });

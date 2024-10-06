@@ -2,14 +2,16 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
 import javafx.animation.ParallelTransition;
-import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -28,6 +30,7 @@ import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.SuspectOverlay;
 import nz.ac.auckland.se206.TimerManager;
+import nz.ac.auckland.se206.VolumeManager;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -85,6 +88,7 @@ public class RoomController {
   @FXML private Rectangle unlockphone;
   @FXML private Rectangle gallery;
   @FXML private Rectangle calendar;
+  @FXML private Slider volumeSlider;
 
   private boolean clueVisible = false;
   private GameTimer gameTimer;
@@ -100,12 +104,27 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
+    // Initialize the slider to match the current global volume (0 to 100)
+    volumeSlider.setMin(0);
+    volumeSlider.setMax(100);
+    volumeSlider.setValue(VolumeManager.getInstance().getVolume()); // Set slider to current volume
 
+    // Bind the slider's value to the global VolumeManager's volumeProperty
+    volumeSlider
+        .valueProperty()
+        .addListener(
+            new InvalidationListener() {
+              @Override
+              public void invalidated(Observable observable) {
+                // Update the VolumeManager's volume whenever the slider value changes
+                VolumeManager.getInstance().setVolume(volumeSlider.getValue());
+              }
+            });
     if (isFirstInit) {
       isFirstInit = false;
       initialImageClueY = imageClue.getY();
     }
-    
+
     closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
@@ -155,7 +174,7 @@ public class RoomController {
     scanTransition.setByY(200); // Move 200 units up and down along the Y-axis
     scanTransition.setCycleCount(2); // Only one full cycle
     scanTransition.setAutoReverse(true); // Automatically reverse direction after reaching the end
-  
+
     // Add a listener to detect when the transition completes
     scanTransition.setOnFinished(
         event -> {
@@ -228,8 +247,6 @@ public class RoomController {
     phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phone.png")));
     closeButtonImage3.setVisible(false);
   }
-
-
 
   private void completeScan() {
     stopScanLineMovement(); // Stop the scan line movement
