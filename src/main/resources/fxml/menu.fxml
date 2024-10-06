@@ -5,14 +5,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="738.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.MenuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.MenuController">
    <children>
-      <ImageView fitHeight="756.0" fitWidth="828.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="693.0" fitWidth="697.0" pickOnBounds="true">
          <image>
             <Image url="@../images/start.png" />
          </image>
       </ImageView>
-      <Rectangle fx:id="play" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="92.0" layoutX="257.0" layoutY="639.0" onMouseClicked="#onClick" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="248.0" />
+      <Rectangle fx:id="play" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="79.0" layoutX="240.0" layoutY="587.0" onMouseClicked="#onClick" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="224.0" />
    </children>
 </Pane>

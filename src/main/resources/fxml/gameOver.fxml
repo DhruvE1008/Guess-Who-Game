@@ -10,7 +10,7 @@
 
 <Pane fx:id="gameOver" focusTraversable="true" prefHeight="693.0" prefWidth="697.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.GameOverController">
    <children>
-      <ImageView fitHeight="696.0" fitWidth="728.0" layoutX="1.0" layoutY="1.0" preserveRatio="true">
+      <ImageView fitHeight="693.0" fitWidth="697.0" layoutX="1.0" layoutY="1.0">
          <image>
             <Image url="@../images/background%20with%20cluesv2.png" />
          </image>
