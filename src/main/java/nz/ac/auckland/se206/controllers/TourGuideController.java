@@ -156,7 +156,6 @@ public class TourGuideController {
                     player = new MediaPlayer(sound);
                     player.play();
                   });
-              getSystemPrompt();
               return null;
             }
           };

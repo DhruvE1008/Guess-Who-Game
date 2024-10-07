@@ -16,14 +16,14 @@ import javafx.util.Duration;
 public class SuspectOverlay {
   // This method rotates the arrow button by the specified angle and translates it by the specified
   // amount.
-  public static void rotateButton(Button arrowButton, int angle, double xTranslation) {
+  public static void rotateButton(Button arrowButton, int angle, double horiTranslation) {
     RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);
     rotateTransition.setByAngle(angle);
 
     // Translate the button by the specified amount
     TranslateTransition translateTransition =
         new TranslateTransition(Duration.millis(300), arrowButton);
-    translateTransition.setByX(xTranslation);
+    translateTransition.setByX(horiTranslation);
     // Play animations
     rotateTransition.play();
     translateTransition.play();
