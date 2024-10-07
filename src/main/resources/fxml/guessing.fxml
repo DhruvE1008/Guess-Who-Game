@@ -61,7 +61,7 @@
       <Label layoutX="336.0" layoutY="306.0" text="Journalist" />
       <Label layoutX="473.0" layoutY="306.0" text="Tour Guide" />
       <TextArea fx:id="textArea" layoutX="168.0" layoutY="376.0" onKeyPressed="#changeText" prefHeight="155.0" prefWidth="371.0" promptText="Enter Reason" wrapText="true" />
-      <Button fx:id="submit" disable="true" layoutX="327.0" layoutY="547.0" mnemonicParsing="false" onMouseClicked="#handleSubmit" text="Submit" />
+      <Button fx:id="submit" disable="true" layoutX="302.0" layoutY="531.0" mnemonicParsing="false" onMouseClicked="#handleSubmit" prefHeight="36.0" prefWidth="115.0" styleClass="backStoryButton" text="Submit" translateY="5.0" />
       <Label fx:id="timerLabel" layoutX="687.0" layoutY="10.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-91.0" translateY="-4.0">
          <font>
             <Font size="56.0" />

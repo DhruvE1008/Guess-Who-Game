@@ -83,17 +83,57 @@
 
 
 
-.backStoryButton {
 
+.backStoryButton {
+  -fx-background-color:
+    linear-gradient(#523d24, #301e0a),
+    /* Base gradient for depth */
+    radial-gradient(center 50% 50%, radius 50%, #6b4927, #301e0a);
+  /* Radial gradient for texture */
+  -fx-background-radius: 5;
+  /* Slightly rounded edges */
+  -fx-padding: 10 20 10 20;
+  /* Padding around the text */
+  -fx-border-color: #8b4513;
+  /* Dark brown border color */
+  -fx-border-width: 2;
+  /* Border thickness */
+  -fx-border-radius: 5;
+  -fx-font-size: 16px;
+  /* Font size */
+  -fx-text-fill: #f5deb3;
+  /* Light wheat color for text */
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 8, 0.0, 0, 2);
+  /* Shadow for a slight raised effect */
+}
+
+.backStoryButton:hover {
+  -fx-background-color:
+    linear-gradient(#6b4927, #4a351a),
+    /* Darker gradient on hover */
+    radial-gradient(center 50% 50%, radius 50%, #8b6347, #4a351a);
+  -fx-cursor: hand;
+  /* Pointer cursor on hover */
+  -fx-border-color: #daa520;
+  /* Golden border on hover */
+}
+
+.backStoryButton:pressed {
+  -fx-background-color:
+    linear-gradient(#301e0a, #523d24),
+    /* Inverted gradient for pressed state */
+    radial-gradient(center 50% 50%, radius 50%, #301e0a, #6b4927);
+  -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0.0, 0, 2);
+  /* Inner shadow to show pressed state */
+}
+
+.sendButton {
   -fx-background-image: url("../images/menu.png");
   -fx-background-size: 100% 100%;
-
   /* Stretches the image to fit the VBox */
   -fx-background-repeat: no-repeat;
   /* Ensures the image does not repeat */
-  -fx-cursor: hand;
+  -fx-background-position: center;
+  -fx-font-style: italic;
 
-  -fx-border-color: transparent;
-  -fx-focus-color: transparent;
-  -fx-faint-focus-color: transparent;
 }

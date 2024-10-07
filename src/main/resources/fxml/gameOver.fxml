@@ -22,7 +22,7 @@
             <Image url="@../images/black%20image.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="556.0" fitWidth="482.0" layoutX="121.0" layoutY="75.0" pickOnBounds="true">
+      <ImageView fitHeight="556.0" fitWidth="482.0" layoutX="121.0" layoutY="75.0" onMouseClicked="#handleRestart" pickOnBounds="true">
          <image>
             <Image url="@../images/menu.png" />
          </image>
@@ -43,16 +43,16 @@
          </font>
       </Label>
       <Label layoutX="180.0" layoutY="178.0" text="Feedback:" />
-      <ImageView fitHeight="71.0" fitWidth="192.0" layoutX="180.0" layoutY="510.0" onMouseClicked="#handleRestart" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/restart_button.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="71.0" fitWidth="124.0" layoutX="415.0" layoutY="510.0" onMouseClicked="#handleExit" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/exit_button.png" />
-         </image>
-      </ImageView>
       <TextArea fx:id="textArea" editable="false" layoutX="168.0" layoutY="210.0" prefHeight="200.0" prefWidth="399.0" text="The wrong thief has been selected." wrapText="true" />
+      <Button fx:id="restart" layoutX="180.0" layoutY="510.0" mnemonicParsing="false" onMouseClicked="#handleRestart" prefHeight="71.0" prefWidth="124.0" styleClass="backStoryButton" text="Restart">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="exit" layoutX="414.0" layoutY="510.0" mnemonicParsing="false" onMouseClicked="#handleExit" prefHeight="71.0" prefWidth="124.0" styleClass="backStoryButton" text="Exit">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
