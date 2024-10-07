@@ -48,7 +48,7 @@
             <Image url="@../images/footprintshover.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnGuess" disable="true" layoutX="540.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleGuessClick" styleClass="backStoryButton" text="Make a Guess" />
+      <Button fx:id="btnGuess" disable="true" layoutX="542.0" layoutY="98.0" mnemonicParsing="false" onAction="#handleGuessClick" styleClass="backStoryButton" text="Make a Guess" />
       <VBox fx:id="suspectMenu" layoutX="4.0" layoutY="92.0" prefHeight="400.0" prefWidth="143.0" styleClass="vbox" visible="false">
          <children>
             <ImageView fx:id="crimeScene" fitHeight="98.0" fitWidth="118.0" onMouseClicked="#onProfileClick" onMouseEntered="#onHover" onMouseExited="#onExit" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="35.0">
