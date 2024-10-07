@@ -112,6 +112,11 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Slider fx:id="volumeSlider" layoutX="539.0" layoutY="86.0" />
+      <Slider fx:id="volumeSlider" layoutX="550.0" layoutY="70.0" />
+      <ImageView fitHeight="31.0" fitWidth="28.0" layoutX="514.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/soundimagev3.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

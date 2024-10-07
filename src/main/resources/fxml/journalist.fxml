@@ -116,6 +116,11 @@
          </font>
       </Label>
       <ProgressIndicator fx:id="progressIndicator" layoutX="396.0" layoutY="511.0" />
-      <Slider fx:id="volumeSlider" layoutX="549.0" layoutY="96.0" />
+      <Slider fx:id="volumeSlider" layoutX="550.0" layoutY="70.0" />
+      <ImageView fitHeight="31.0" fitWidth="28.0" layoutX="514.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/soundimagev3.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

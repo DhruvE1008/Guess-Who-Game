@@ -22,7 +22,7 @@
             <Image url="@../images/tour_guide.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="guidebubble" fitHeight="150.0" fitWidth="200.0" layoutX="422.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="guidebubble" fitHeight="150.0" fitWidth="200.0" layoutX="428.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/TESTV2.gif" />
          </image>
@@ -114,6 +114,11 @@
          </font>
       </Label>
       <ProgressIndicator fx:id="progressIndicator" layoutX="395.0" layoutY="510.0" />
-      <Slider fx:id="volumeSlider" layoutX="514.0" layoutY="64.0" />
+      <Slider fx:id="volumeSlider" layoutX="550.0" layoutY="70.0" />
+      <ImageView fitHeight="31.0" fitWidth="28.0" layoutX="514.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/soundimagev3.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
