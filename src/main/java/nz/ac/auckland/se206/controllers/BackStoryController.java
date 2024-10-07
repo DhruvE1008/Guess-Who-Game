@@ -35,6 +35,9 @@ public class BackStoryController {
     return context;
   }
 
+  private MediaPlayer firstMediaPlayer;
+  private MediaPlayer secondMediaPlayer;
+
   @FXML private Button skipButton;
   @FXML private Button continueButton;
   @FXML private ImageView tombImage;
@@ -44,7 +47,6 @@ public class BackStoryController {
   @FXML private Label timerLabel;
   @FXML private Slider volumeSlider;
 
-  private MediaPlayer mediaPlayer;
   private GameTimer gameTimer;
 
   // This method initializes the backstory content
@@ -104,8 +106,20 @@ public class BackStoryController {
 
   @FXML
   private void handleSkip(MouseEvent event) throws IOException {
-    mediaPlayer.stop(); // Stop the audio
-    App.changeCrimeScene(event); // Navigate back to the main menu
+    // Stop the first media player if it's playing
+    if (firstMediaPlayer != null) {
+      firstMediaPlayer.stop(); // Stop the audio
+      firstMediaPlayer.dispose(); // Release resources
+    }
+
+    // Stop the second media player if it's already started
+    if (secondMediaPlayer != null) {
+      secondMediaPlayer.stop(); // Stop the second audio if it has started
+      secondMediaPlayer.dispose(); // Release resources
+    }
+
+    // Now change the scene after stopping the media players
+    App.changeCrimeScene(event); // Navigate to the crime scene
   }
 
   // Method to change the image in the ImageView
@@ -133,32 +147,45 @@ public class BackStoryController {
   }
 
   // Method to play two sounds with subtitles
+  // Method to play two sounds with subtitles
   private void playTwoSounds() {
-    // First sound file
+    // Load the first sound file
     Media firstSound = new Media(getClass().getResource("/sounds/backstory1.mp3").toExternalForm());
-    mediaPlayer = new MediaPlayer(firstSound);
+    firstMediaPlayer = new MediaPlayer(firstSound);
 
     // Set initial volume and apply listener for first media player
-    VolumeManager.setVolumeAndListener(mediaPlayer);
+    VolumeManager.setVolumeAndListener(firstMediaPlayer);
 
-    // Play first sound, and set the subtitles to type in while the audio plays
-    mediaPlayer.play();
-    showSubtitlesForFirstAudio();
+    // Play the first sound and set the subtitles to type while the audio plays
+    firstMediaPlayer.play();
+    showSubtitlesForFirstAudio(); // Start the first subtitle typing
 
-    // Set onEndOfMedia to handle playing the second sound
-    mediaPlayer.setOnEndOfMedia(
+    // When the first audio ends, change the image and play the second sound
+    firstMediaPlayer.setOnEndOfMedia(
         () -> {
-          changeImage("/images/suspects.png");
+          changeImage("/images/suspects.png"); // Change the image after first audio ends
           image.setX(70);
+
+          // Load the second sound file
           Media secondSound =
               new Media(getClass().getResource("/sounds/backstory2.mp3").toExternalForm());
-          MediaPlayer secondMediaPlayer = new MediaPlayer(secondSound);
 
-          // Set initial volume and apply listener for the second media player
+          secondMediaPlayer = new MediaPlayer(secondSound);
           VolumeManager.setVolumeAndListener(secondMediaPlayer);
 
-          secondMediaPlayer.play();
-          showSubtitlesForSecondAudio(); // Display subtitles for the second audio
+          // Set up the second media player to play after the first finishes
+          secondMediaPlayer.setOnReady(
+              () -> {
+                secondMediaPlayer.play(); // Play the second audio once it's ready
+                showSubtitlesForSecondAudio(); // Display subtitles for the second audio
+              });
+
+          // Enable the continue button after the second audio finishes
+          secondMediaPlayer.setOnEndOfMedia(
+              () -> {
+                continueButton.setDisable(false);
+                skipButton.setDisable(true); // Disable skip after both audios
+              });
         });
   }
 

@@ -15,14 +15,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="room" focusTraversable="true" prefHeight="738.0" prefWidth="756.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.JournalistController">
+<Pane fx:id="room" focusTraversable="true" prefHeight="693.0" prefWidth="697.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.JournalistController">
    <children>
-      <ImageView fitHeight="779.0" fitWidth="883.0" layoutX="-21.0" layoutY="-33.0" preserveRatio="true">
+      <ImageView fitHeight="693.0" fitWidth="697.0">
          <image>
             <Image url="@../images/journalist.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="journbubble" fitHeight="161.0" fitWidth="236.0" layoutX="490.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="journbubble" fitHeight="98.0" fitWidth="192.0" layoutX="480.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/TESTV2.gif" />
          </image>
@@ -65,7 +65,7 @@
       </VBox>
      
        <Button fx:id="btnObjectives" layoutX="4.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#togglingObjectives" prefHeight="36.0" prefWidth="167.0" styleClass="objectivesButton" text="Objectives" translateX="-3.0" translateY="-6.0" />
-      <Button fx:id="arrowButton" layoutY="349.0" mnemonicParsing="false" onAction="#onToggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
+      <Button fx:id="arrowButton" layoutY="300.0" mnemonicParsing="false" onAction="#onToggleMenu" prefHeight="56.0" prefWidth="66.0" styleClass="arrowButton" />
 
      <VBox fx:id="objectiveMenu" layoutX="1.0" layoutY="37.0" prefHeight="208.0" prefWidth="167.0" styleClass="vbox" visible="false">
          <children>
@@ -93,19 +93,19 @@
             <Font size="20.0" />
          </font>
       </TextArea>
-      <TextField fx:id="txtInput" disable="true" layoutX="205.0" layoutY="557.0" opacity="0.7" prefHeight="26.0" prefWidth="341.0" />
-      <Button fx:id="btnSend" disable="true" layoutX="553.0" layoutY="558.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.7" prefHeight="25.0" prefWidth="89.0" text="Send" />
-          <Label fx:id="timerLabel" layoutX="677.0" layoutY="10.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-30.0" translateY="-4.0">
+      <TextField fx:id="txtInput" layoutX="205.0" layoutY="557.0" opacity="0.7" prefHeight="26.0" prefWidth="341.0" />
+      <Button fx:id="btnSend" layoutX="553.0" layoutY="558.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.7" prefHeight="25.0" prefWidth="89.0" text="Send" />
+          <Label fx:id="timerLabel" layoutX="628.0" layoutY="4.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-30.0" translateY="-4.0">
          <font>
             <Font size="56.0" />
          </font>
       </Label>
-      <Label layoutX="531.0" layoutY="-2.0" minWidth="92.0" prefHeight="51.0" prefWidth="103.0" styleClass="timerLabel" text="Timer :" textFill="#f60707" translateX="33.0" translateY="8.0">
+      <Label layoutX="476.0" layoutY="-8.0" minWidth="92.0" prefHeight="51.0" prefWidth="103.0" styleClass="timerLabel" text="Timer :" textFill="#f60707" translateX="33.0" translateY="8.0">
          <font>
             <Font size="56.0" />
          </font>
       </Label>
-      <Label fx:id="setupLabel" layoutX="205.0" layoutY="504.0" prefHeight="66.0" prefWidth="231.0" text="Initializing Chat" textFill="#ff0f0f">
+      <Label fx:id="setupLabel" layoutX="205.0" layoutY="504.0" prefHeight="66.0" prefWidth="231.0" text="Initializing Chat" textFill="#ff0f0f" visible="false">
          <font>
             <Font size="27.0" />
          </font>
@@ -115,12 +115,12 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="396.0" layoutY="511.0" />
       <Slider fx:id="volumeSlider" layoutX="550.0" layoutY="70.0" />
       <ImageView fitHeight="31.0" fitWidth="28.0" layoutX="514.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/soundimagev3.png" />
          </image>
       </ImageView>
+      <ProgressIndicator fx:id="progressIndicator" layoutX="396.0" layoutY="511.0" visible="false" />
    </children>
 </Pane>

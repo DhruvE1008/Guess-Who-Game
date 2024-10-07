@@ -8,7 +8,9 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -56,7 +58,6 @@ public class RoomController {
   @FXML private ImageView archaeologist;
   @FXML private ImageView closeButtonImage;
   @FXML private ImageView closeButtonImage1;
-  @FXML private ImageView closeButtonImage2;
   @FXML private ImageView closeButtonImage3;
   @FXML private ImageView crimeScene;
   @FXML private ImageView cross;
@@ -91,11 +92,12 @@ public class RoomController {
   @FXML private Slider volumeSlider;
 
   private boolean clueVisible = false;
+  private boolean isFKeyPressed = false;
   private GameTimer gameTimer;
   private Image backImage;
   private Image frontImage;
   private ObjectivesManager objectivesManager;
-  private double yValue;
+  private double vertValue;
   private double initialImageClueY;
 
   /**
@@ -124,8 +126,6 @@ public class RoomController {
       isFirstInit = false;
       initialImageClueY = imageClue.getY();
     }
-
-    closeButtonImage2.setVisible(false);
     pictureBackground.setVisible(true);
     gameTimer = TimerManager.getGameTimer();
 
@@ -188,6 +188,9 @@ public class RoomController {
 
   @FXML
   private void onPhoneClick() {
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
+    handleCloseClick(null);
     // open the phone and update the objectives
     objectivesManager.completeObjectiveStep(1);
     phonePopup.setVisible(true);
@@ -263,6 +266,8 @@ public class RoomController {
     if (event.getCode() == KeyCode.S) {
       scanLabel.setText("Scanning...");
       startScanLineMovement(); // Start scan when 'S' is pressed
+    } else if (event.getCode() == KeyCode.F) {
+      rotate();
     }
   }
 
@@ -277,7 +282,9 @@ public class RoomController {
   }
 
   private void stopScanLineMovement() {
-    scanTransition.stop(); // Stop the scan line movement
+    if (scanTransition != null) {
+      scanTransition.stop(); // Stop the scan line movement
+    }
   }
 
   // Update the objective labels
@@ -291,12 +298,6 @@ public class RoomController {
     if (objectivesManager.isObjectiveCompleted(1)) {
       objective2Label.setStyle("-fx-strikethrough: true;");
     }
-  }
-
-  @FXML
-  private void onCloseButton2Pressed() {
-    pictureBackground.setVisible(true);
-    closeButtonImage2.setVisible(false);
   }
 
   @FXML
@@ -340,6 +341,7 @@ public class RoomController {
 
   @FXML
   private void onCloseButton1Pressed() {
+    // closes the photo clue
     stopScanLineMovement();
     scanLine.setTranslateY(0);
     footprint.setImage(new Image(getClass().getResourceAsStream("/images/startScan.png")));
@@ -362,9 +364,6 @@ public class RoomController {
 
   @FXML
   private void onToggleMenu() {
-
-    onCloseButton2Pressed();
-
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton, objectiveMenu, objectiveClose);
   }
 
@@ -423,7 +422,13 @@ public class RoomController {
 
   @FXML
   private void handleFootClick() {
+    // if the footprint is clicked it will close the other clues
+    // set the footprint to visible and update objectives
+    onCloseButtonPressed();
+    onCloseButton1Pressed();
+    handleCloseClick(null);
     setupScanLineMovement();
+    objectivesManager.completeObjectiveStep(1);
     footprint.setVisible(true);
     scanLabel.setVisible(true);
     scanLine.setVisible(true);
@@ -450,28 +455,56 @@ public class RoomController {
 
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
-    // if the photo clue is clicked it will update the objectives
+    // If the photo clue is clicked, update the objectives
     objectivesManager.completeObjectiveStep(1);
-    // closes the other clues
+
+    // Close any other clues that are open
     onCloseButton1Pressed();
-    onCloseButton2Pressed();
+
     if (!clueVisible) {
-      // if the user is still looking at the clue then it will be rotated
+      // Set the clue as visible and display related UI elements
       clueVisible = true;
       flipLabel.setVisible(true);
       photoClue.setVisible(true);
       cross.setVisible(true);
+
+      // Set up the key event handler for the photo clue
+      Scene scene = photoClue.getScene(); // Get the scene from the photo clue
+      scene.setOnKeyPressed(
+          (EventHandler<? super KeyEvent>)
+              new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                  // Rotate only when 'F' is tapped (not held)
+                  if (event.getCode() == KeyCode.F && !isFKeyPressed) {
+                    rotate(); // Rotate the photo clue
+                    isFKeyPressed = true; // Set the flag to prevent multiple triggers
+                  }
+                }
+              });
+
+      // Also handle KeyReleased event to reset the flag
+      scene.setOnKeyReleased(
+          (EventHandler<? super KeyEvent>)
+              new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                  if (event.getCode() == KeyCode.F) {
+                    isFKeyPressed = false; // Reset the flag when the key is released
+                  }
+                }
+              });
     }
   }
 
   @FXML
   private void handleEnvelopeClick(MouseEvent event) {
+    onCloseButtonPressed();
     handleCloseClick(event);
     // if the envelope is clicked it will update the objectives
     objectivesManager.completeObjectiveStep(1);
     // closes the other clues
     onCloseButton1Pressed();
-    onCloseButton2Pressed();
     imageClue.setVisible(true);
     envelopeLabel1.setVisible(true);
     envelopeLabel2.setVisible(true);
@@ -482,13 +515,13 @@ public class RoomController {
 
   @FXML
   private void handleMousePressed(MouseEvent event) {
-    yValue = event.getSceneY();
+    vertValue = event.getSceneY();
   }
 
   @FXML
   private void handleDrag(MouseEvent event) {
     // gets the position that the user is dragging the photo from
-    double newY = event.getSceneY() - yValue;
+    double newY = event.getSceneY() - vertValue;
     // stops the user from dragging the photo under the envelope
     if ((newY + imageClue.getFitHeight())
         <= (envelopeFront.getY() + envelopeFront.getFitHeight())) {

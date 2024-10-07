@@ -15,9 +15,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="room" focusTraversable="true" prefHeight="676.0" prefWidth="677.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.TourGuideController">
+<Pane fx:id="room" focusTraversable="true" prefHeight="693.0" prefWidth="697.0" style="-fx-background-color: #D2B48C;" stylesheets="@../css/suspectLayout.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.TourGuideController">
    <children>
-      <ImageView fitHeight="676.0" fitWidth="734.0" preserveRatio="true">
+      <ImageView fitHeight="693.0" fitWidth="697.0">
          <image>
             <Image url="@../images/tour_guide.jpg" />
          </image>
@@ -91,19 +91,19 @@
             <Font size="20.0" />
          </font>
       </TextArea>
-      <TextField fx:id="txtInput" disable="true" layoutX="205.0" layoutY="557.0" opacity="0.7" prefHeight="26.0" prefWidth="341.0" />
-      <Button fx:id="btnSend" disable="true" layoutX="553.0" layoutY="558.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.7" prefHeight="25.0" prefWidth="89.0" text="Send" />
-      <Label fx:id="timerLabel" layoutX="677.0" layoutY="10.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-110.0" translateY="-4.0">
+      <TextField fx:id="txtInput" layoutX="205.0" layoutY="557.0" opacity="0.7" prefHeight="26.0" prefWidth="341.0" />
+      <Button fx:id="btnSend" layoutX="553.0" layoutY="558.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.7" prefHeight="25.0" prefWidth="89.0" text="Send" />
+      <Label fx:id="timerLabel" layoutX="708.0" layoutY="5.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-110.0" translateY="-4.0">
          <font>
             <Font size="56.0" />
          </font>
       </Label>
-      <Label layoutX="531.0" layoutY="-2.0" minWidth="92.0" prefHeight="51.0" prefWidth="103.0" styleClass="timerLabel" text="Timer :" textFill="#f60707" translateX="-50.0" translateY="8.0">
+      <Label layoutX="559.0" layoutY="-7.0" minWidth="92.0" prefHeight="51.0" prefWidth="103.0" styleClass="timerLabel" text="Timer :" textFill="#f60707" translateX="-50.0" translateY="8.0">
          <font>
             <Font size="56.0" />
          </font>
       </Label>
-      <Label fx:id="setupLabel" layoutX="205.0" layoutY="504.0" prefHeight="66.0" prefWidth="231.0" text="Initializing Chat" textFill="#ff0f0f">
+      <Label fx:id="setupLabel" layoutX="205.0" layoutY="504.0" prefHeight="66.0" prefWidth="231.0" text="Initializing Chat" textFill="#ff0f0f" visible="false">
          <font>
             <Font size="27.0" />
          </font>
@@ -113,12 +113,12 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="395.0" layoutY="510.0" />
       <Slider fx:id="volumeSlider" layoutX="550.0" layoutY="70.0" />
       <ImageView fitHeight="31.0" fitWidth="28.0" layoutX="514.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/soundimagev3.png" />
          </image>
       </ImageView>
+      <ProgressIndicator fx:id="progressIndicator" layoutX="395.0" layoutY="510.0" visible="false" />
    </children>
 </Pane>
