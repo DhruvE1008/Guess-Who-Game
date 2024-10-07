@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -33,6 +34,7 @@ import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.SuspectOverlay;
 import nz.ac.auckland.se206.TimerLabelSet;
 import nz.ac.auckland.se206.TimerManager;
+import nz.ac.auckland.se206.VolumeManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
 /**
@@ -74,6 +76,7 @@ public class JournalistController {
   @FXML private Label setupLabel;
   @FXML private ProgressIndicator progressIndicator;
   @FXML private Label readyMessageLabel;
+  @FXML private Slider volumeSlider;
 
   private GameTimer gameTimer;
   private MediaPlayer journmedia;
@@ -85,6 +88,10 @@ public class JournalistController {
    */
   @FXML
   public void initialize() {
+    volumeSlider.setMin(0);
+    volumeSlider.setMax(100);
+    volumeSlider.valueProperty().bindBidirectional(VolumeManager.getInstance().volumeProperty());
+
     gameTimer = TimerManager.getGameTimer();
 
     // Bind the timer label to display the time in minutes and seconds
@@ -148,6 +155,7 @@ public class JournalistController {
                       e.printStackTrace();
                     }
                     journmedia = new MediaPlayer(sound);
+                    VolumeManager.setVolumeAndListener(journmedia);
                     journmedia.play();
                   });
               return null;

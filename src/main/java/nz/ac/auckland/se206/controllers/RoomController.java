@@ -4,6 +4,8 @@ import java.io.IOException;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -29,6 +32,7 @@ import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.SuspectOverlay;
 import nz.ac.auckland.se206.TimerManager;
+import nz.ac.auckland.se206.VolumeManager;
 
 /**
  * Controller class for the room view. Handles user interactions within the room where the user can
@@ -85,6 +89,7 @@ public class RoomController {
   @FXML private Rectangle unlockphone;
   @FXML private Rectangle gallery;
   @FXML private Rectangle calendar;
+  @FXML private Slider volumeSlider;
 
   private boolean clueVisible = false;
   private boolean isFKeyPressed = false;
@@ -101,7 +106,22 @@ public class RoomController {
    */
   @FXML
   public void initialize() {
+    // Initialize the slider to match the current global volume (0 to 100)
+    volumeSlider.setMin(0);
+    volumeSlider.setMax(100);
+    volumeSlider.setValue(VolumeManager.getInstance().getVolume()); // Set slider to current volume
 
+    // Bind the slider's value to the global VolumeManager's volumeProperty
+    volumeSlider
+        .valueProperty()
+        .addListener(
+            new InvalidationListener() {
+              @Override
+              public void invalidated(Observable observable) {
+                // Update the VolumeManager's volume whenever the slider value changes
+                VolumeManager.getInstance().setVolume(volumeSlider.getValue());
+              }
+            });
     if (isFirstInit) {
       isFirstInit = false;
       initialImageClueY = imageClue.getY();
