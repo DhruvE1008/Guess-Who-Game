@@ -91,7 +91,7 @@
          </font>
       </TextArea>
       <TextField fx:id="txtInput" layoutX="205.0" layoutY="557.0" opacity="0.7" prefHeight="26.0" prefWidth="341.0" />
-      <Button fx:id="btnSend" layoutX="553.0" layoutY="558.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.7" prefHeight="25.0" prefWidth="89.0" text="Send" />
+      <Button fx:id="btnSend" layoutX="553.0" styleClass = "sendButton" layoutY="558.0" mnemonicParsing="false" onAction="#onSendMessage" opacity="0.7" prefHeight="25.0" prefWidth="89.0" text="Send" />
       <Label fx:id="timerLabel" layoutX="708.0" layoutY="5.0" minWidth="82.0" prefHeight="51.0" prefWidth="82.0" styleClass="timerLabel" text="00:00" textFill="#f60707" translateX="-110.0" translateY="-4.0">
          <font>
             <Font size="56.0" />

@@ -44,7 +44,6 @@ public class BackStoryController {
   @FXML private Label subTitles;
   @FXML private Label timerLabel;
 
-  private MediaPlayer mediaPlayer;
   private GameTimer gameTimer;
 
   // This method initializes the backstory content
