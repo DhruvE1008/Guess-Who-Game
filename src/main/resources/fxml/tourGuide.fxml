@@ -119,6 +119,7 @@
             <Image url="@../images/soundimagev3.png" />
          </image>
       </ImageView>
+
       <ProgressIndicator fx:id="progressIndicator" layoutX="395.0" layoutY="510.0" visible="false" />
    </children>
 </Pane>

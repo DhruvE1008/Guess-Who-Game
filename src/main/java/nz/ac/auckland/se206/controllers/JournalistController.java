@@ -105,6 +105,10 @@ public class JournalistController {
           }
         });
     if (firstInitialization) {
+      txtInput.setDisable(true);
+      progressIndicator.setVisible(true);
+      setupLabel.setVisible(true);
+      arrowButton.setDisable(true);
       Task<Void> getGreeting =
           new Task<Void>() {
             @Override
@@ -125,6 +129,7 @@ public class JournalistController {
                             setupLabel.setVisible(false);
                             progressIndicator.setVisible(false);
                             readyMessageLabel.setVisible(true);
+                            arrowButton.setDisable(false);
                           });
                       return null;
                     }
@@ -136,9 +141,9 @@ public class JournalistController {
               Platform.runLater(
                   () -> {
                     txtaChat.setText(
-                        "Journalist: I was a really good journalist back in the day but there is a"
-                            + " lack of interesting stories these days. If you find the idol it"
-                            + " will be a good story for me");
+                        "Journalist: I have been busy recently looking for a big case. I am"
+                            + " desperate as I will lose my job if I don't report a good story by"
+                            + " the end of this week");
                     Media sound = null;
                     // plays the greeting sound for the journalist
                     try {
@@ -153,7 +158,6 @@ public class JournalistController {
                     VolumeManager.setVolumeAndListener(journmedia);
                     journmedia.play();
                   });
-              getSystemPrompt();
               return null;
             }
           };
