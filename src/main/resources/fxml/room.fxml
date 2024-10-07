@@ -163,7 +163,7 @@
             <Image url="@../images/footprintblack.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="envelopeBack" fitHeight="125.0" fitWidth="223.0" layoutX="237.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="envelopeBack" fitHeight="125.0" fitWidth="223.0" layoutX="237.0" layoutY="208.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/envelopeback.png" />
          </image>
