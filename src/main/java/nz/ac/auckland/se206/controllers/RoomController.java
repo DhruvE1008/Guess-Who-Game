@@ -470,30 +470,30 @@ public class RoomController {
 
       // Set up the key event handler for the photo clue
       Scene scene = photoClue.getScene(); // Get the scene from the photo clue
-      scene.setOnKeyPressed(
-          (EventHandler<? super KeyEvent>)
-              new EventHandler<KeyEvent>() {
-                @Override
-                public void handle(KeyEvent event) {
-                  // Rotate only when 'F' is tapped (not held)
-                  if (event.getCode() == KeyCode.F && !isFKeyPressed) {
-                    rotate(); // Rotate the photo clue
-                    isFKeyPressed = true; // Set the flag to prevent multiple triggers
-                  }
-                }
-              });
 
-      // Also handle KeyReleased event to reset the flag
+      // Handle the 'F' key press event
+      scene.setOnKeyPressed(
+          new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+              // Rotate only when 'F' is tapped (not held)
+              if (event.getCode() == KeyCode.F && !isFKeyPressed) {
+                rotate(); // Rotate the photo clue
+                isFKeyPressed = true; // Set the flag to prevent multiple triggers
+              }
+            }
+          });
+
+      // Handle the 'F' key release event
       scene.setOnKeyReleased(
-          (EventHandler<? super KeyEvent>)
-              new EventHandler<KeyEvent>() {
-                @Override
-                public void handle(KeyEvent event) {
-                  if (event.getCode() == KeyCode.F) {
-                    isFKeyPressed = false; // Reset the flag when the key is released
-                  }
-                }
-              });
+          new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+              if (event.getCode() == KeyCode.F) {
+                isFKeyPressed = false; // Reset the flag when the key is released
+              }
+            }
+          });
     }
   }
 
