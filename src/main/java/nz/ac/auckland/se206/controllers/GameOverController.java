@@ -17,9 +17,9 @@ public class GameOverController {
   private int suspect;
 
   /**
-   * Sets the feedback text to be displayed
+   * Sets the feedback text to be displayed.
    *
-   * @param feedback
+   * @param feedback The feedback to be displayed
    */
   @FXML
   public void setFeedback(String feedback) {
@@ -29,9 +29,9 @@ public class GameOverController {
   }
 
   /**
-   * Handles the restart button being clicked
+   * Handles the restart button being clicked.
    *
-   * @param event
+   * @param event The mouse event that triggered this method
    */
   @FXML
   public void handleRestart(MouseEvent event) {
@@ -41,9 +41,9 @@ public class GameOverController {
   }
 
   /**
-   * Handles the exit button being clicked
+   * Handles the exit button being clicked.
    *
-   * @param event
+   * @param event The mouse event that triggered this method
    */
   @FXML
   private void handleExit(MouseEvent event) {
@@ -52,9 +52,9 @@ public class GameOverController {
   }
 
   /**
-   * Sets the suspect value
+   * Sets the suspect value.
    *
-   * @param suspect
+   * @param suspect The suspect value
    */
   public void setSuspect(int suspect) {
     this.suspect = suspect;

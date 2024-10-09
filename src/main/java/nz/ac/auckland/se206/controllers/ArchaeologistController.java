@@ -85,10 +85,10 @@ public class ArchaeologistController {
    * Initializes the room view. If it's the first time initialization, it will provide instructions
    * via text-to-speech.
    *
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws ApiProxyException
-   * @throws InterruptedException
+   * @throws URISyntaxException If the URI is invalid
+   * @throws IOException If the fxml file cannot be found
+   * @throws ApiProxyException If the API proxy is invalid
+   * @throws InterruptedException If the thread is interrupted
    */
   @FXML
   public void initialize() {
@@ -177,7 +177,7 @@ public class ArchaeologistController {
   /**
    * Handles the hover event for the suspect overlay.
    *
-   * @param event
+   * @param event The mouse event that triggered this method
    */
   @FXML
   private void onHover(MouseEvent event) {
@@ -187,7 +187,7 @@ public class ArchaeologistController {
   /**
    * Handles the exit event for the suspect overlay.
    *
-   * @param event
+   * @param event The mouse event that triggered this method
    */
   @FXML
   private void onExit(MouseEvent event) {
@@ -215,8 +215,8 @@ public class ArchaeologistController {
   /**
    * Handles the click event for the suspect overlay.
    *
-   * @param event
-   * @throws IOException
+   * @param event The mouse event that triggered this method
+   * @throws IOException If the fxml file cannot be found
    */
   @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
@@ -230,10 +230,10 @@ public class ArchaeologistController {
   /**
    * Handles the click event for the continue button.
    *
-   * @param event
-   * @throws IOException
-   * @throws InterruptedException
-   * @throws ApiProxyException
+   * @param event The mouse event that triggered this method
+   * @throws IOException If the fxml file cannot be found
+   * @throws InterruptedException If the thread is interrupted
+   * @throws ApiProxyException If the API proxy is invalid
    */
   @FXML
   private void onSendMessage(ActionEvent event) {
@@ -277,7 +277,7 @@ public class ArchaeologistController {
   /**
    * Gets the system prompt for the archaeologist.
    *
-   * @throws ApiProxyException
+   * @throws ApiProxyException If the API proxy is invalid
    */
   private void getSystemPrompt() {
     // sets the values for the system prompt
@@ -309,8 +309,8 @@ public class ArchaeologistController {
   /**
    * Updates the objective labels.
    *
-   * @throws IOException
-   * @throws ApiProxyException
+   * @throws IOException If the fxml file cannot be found
+   * @throws ApiProxyException If the API proxy is invalid
    */
   public void updateObjectiveLabels() {
     SuspectOverlay.updateObjectiveLabels(objectivesManager, objective1Label, objective2Label);

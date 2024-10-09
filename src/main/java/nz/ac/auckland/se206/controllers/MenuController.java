@@ -9,6 +9,12 @@ import nz.ac.auckland.se206.App;
 public class MenuController {
   @FXML private Rectangle play;
 
+  /**
+   * Handles the play button being clicked.
+   *
+   * @param event The mouse event that triggered this method
+   * @throws IOException If the fxml file cannot be found
+   */
   @FXML
   private void onClick(MouseEvent event) throws IOException {
     App.changeBackStory(event);

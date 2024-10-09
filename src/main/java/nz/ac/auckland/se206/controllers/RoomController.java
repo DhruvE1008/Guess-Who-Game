@@ -103,6 +103,10 @@ public class RoomController {
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
    * via text-to-speech.
+   *
+   * @throws IOException if there is an I/O error
+   * @throws InterruptedException if the thread is interrupted
+   * @throws Exception if there is an error
    */
   @FXML
   public void initialize() {
@@ -262,6 +266,11 @@ public class RoomController {
     scanLine.setVisible(false); // Hide the scan line
   }
 
+  /**
+   * Handles key pressed events for the scan line movement.
+   *
+   * @param event the key event triggered by pressing a key
+   */
   private void handleKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.S) {
       scanLabel.setText("Scanning...");
@@ -271,6 +280,11 @@ public class RoomController {
     }
   }
 
+  /**
+   * Handles key released events for the scan line movement.
+   *
+   * @param event the key event triggered by releasing a key
+   */
   private void handleKeyReleased(KeyEvent event) {
     if (event.getCode() == KeyCode.S) {
       // Do nothing on key release in this case
@@ -406,6 +420,11 @@ public class RoomController {
     rotateOut.play();
   }
 
+  /**
+   * Handles the close button click event.
+   *
+   * @param event the mouse event triggered by clicking the close button
+   */
   @FXML
   private void handleCloseClick(MouseEvent event) {
     // closes all the images related to the photo clue and labels associated with them
@@ -435,6 +454,12 @@ public class RoomController {
     closeButtonImage1.setVisible(true);
   }
 
+  /**
+   * Handles mouse clicks on the suspect images.
+   *
+   * @param event the mouse event triggered by clicking the archaeologist image
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
     ImageView clickedImageView = (ImageView) event.getSource();
@@ -442,7 +467,7 @@ public class RoomController {
   }
 
   /**
-   * Handles mouse clicks on rectangles representing people in the room.
+   * Handles mouse clicks on rectangles representing objects in the room.
    *
    * @param event the mouse event triggered by clicking a rectangle
    * @throws IOException if there is an I/O error
@@ -453,6 +478,12 @@ public class RoomController {
     context.handleRectangleClick(event, clickedRectangle.getId());
   }
 
+  /**
+   * Handles mouse clicks on the photo clue.
+   *
+   * @param event the mouse event triggered by clicking the crime scene image
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handlePhotoClueClick(MouseEvent event) {
     // If the photo clue is clicked, update the objectives
@@ -497,6 +528,12 @@ public class RoomController {
     }
   }
 
+  /**
+   * Handles the envelope click event.
+   *
+   * @param event the action event triggered by clicking the archaeologist button
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handleEnvelopeClick(MouseEvent event) {
     onCloseButtonPressed();
@@ -513,11 +550,23 @@ public class RoomController {
     cross.setVisible(true);
   }
 
+  /**
+   * Handles the mouse press.
+   *
+   * @param event the action event triggered by clicking the archaeologist button
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handleMousePressed(MouseEvent event) {
     vertValue = event.getSceneY();
   }
 
+  /**
+   * Handles the drag event.
+   *
+   * @param event the action event triggered by clicking the archaeologist button
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handleDrag(MouseEvent event) {
     // gets the position that the user is dragging the photo from
@@ -538,6 +587,12 @@ public class RoomController {
     }
   }
 
+  /**
+   * Handles the drag finish event.
+   *
+   * @param event the action event triggered by clicking the archaeologist button
+   * @throws IOException if there is an I/O error
+   */
   @FXML
   private void handleDragFinish(MouseEvent event) {
     // if the photo is dragged above the envelope then a transition occurs
