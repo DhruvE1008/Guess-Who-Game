@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.MediaPlayer;
 
+/** VolumeManager class which is used to manage the volume of the MediaPlayer. */
 public class VolumeManager {
   private static VolumeManager instance;
 
@@ -13,9 +14,9 @@ public class VolumeManager {
   private VolumeManager() {}
 
   /**
-   * Get the singleton instance of VolumeManager
+   * Get the singleton instance of VolumeManager.
    *
-   * @return
+   * @return the singleton instance of VolumeManager
    */
   public static VolumeManager getInstance() {
     if (instance == null) {
@@ -25,27 +26,27 @@ public class VolumeManager {
   }
 
   /**
-   * Get the volume property
+   * Gets the volume property that has been set.
    *
-   * @return
+   * @return the volume property
    */
   public DoubleProperty volumeProperty() {
     return volume;
   }
 
   /**
-   * Get the volume
+   * Get the volume that is being used for the players.
    *
-   * @return
+   * @return the volume variable
    */
   public double getVolume() {
     return volume.get();
   }
 
   /**
-   * Set the volume
+   * Set the volume variable to a new value.
    *
-   * @param volume
+   * @param volume the volume that has been set
    */
   public void setVolume(double volume) {
     this.volume.set(volume);
@@ -53,9 +54,9 @@ public class VolumeManager {
 
   /**
    * Set the volume and add a listener to update the MediaPlayer volume whenever the volume slider
-   * is changed
+   * is changed.
    *
-   * @param player
+   * @param player The MediaPlayer to set the volume for
    */
   public static void setVolumeAndListener(MediaPlayer player) {
     // Set initial volume by converting the VolumeManager's 0-100 value to 0.0-1.0
