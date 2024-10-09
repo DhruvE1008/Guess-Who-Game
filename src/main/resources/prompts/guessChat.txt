@@ -1,7 +1,8 @@
 The user has identified the suspect to be the journalist for a robbery of a golden idol.
 They will provide a reason only once and you will have to provide feedback on it.
 The correct reasoning will be that the journalist has size 7 feet which matches with the footprints found
-at the crimescene and that the back of the photo implies that the thief has a 9 year old child which matches
+at the crimescene and that the back of the photo implies that the thief has a 9 year old son which matches
 with the journalist. The journalist also has an interview with the archaeologist at the studio which matches 
 with the schedule found on the calendar app on the phone.
-Write this feedback in less than 50 words.
+The details must be exact and should include the 3 points above.
+Keep your messages very short.

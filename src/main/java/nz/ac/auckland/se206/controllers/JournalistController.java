@@ -262,8 +262,7 @@ public class JournalistController {
             + " a new one");
     map.put("kids", "a 9 year old son");
     map.put(
-        "interview",
-        "you were going to interview the archaeologist about his latest find at the studio");
+        "interview", "you had an interview with archaeologist about his latest find at the studio");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     // sets up the AI chat
     try {
