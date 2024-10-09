@@ -25,10 +25,6 @@ import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
-/**
- * Controller class for the guessing view. Handles user interactions within the room where the user
- * can guess the profession of the suspect.
- */
 public class GuessingController {
   private static ChatCompletionRequest chatCompletionRequest;
   @FXML private Button submit;
@@ -43,7 +39,7 @@ public class GuessingController {
   private int suspect = 0;
 
   /**
-   * Initializes the guessing view.
+   * Initializes the controller class. This method is automatically called after the fxml file has.
    *
    * @throws IOException if an I/O error occurs
    * @throws URISyntaxException if a URI syntax error occurs
