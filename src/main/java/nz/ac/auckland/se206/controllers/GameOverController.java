@@ -8,6 +8,10 @@ import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.ObjectivesManager;
 import nz.ac.auckland.se206.TimerManager;
 
+/**
+ * This class contains methods that are used to manage the game over screen. The game over screen is
+ * displayed when the player has lost the game.
+ */
 public class GameOverController {
 
   @FXML private Label correctLabel;
@@ -52,7 +56,8 @@ public class GameOverController {
   }
 
   /**
-   * Sets the suspect value.
+   * Sets the suspect value. If the suspect is correct, the correct label is displayed. If the
+   * suspect
    *
    * @param suspect The suspect value
    */

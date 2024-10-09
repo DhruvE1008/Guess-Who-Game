@@ -6,6 +6,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import nz.ac.auckland.se206.App;
 
+/**
+ * This class contains methods that are used to manage the main menu screen. The main menu screen is
+ * displayed when the game is first launched.
+ */
 public class MenuController {
   @FXML private Rectangle play;
 

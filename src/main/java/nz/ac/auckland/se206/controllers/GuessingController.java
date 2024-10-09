@@ -25,6 +25,10 @@ import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
+/**
+ * This class contains methods that are used to manage the guessing screen. The guessing screen is
+ * displayed when the player is asked to make a guess.
+ */
 public class GuessingController {
   private static ChatCompletionRequest chatCompletionRequest;
   @FXML private Button submit;
