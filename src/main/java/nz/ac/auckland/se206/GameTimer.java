@@ -6,11 +6,17 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.util.Duration;
 
+/** GameTimer class which is used to keep track of the time in the game */
 public class GameTimer {
   private final IntegerProperty timeInSeconds;
   private final int initialTimeInSeconds;
   private Timeline timeline;
 
+  /**
+   * Constructor for GameTimer which initializes the live timer in minutes
+   *
+   * @param startMinutes The initial time in minutes
+   */
   public GameTimer(int startMinutes) {
     initialTimeInSeconds = startMinutes * 60;
     timeInSeconds = new SimpleIntegerProperty(initialTimeInSeconds);
