@@ -289,8 +289,7 @@ public class ArchaeologistController {
         "your phone broke last week and you couldn’t get a replacement due to denied funding");
     map.put("kids", "a 9 year old son");
     map.put(
-        "interview",
-        "you were getting interviewed by the journalist about your latest find at the studio");
+        "interview", "you had an interview by the journalist about your latest find at the studio");
     String message = PromptEngineering.getPrompt("chat.txt", map);
     // sets up the chat with the system prompt
     try {

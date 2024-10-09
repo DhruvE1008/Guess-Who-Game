@@ -280,7 +280,7 @@ public class TourGuideController {
     map.put("reason", "you can’t afford a smartphone and you have a brick phone");
 
     map.put("kids", "a 9 year old daughter");
-    map.put("interview", "you were going to a job interview at the museum");
+    map.put("interview", "you had a job interview at the museum");
     String promptMessage = PromptEngineering.getPrompt("chat.txt", map);
     // configures the AI for the chat and sends the system prompt
     try {
