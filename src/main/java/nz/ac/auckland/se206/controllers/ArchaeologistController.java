@@ -307,7 +307,7 @@ public class ArchaeologistController {
   }
 
   /**
-   * Updates the objective labels.
+   * Updates the objective labels. If the objectives are completed, the labels will be crossed out.
    *
    * @throws IOException If the fxml file cannot be found
    * @throws ApiProxyException If the API proxy is invalid

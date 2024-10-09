@@ -82,9 +82,8 @@ public class ObjectivesManager {
   }
 
   /**
-   * Get the progress for an objective.
-   *
-   * @param index The index of the objective
+   * Get the progress for an objective. The progress is the number of steps completed for the
+   * objectives.
    */
   public void resetObjectives() {
     for (int i = 0; i < objectivesCompleted.length; i++) {

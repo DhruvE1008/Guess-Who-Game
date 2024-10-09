@@ -301,7 +301,7 @@ public class RoomController {
     }
   }
 
-  // Update the objective labels
+  /** Updates the objective labels based on the completion status of the objectives. */
   public void updateObjectiveLabels() {
     // Update the first objective label
     if (objectivesManager.isObjectiveCompleted(0)) {

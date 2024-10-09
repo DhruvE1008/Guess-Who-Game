@@ -23,6 +23,10 @@ import nz.ac.auckland.se206.GameTimer;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.VolumeManager;
 
+/**
+ * This class contains methods that are used to manage the backstory screen. The backstory screen is
+ * displayed when the game is first launched.
+ */
 public class BackStoryController {
 
   private static GameStateContext context = new GameStateContext();
