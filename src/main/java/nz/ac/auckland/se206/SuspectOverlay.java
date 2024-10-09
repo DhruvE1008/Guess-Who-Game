@@ -14,12 +14,13 @@ import javafx.util.Duration;
  * suspect overlay is a menu that displays information about the suspects in the game.
  */
 public class SuspectOverlay {
-  // This method rotates the arrow button by the specified angle and translates it by the specified
-  // amount.
   /**
-   * @param arrowButton
-   * @param angle
-   * @param horiTranslation
+   * This method rotates the arrow button by the specified angle and translates it by the specified
+   * amount.
+   *
+   * @param arrowButton the button to opens and closes the overlay
+   * @param angle the angle to rotate the button by
+   * @param horiTranslation the amount to translate the button horizontally
    */
   public static void rotateButton(Button arrowButton, int angle, double horiTranslation) {
     RotateTransition rotateTransition = new RotateTransition(Duration.millis(300), arrowButton);

@@ -3,18 +3,12 @@ package nz.ac.auckland.se206;
 import java.util.ArrayList;
 import java.util.List;
 
-/** ObjectivesManager class which is used to keep track of the objectives in the game */
+/** ObjectivesManager class which is used to keep track of the objectives in the game. */
 public class ObjectivesManager {
 
   private static ObjectivesManager instance;
 
-
-  /**
-   * Get the singleton instance of ObjectivesManager
-   *
-   * @return
-   */
-
+  /** Get the singleton instance of ObjectivesManager. */
   public static ObjectivesManager getInstance() {
     if (instance == null) {
       instance = new ObjectivesManager();
@@ -28,7 +22,7 @@ public class ObjectivesManager {
       stepsRequiredForObjectives; // Specify how many steps are required for each objective
   private List<Runnable> observers = new ArrayList<>();
 
-  /** Constructor for ObjectivesManager */
+  /** Constructor for ObjectivesManager. */
   private ObjectivesManager() {
     initializeObjectives(
         2, new int[] {3, 1}); // For example, 3 steps for objective 0, 1 step for objective 1
@@ -36,7 +30,7 @@ public class ObjectivesManager {
 
   /**
    * Initialize the objectives arrays with the number of objectives and the number of steps required
-   * for each objective
+   * for each objective.
    *
    * @param numObjectives The objectives to be completed
    * @param stepsRequired The number of steps required for each objective
@@ -49,20 +43,19 @@ public class ObjectivesManager {
   }
 
   /**
-   * Check if an objective is completed
+   * Check if an objective is completed.
    *
-   * @param index
-   * @return
+   * @param index The index of the objective
+   * @return true if the objective is completed, false otherwise
    */
   public boolean isObjectiveCompleted(int index) {
     return objectivesCompleted[index];
   }
 
   /**
-   * Get the progress for an objective
+   * Get the progress for an objective.
    *
-   * @param index
-   * @return
+   * @param index The index of the objective
    */
   public void completeObjectiveStep(int index) {
     if (!objectivesCompleted[index]) {
@@ -78,9 +71,7 @@ public class ObjectivesManager {
     }
   }
 
-
-  /** Enable the guess button if all objectives are completed */
-
+  /** Enable the guess button if all objectives are completed. */
   public void enableGuessButton() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       if (!objectivesCompleted[i]) {
@@ -90,15 +81,11 @@ public class ObjectivesManager {
     App.setGuessButton();
   }
 
-
   /**
-   * Get the progress for an objective
+   * Get the progress for an objective.
    *
-   * @param index
-   * @return
-   * @throws IllegalArgumentException
+   * @param index The index of the objective
    */
-
   public void resetObjectives() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       objectivesCompleted[i] = false; // Reset completion status
@@ -108,15 +95,15 @@ public class ObjectivesManager {
   }
 
   /**
-   * Add an observer to the list of observers
+   * Add an observer to the list of observers.
    *
-   * @param observer
+   * @param observer the text label that depends on the objectives
    */
   public void addObserver(Runnable observer) {
     observers.add(observer);
   }
 
-  /** Notify all observers */
+  /** Notify all observers and makes all the observers run. */
   private void notifyObservers() {
     for (Runnable observer : observers) {
       observer.run();

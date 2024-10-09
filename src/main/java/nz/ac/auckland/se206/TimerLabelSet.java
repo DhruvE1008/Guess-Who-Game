@@ -3,6 +3,10 @@ package nz.ac.auckland.se206;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 
+/**
+ * This class contains methods that are used to create a string binding that displays the time in
+ * minutes and seconds.
+ */
 public class TimerLabelSet {
 
   /**

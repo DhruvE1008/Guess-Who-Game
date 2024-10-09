@@ -45,6 +45,10 @@ public class GameStarted implements GameState {
     }
   }
 
+  /**
+   * Handles the event when the send chat button is clicked. Updates the chat text area with the
+   * user's input and the AI's response.
+   */
   public void handleSendChatClick(
       TextArea chatTextArea, String userInput, String person, String aiResponse) {
     chatTextArea.clear();
@@ -53,6 +57,13 @@ public class GameStarted implements GameState {
     chatTextArea.setScrollTop(Double.MAX_VALUE);
   }
 
+  /**
+   * Handles the event when a profile is clicked. Switches scenes based on the profile clicked.
+   *
+   * @param event the mouse event triggered by clicking a profile
+   * @param profile the profile clicked
+   * @throws IOException if there is an I/O error
+   */
   public void handleProfileClick(MouseEvent event, String profile) throws IOException {
     // switches scenes based on the profile clicked
     // uses the App class to switch scenes
