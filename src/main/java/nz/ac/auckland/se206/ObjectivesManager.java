@@ -3,15 +3,18 @@ package nz.ac.auckland.se206;
 import java.util.ArrayList;
 import java.util.List;
 
+/** ObjectivesManager class which is used to keep track of the objectives in the game */
 public class ObjectivesManager {
 
   private static ObjectivesManager instance;
+
 
   /**
    * Get the singleton instance of ObjectivesManager
    *
    * @return
    */
+
   public static ObjectivesManager getInstance() {
     if (instance == null) {
       instance = new ObjectivesManager();
@@ -32,10 +35,11 @@ public class ObjectivesManager {
   }
 
   /**
-   * Initialize objectives
+   * Initialize the objectives arrays with the number of objectives and the number of steps required
+   * for each objective
    *
-   * @param numObjectives
-   * @param stepsRequired
+   * @param numObjectives The objectives to be completed
+   * @param stepsRequired The number of steps required for each objective
    */
   public void initializeObjectives(int numObjectives, int[] stepsRequired) {
     objectivesCompleted = new boolean[numObjectives];
@@ -74,7 +78,9 @@ public class ObjectivesManager {
     }
   }
 
+
   /** Enable the guess button if all objectives are completed */
+
   public void enableGuessButton() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       if (!objectivesCompleted[i]) {
@@ -84,6 +90,7 @@ public class ObjectivesManager {
     App.setGuessButton();
   }
 
+
   /**
    * Get the progress for an objective
    *
@@ -91,7 +98,7 @@ public class ObjectivesManager {
    * @return
    * @throws IllegalArgumentException
    */
-  // New: Reset all objectives to their initial state
+
   public void resetObjectives() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       objectivesCompleted[i] = false; // Reset completion status

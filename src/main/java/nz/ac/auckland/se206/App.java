@@ -55,6 +55,12 @@ public class App extends Application {
     return primaryStage;
   }
 
+  /**
+   * Changes the scene to the archaeologist scene.
+   *
+   * @param event the mouseclick event that triggers the change
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeArchaeologist(MouseEvent event) throws IOException {
     // switches the scene to the archaeologist scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/archaeologist.fxml"));
@@ -67,6 +73,12 @@ public class App extends Application {
     stage.show();
   }
 
+  /**
+   * Changes the scene to the journalist scene.
+   *
+   * @param event the mouseclick event that triggers the change
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeJournalist(MouseEvent event) throws IOException {
     // switches scene to the journalist scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/journalist.fxml"));
@@ -79,6 +91,12 @@ public class App extends Application {
     stage.show();
   }
 
+  /**
+   * Changes the scene to the tour guide scene.
+   *
+   * @param event the mouseclick event that triggers the change
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeGuide(MouseEvent event) throws IOException {
     // switches the scene to the tour guide scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/tourGuide.fxml"));
@@ -91,6 +109,12 @@ public class App extends Application {
     stage.show();
   }
 
+  /**
+   * Changes the scene to the crime scene.
+   *
+   * @param event the mouseclick event that triggers the change
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeCrimeScene(MouseEvent event) throws IOException {
     Task<Void> loadSceneTask =
         new Task<Void>() {
@@ -125,6 +149,11 @@ public class App extends Application {
     backgroundThread.start();
   }
 
+  /**
+   * Changes the scene to the guessing scene.
+   *
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeGuessing() throws IOException {
     TimerManager.resetTimerToOneMinute();
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/guessing.fxml"));
@@ -139,6 +168,12 @@ public class App extends Application {
     stage.show();
   }
 
+  /**
+   * Changes the scene to the backstory scene.
+   *
+   * @param event the mouseclick event that triggers the change
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeBackStory(MouseEvent event) throws IOException {
     // switches the scene to the backstory scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/backStory.fxml"));
@@ -151,6 +186,13 @@ public class App extends Application {
     stage.show();
   }
 
+  /**
+   * Changes the scene to the game over scene.
+   *
+   * @param suspect the suspect that the player has chosen
+   * @param feedback the feedback that the player has received
+   * @throws IOException if the FXML file is not found
+   */
   public static void changeGameOver(int suspect, String feedback) throws IOException {
     // switches the scene over to the game over scene
     FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/gameOver.fxml"));
@@ -166,6 +208,11 @@ public class App extends Application {
     stage.show();
   }
 
+  /**
+   * Changes the cursor to the specified cursor.
+   *
+   * @param cursor the cursor to change to
+   */
   public static void changeCursor(String cursor) {
     // if the cursor is set to hover, set the cursor to the custom cursor
     if (cursor.equals("hover")) {
@@ -192,6 +239,10 @@ public class App extends Application {
     return new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml")).load();
   }
 
+  /**
+   * Restarts the game by setting all the first messages to the first message and setting the first
+   * time booleans to true.
+   */
   public static void restartGame() {
     // sets all the first messages so that tts and text are set to the first message
     JournalistController.setFirstMessage();
