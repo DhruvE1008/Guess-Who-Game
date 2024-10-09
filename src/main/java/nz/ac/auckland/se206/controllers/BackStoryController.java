@@ -109,7 +109,6 @@ public class BackStoryController {
     // Stop the first media player if it's playing
     if (firstMediaPlayer != null) {
       firstMediaPlayer.stop(); // Stop the audio
-      firstMediaPlayer.dispose(); // Release resources
     }
 
     // Stop the second media player if it's already started
