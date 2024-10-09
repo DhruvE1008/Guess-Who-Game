@@ -49,7 +49,9 @@ public class BackStoryController {
 
   private GameTimer gameTimer;
 
-  // This method initializes the backstory content
+  /**
+   * Initializes the controller class. This method is automatically called after the fxml file has
+   */
   @FXML
   private void initialize() {
     volumeSlider.setMin(0);
@@ -98,12 +100,23 @@ public class BackStoryController {
     playTwoSounds(); // Play the sounds and manage the subtitles
   }
 
-  // Handle the "continue" button click to proceed to the next scene
+  /**
+   * Handle the continue button to navigate to the crime scene
+   *
+   * @param event
+   * @throws IOException
+   */
   @FXML
   private void handleContinue(MouseEvent event) throws IOException {
     App.changeCrimeScene(event); // Navigate to the crime scene or game scene
   }
 
+  /**
+   * Handle the skip button to navigate to the crime scene
+   *
+   * @param event
+   * @throws IOException
+   */
   @FXML
   private void handleSkip(MouseEvent event) throws IOException {
     // Stop the first media player if it's playing
@@ -121,7 +134,11 @@ public class BackStoryController {
     App.changeCrimeScene(event); // Navigate to the crime scene
   }
 
-  // Method to change the image in the ImageView
+  /**
+   * Change the image displayed on the screen
+   *
+   * @param imagePath
+   */
   @FXML
   private void changeImage(String imagePath) {
     FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), image);
@@ -145,8 +162,10 @@ public class BackStoryController {
     fadeOut.play(); // Start the fade-out transition
   }
 
-  // Method to play two sounds with subtitles
-  // Method to play two sounds with subtitles
+  /**
+   * Play two sounds and manage the subtitles The first sound is played first and the second sound
+   * is played after the first ends The subtitles are displayed while the audio is playing
+   */
   private void playTwoSounds() {
     // Load the first sound file
     Media firstSound = new Media(getClass().getResource("/sounds/backstory1.mp3").toExternalForm());
@@ -188,14 +207,20 @@ public class BackStoryController {
         });
   }
 
-  // Method to display subtitles while the first audio is playing
+  /**
+   * Display subtitles for the first audio The subtitles are displayed while the first audio is
+   * playing
+   */
   private void showSubtitlesForFirstAudio() {
     String firstSubtitles =
         "A priceless golden idol has been stolen from an ancient egyptian tomb...";
     typeSubtitles(firstSubtitles, 0); // Call the typing animation for first audio
   }
 
-  // Method to display subtitles while the second audio is playing
+  /**
+   * Display subtitles for the second audio The subtitles are displayed while the second audio is
+   * playing The continue button is enabled after the second audio finishes
+   */
   private void showSubtitlesForSecondAudio() {
     String secondSubtitles = "The last three people at the scene are the main suspects...";
     typeSubtitles(secondSubtitles, 0);
@@ -203,7 +228,12 @@ public class BackStoryController {
     skipButton.setDisable(true); // Enable the continue button after the second audio
   }
 
-  // Method to handle typing animation of subtitles
+  /**
+   * Type the subtitles on the screen
+   *
+   * @param text
+   * @param delayInMillis
+   */
   private void typeSubtitles(String text, int delayInMillis) {
     subTitles.setText(""); // Clear the label before typing the new subtitles
 

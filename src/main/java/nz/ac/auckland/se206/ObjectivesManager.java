@@ -8,7 +8,13 @@ public class ObjectivesManager {
 
   private static ObjectivesManager instance;
 
-  /** gets the current instance of the objectives manager being used */
+
+  /**
+   * Get the singleton instance of ObjectivesManager
+   *
+   * @return
+   */
+
   public static ObjectivesManager getInstance() {
     if (instance == null) {
       instance = new ObjectivesManager();
@@ -22,6 +28,7 @@ public class ObjectivesManager {
       stepsRequiredForObjectives; // Specify how many steps are required for each objective
   private List<Runnable> observers = new ArrayList<>();
 
+  /** Constructor for ObjectivesManager */
   private ObjectivesManager() {
     initializeObjectives(
         2, new int[] {3, 1}); // For example, 3 steps for objective 0, 1 step for objective 1
@@ -41,14 +48,21 @@ public class ObjectivesManager {
         stepsRequired; // Assign how many steps are required for each objective
   }
 
+  /**
+   * Check if an objective is completed
+   *
+   * @param index
+   * @return
+   */
   public boolean isObjectiveCompleted(int index) {
     return objectivesCompleted[index];
   }
 
   /**
-   * Completes the objective step at the specified index
+   * Get the progress for an objective
    *
-   * @param index The index of the objective to complete
+   * @param index
+   * @return
    */
   public void completeObjectiveStep(int index) {
     if (!objectivesCompleted[index]) {
@@ -64,7 +78,9 @@ public class ObjectivesManager {
     }
   }
 
-  /** If all the objectives are completed, enable the guess button */
+
+  /** Enable the guess button if all objectives are completed */
+
   public void enableGuessButton() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       if (!objectivesCompleted[i]) {
@@ -74,7 +90,15 @@ public class ObjectivesManager {
     App.setGuessButton();
   }
 
-  /** Reset all objectives to their initial state (not completed and no progress) */
+
+  /**
+   * Get the progress for an objective
+   *
+   * @param index
+   * @return
+   * @throws IllegalArgumentException
+   */
+
   public void resetObjectives() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       objectivesCompleted[i] = false; // Reset completion status
@@ -83,10 +107,16 @@ public class ObjectivesManager {
     notifyObservers(); // Notify any observers that objectives have been reset
   }
 
+  /**
+   * Add an observer to the list of observers
+   *
+   * @param observer
+   */
   public void addObserver(Runnable observer) {
     observers.add(observer);
   }
 
+  /** Notify all observers */
   private void notifyObservers() {
     for (Runnable observer : observers) {
       observer.run();
