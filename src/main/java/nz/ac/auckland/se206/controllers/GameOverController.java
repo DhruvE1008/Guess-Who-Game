@@ -16,6 +16,11 @@ public class GameOverController {
 
   private int suspect;
 
+  /**
+   * Sets the feedback text to be displayed
+   *
+   * @param feedback
+   */
   @FXML
   public void setFeedback(String feedback) {
     if (suspect == 2 || suspect == 0) {
@@ -23,6 +28,11 @@ public class GameOverController {
     }
   }
 
+  /**
+   * Handles the restart button being clicked
+   *
+   * @param event
+   */
   @FXML
   public void handleRestart(MouseEvent event) {
     TimerManager.resetTimer();
@@ -30,12 +40,22 @@ public class GameOverController {
     App.restartGame();
   }
 
+  /**
+   * Handles the exit button being clicked
+   *
+   * @param event
+   */
   @FXML
   private void handleExit(MouseEvent event) {
 
     App.exitGame();
   }
 
+  /**
+   * Sets the suspect value
+   *
+   * @param suspect
+   */
   public void setSuspect(int suspect) {
     this.suspect = suspect;
     if (suspect == 2) {

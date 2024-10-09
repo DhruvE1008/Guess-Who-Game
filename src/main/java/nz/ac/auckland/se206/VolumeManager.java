@@ -12,6 +12,11 @@ public class VolumeManager {
 
   private VolumeManager() {}
 
+  /**
+   * Get the singleton instance of VolumeManager
+   *
+   * @return
+   */
   public static VolumeManager getInstance() {
     if (instance == null) {
       instance = new VolumeManager();
@@ -19,18 +24,39 @@ public class VolumeManager {
     return instance;
   }
 
+  /**
+   * Get the volume property
+   *
+   * @return
+   */
   public DoubleProperty volumeProperty() {
     return volume;
   }
 
+  /**
+   * Get the volume
+   *
+   * @return
+   */
   public double getVolume() {
     return volume.get();
   }
 
+  /**
+   * Set the volume
+   *
+   * @param volume
+   */
   public void setVolume(double volume) {
     this.volume.set(volume);
   }
 
+  /**
+   * Set the volume and add a listener to update the MediaPlayer volume whenever the volume slider
+   * is changed
+   *
+   * @param player
+   */
   public static void setVolumeAndListener(MediaPlayer player) {
     // Set initial volume by converting the VolumeManager's 0-100 value to 0.0-1.0
     player.setVolume(VolumeManager.getInstance().getVolume() / 100);

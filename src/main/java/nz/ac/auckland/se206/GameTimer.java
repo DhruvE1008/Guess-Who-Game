@@ -11,6 +11,11 @@ public class GameTimer {
   private final int initialTimeInSeconds;
   private Timeline timeline;
 
+  /**
+   * Constructor for GameTimer
+   *
+   * @param startMinutes
+   */
   public GameTimer(int startMinutes) {
     initialTimeInSeconds = startMinutes * 60;
     timeInSeconds = new SimpleIntegerProperty(initialTimeInSeconds);
@@ -29,31 +34,46 @@ public class GameTimer {
     timeline.setCycleCount(Timeline.INDEFINITE); // Run indefinitely
   }
 
+  /** Start the timer */
   public void start() {
     timeline.play(); // Start the timer
   }
 
+  /** Stop the timer */
   public void stop() {
     timeline.stop(); // Stop the timer
   }
 
+  /** Pause the timer */
   public void guessState() {
     timeline.pause(); // Pause the timer
   }
 
+  /** Resume the timer */
   public void reset() {
     timeline.stop();
     timeInSeconds.set(initialTimeInSeconds); // Reset to initial time
   }
 
+  /** Reset the timer to 1 minute */
   public void resetToOneMinute() {
     timeInSeconds.set(60); // Reset to 1 minute
   }
 
+  /**
+   * Get the time in seconds
+   *
+   * @return
+   */
   public IntegerProperty timeInSecondsProperty() {
     return timeInSeconds;
   }
 
+  /**
+   * Get the time in seconds
+   *
+   * @return
+   */
   public int getTimeInSeconds() {
     return timeInSeconds.get();
   }

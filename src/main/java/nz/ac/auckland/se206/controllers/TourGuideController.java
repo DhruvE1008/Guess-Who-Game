@@ -178,17 +178,20 @@ public class TourGuideController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
+  /** Handles the menu toggle button click event. */
   @FXML
   private void onToggleMenu() {
 
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton, objectiveMenu, objectiveClose);
   }
 
+  /** Handles the objectives guide button click event. */
   @FXML
   private void toggleObjectivesGuide() {
     SuspectOverlay.toggleObjectives(objectiveMenu, objectiveClose, suspectMenu, this::onToggleMenu);
   }
 
+  /** Handles the close objectives guide button click event. */
   @FXML
   private void closeObjectivesGuide() {
     SuspectOverlay.closeObjectivesMenu(objectiveMenu, objectiveClose);

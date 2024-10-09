@@ -84,6 +84,11 @@ public class ArchaeologistController {
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
    * via text-to-speech.
+   *
+   * @throws URISyntaxException
+   * @throws IOException
+   * @throws ApiProxyException
+   * @throws InterruptedException
    */
   @FXML
   public void initialize() {
@@ -169,31 +174,50 @@ public class ArchaeologistController {
     objectivesManager.addObserver(this::updateObjectiveLabels);
   }
 
+  /**
+   * Handles the hover event for the suspect overlay.
+   *
+   * @param event
+   */
   @FXML
   private void onHover(MouseEvent event) {
     SuspectOverlay.onHover(event);
   }
 
+  /**
+   * Handles the exit event for the suspect overlay.
+   *
+   * @param event
+   */
   @FXML
   private void onExit(MouseEvent event) {
     SuspectOverlay.onExit(event);
   }
 
+  /** Toggles the suspect overlay menu. */
   @FXML
   private void onToggleMenu() {
     SuspectOverlay.toggleMenu(suspectMenu, arrowButton, objectiveMenu, objectiveClose);
   }
 
+  /** Toggles the objectives overlay menu. */
   @FXML
   private void toggleObjectives() {
     SuspectOverlay.toggleObjectives(objectiveMenu, objectiveClose, suspectMenu, this::onToggleMenu);
   }
 
+  /** Closes the objectives overlay menu. */
   @FXML
   private void closeObjectives() {
     SuspectOverlay.closeObjectivesMenu(objectiveMenu, objectiveClose);
   }
 
+  /**
+   * Handles the click event for the suspect overlay.
+   *
+   * @param event
+   * @throws IOException
+   */
   @FXML
   private void onProfileClick(MouseEvent event) throws IOException {
     if (archPlayer != null) {
@@ -203,6 +227,14 @@ public class ArchaeologistController {
     archContext.handleProfileClick(event, clickedImageView.getId());
   }
 
+  /**
+   * Handles the click event for the continue button.
+   *
+   * @param event
+   * @throws IOException
+   * @throws InterruptedException
+   * @throws ApiProxyException
+   */
   @FXML
   private void onSendMessage(ActionEvent event) {
     // if it's the first message, complete the first objective step for the archaeologist
@@ -242,6 +274,11 @@ public class ArchaeologistController {
     thread.start();
   }
 
+  /**
+   * Gets the system prompt for the archaeologist.
+   *
+   * @throws ApiProxyException
+   */
   private void getSystemPrompt() {
     // sets the values for the system prompt
     Map<String, String> map = new HashMap<>();
@@ -270,7 +307,12 @@ public class ArchaeologistController {
     }
   }
 
-  // Update the objective labels
+  /**
+   * Updates the objective labels.
+   *
+   * @throws IOException
+   * @throws ApiProxyException
+   */
   public void updateObjectiveLabels() {
     SuspectOverlay.updateObjectiveLabels(objectivesManager, objective1Label, objective2Label);
   }
