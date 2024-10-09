@@ -3,10 +3,12 @@ package nz.ac.auckland.se206;
 import java.util.ArrayList;
 import java.util.List;
 
+/** ObjectivesManager class which is used to keep track of the objectives in the game */
 public class ObjectivesManager {
 
   private static ObjectivesManager instance;
 
+  /** gets the current instance of the objectives manager being used */
   public static ObjectivesManager getInstance() {
     if (instance == null) {
       instance = new ObjectivesManager();
@@ -25,6 +27,13 @@ public class ObjectivesManager {
         2, new int[] {3, 1}); // For example, 3 steps for objective 0, 1 step for objective 1
   }
 
+  /**
+   * Initialize the objectives arrays with the number of objectives and the number of steps required
+   * for each objective
+   *
+   * @param numObjectives The objectives to be completed
+   * @param stepsRequired The number of steps required for each objective
+   */
   public void initializeObjectives(int numObjectives, int[] stepsRequired) {
     objectivesCompleted = new boolean[numObjectives];
     objectivesProgress = new int[numObjectives]; // Initialize progress for each objective
@@ -36,6 +45,11 @@ public class ObjectivesManager {
     return objectivesCompleted[index];
   }
 
+  /**
+   * Completes the objective step at the specified index
+   *
+   * @param index The index of the objective to complete
+   */
   public void completeObjectiveStep(int index) {
     if (!objectivesCompleted[index]) {
       // Increment progress for the objective
@@ -50,6 +64,7 @@ public class ObjectivesManager {
     }
   }
 
+  /** If all the objectives are completed, enable the guess button */
   public void enableGuessButton() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       if (!objectivesCompleted[i]) {
@@ -59,7 +74,7 @@ public class ObjectivesManager {
     App.setGuessButton();
   }
 
-  // New: Reset all objectives to their initial state
+  /** Reset all objectives to their initial state (not completed and no progress) */
   public void resetObjectives() {
     for (int i = 0; i < objectivesCompleted.length; i++) {
       objectivesCompleted[i] = false; // Reset completion status
