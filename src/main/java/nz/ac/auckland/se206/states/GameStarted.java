@@ -51,7 +51,6 @@ public class GameStarted implements GameState {
    */
   public void handleSendChatClick(
       TextArea chatTextArea, String userInput, String person, String aiResponse) {
-    chatTextArea.clear();
     chatTextArea.appendText("You: " + userInput + "\n\n");
     chatTextArea.appendText(person + ": " + aiResponse);
     chatTextArea.setScrollTop(Double.MAX_VALUE);

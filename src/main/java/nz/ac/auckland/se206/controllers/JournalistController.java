@@ -81,6 +81,7 @@ public class JournalistController {
   private GameTimer gameTimer;
   private MediaPlayer journmedia;
   private ObjectivesManager objectivesManager;
+  private boolean firstTime = true;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -214,7 +215,12 @@ public class JournalistController {
       objectivesManager.completeObjectiveStep(0);
       journFirstMessage = false;
       readyMessageLabel.setVisible(false);
+      txtaChat.clear();
     }
+    if (!firstTime) {
+      txtaChat.appendText("\n\n");
+    }
+    firstTime = false;
     String userMessage = txtInput.getText().trim();
     // if the message is empty do nothing
     if (userMessage.isEmpty()) {
