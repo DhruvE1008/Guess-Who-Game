@@ -217,14 +217,13 @@ public class RoomController {
     // current tracks what image is currently being displayed
     current = 1;
     // make the initial image the kid image
-    phoneDisplay.setImage(
-        new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phonekidv4.png")));
   }
 
   @FXML
   private void onBackPressed() {
     // go back to the home screen
-    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phonehomev3.png")));
     gallery.setDisable(false);
     calendar.setDisable(false);
     leftarrow.setDisable(true);
@@ -234,7 +233,7 @@ public class RoomController {
   @FXML
   private void onUnlockPhone() {
     // unlock the phone and go to the home screen
-    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/home_screen.png")));
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phonehomev3.png")));
     unlockphone.setDisable(true);
     gallery.setDisable(false);
     calendar.setDisable(false);
@@ -243,7 +242,7 @@ public class RoomController {
   @FXML
   private void onCalendarClicked() {
     // open the calendar
-    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/calendar.png")));
+    phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/photocalanderv2.png")));
     gallery.setDisable(true);
     calendar.setDisable(true);
   }
@@ -322,8 +321,7 @@ public class RoomController {
     current = current + 1;
     System.out.println(current);
     if (current == 1) {
-      phoneDisplay.setImage(
-          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phonekidv4.png")));
     } else if (current == 2) {
       phoneDisplay.setImage(
           new Image(getClass().getResourceAsStream("/images/phonegalleryegyptarrow.png")));
@@ -348,8 +346,7 @@ public class RoomController {
           new Image(getClass().getResourceAsStream("/images/gallerymapwitharrows.png")));
     } else {
       current = 1;
-      phoneDisplay.setImage(
-          new Image(getClass().getResourceAsStream("/images/phonegallerykidarrow.png")));
+      phoneDisplay.setImage(new Image(getClass().getResourceAsStream("/images/phonekidv4.png")));
     }
   }
 
