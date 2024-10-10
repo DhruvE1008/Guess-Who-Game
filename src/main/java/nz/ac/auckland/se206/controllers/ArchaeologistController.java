@@ -80,6 +80,7 @@ public class ArchaeologistController {
   private GameTimer gameTimer;
   private MediaPlayer archPlayer;
   private ObjectivesManager objectivesManager;
+  private boolean firstTime = true;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -242,7 +243,12 @@ public class ArchaeologistController {
       objectivesManager.completeObjectiveStep(0);
       isFirstArchMessage = false;
       readyMessageLabel.setVisible(false);
+      archTxtChat.clear();
     }
+    if (!firstTime) {
+      archTxtChat.appendText("\n\n");
+    }
+    firstTime = false;
     String message = archTxtInput.getText().trim();
     // if the message is empty, do nothing
     if (message.isEmpty()) {

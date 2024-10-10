@@ -89,6 +89,7 @@ public class TourGuideController {
   private GameTimer gameTimer;
   private MediaPlayer player;
   private ObjectivesManager objectivesManager;
+  private boolean firstTime = true;
 
   /**
    * Initializes the room view. If it's the first time initialization, it will provide instructions
@@ -234,7 +235,12 @@ public class TourGuideController {
       objectivesManager.completeObjectiveStep(0);
       FirstMessage = false;
       readyMessageLabel.setVisible(false);
+      txtaChat.clear();
     }
+    if (!firstTime) {
+      txtaChat.appendText("\n\n");
+    }
+    firstTime = false;
     String message = txtInput.getText().trim();
     // if the message is empty, do nothing
     if (message.isEmpty()) {
