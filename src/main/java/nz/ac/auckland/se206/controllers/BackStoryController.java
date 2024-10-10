@@ -116,7 +116,6 @@ public class BackStoryController {
     // Stop the second media player if it's already started
     if (secondMediaPlayer != null) {
       secondMediaPlayer.stop(); // Stop the second audio if it has started
-      secondMediaPlayer.dispose(); // Release resources
     }
 
     App.changeCrimeScene(event); // Navigate to the crime scene or game scene
@@ -133,12 +132,6 @@ public class BackStoryController {
     // Stop the first media player if it's playing
     if (firstMediaPlayer != null) {
       firstMediaPlayer.stop(); // Stop the audio
-    }
-
-    // Stop the second media player if it's already started
-    if (secondMediaPlayer != null) {
-      secondMediaPlayer.stop(); // Stop the second audio if it has started
-      secondMediaPlayer.dispose(); // Release resources
     }
 
     // Now change the scene after stopping the media players
