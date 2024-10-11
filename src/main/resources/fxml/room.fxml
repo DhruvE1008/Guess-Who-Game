@@ -21,7 +21,7 @@
          </image>
       </ImageView>
 
-         <Pane fx:id="phonePopup" layoutX="254.0" layoutY="131.0" prefHeight="400.0" prefWidth="200.0" visible="true">
+         <Pane fx:id="phonePopup" layoutX="254.0" layoutY="131.0" prefHeight="400.0" prefWidth="200.0" visible="false">
    <children>
       <!-- Phone lock screen background -->
       <ImageView fx:id="phoneDisplay" fitHeight="400.0" fitWidth="208.0" layoutX="-2.0" layoutY="13.0" preserveRatio="true">
