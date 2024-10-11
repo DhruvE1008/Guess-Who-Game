@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import nz.ac.auckland.se206.controllers.ArchaeologistController;
@@ -67,6 +68,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setFill(Color.TRANSPARENT);
     // sets the cursor to the default cursor
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
@@ -85,6 +87,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setFill(Color.TRANSPARENT);
     // sets the cursor to the default cursor
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
@@ -103,6 +106,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setFill(Color.TRANSPARENT);
     // sets the cursor to the default cursor
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
@@ -131,7 +135,7 @@ public class App extends Application {
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     // Create a new scene and set up the key event handler
                     scene = new Scene(root);
-
+                    scene.setFill(Color.TRANSPARENT);
                     // Set the new scene on the stage
                     stage.setScene(scene);
                     stage.show();
@@ -162,7 +166,7 @@ public class App extends Application {
     Stage stage =
         (Stage) App.getPrimaryStage().getScene().getWindow(); // Adjusted to use App's primary stage
     scene = new Scene(root);
-
+    scene.setFill(Color.TRANSPARENT);
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
     stage.show();
@@ -180,6 +184,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     scene = new Scene(root);
+    scene.setFill(Color.TRANSPARENT);
     // sets the cursor to default
     scene.setCursor(Cursor.DEFAULT);
     stage.setScene(scene);
@@ -199,6 +204,7 @@ public class App extends Application {
     Parent root = loader.load();
     Stage stage = (Stage) App.getPrimaryStage().getScene().getWindow();
     scene = new Scene(root);
+    scene.setFill(Color.TRANSPARENT);
     GameOverController controller = loader.getController();
     // sets the suspect and feedback in the game over controller
     controller.setSuspect(suspect);
@@ -295,6 +301,7 @@ public class App extends Application {
     Parent root = loader.load();
 
     scene = new Scene(root);
+    scene.setFill(Color.TRANSPARENT);
     stage.setScene(scene);
     stage.show();
     stage.setOnCloseRequest(event -> handleWindowClose(event));
