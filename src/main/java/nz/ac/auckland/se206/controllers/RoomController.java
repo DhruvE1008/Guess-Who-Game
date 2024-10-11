@@ -175,7 +175,7 @@ public class RoomController {
   private void setupScanLineMovement() {
     // Create the translate transition for the scanLine on the Y-axis
     scanTransition = new TranslateTransition(Duration.millis(2000), scanLine);
-    scanTransition.setByY(200); // Move 200 units up and down along the Y-axis
+    scanTransition.setByY(210); // Move 200 units up and down along the Y-axis
     scanTransition.setCycleCount(2); // Only one full cycle
     scanTransition.setAutoReverse(true); // Automatically reverse direction after reaching the end
 
@@ -272,7 +272,7 @@ public class RoomController {
    */
   private void handleKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.S) {
-      scanLabel.setText("Scanning...");
+      scanLabel.setText("    Scanning...");
       startScanLineMovement(); // Start scan when 'S' is pressed
     } else if (event.getCode() == KeyCode.F) {
       rotate();
